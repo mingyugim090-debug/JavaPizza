@@ -1,9 +1,9 @@
 package view;
 
-public class LoginPanel {
+public class GamePanel {
 
 	public static void main(String[] args) {
-		//로그인 화면 패널
+		// TODO Auto-generated method stub
 
 	}
 

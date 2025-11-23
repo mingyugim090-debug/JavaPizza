@@ -1,9 +1,9 @@
 package view;
 
-public class My_view {
+public class InfoPanel {
 
 	public static void main(String[] args) {
-		System.out.print("test");
+		// TODO Auto-generated method stub
 
 	}
 
