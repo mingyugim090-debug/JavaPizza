@@ -1,9 +1,9 @@
 package controller;
 
-public class AppController {
+public class ItemGenerator {
 
 	public static void main(String[] args) {
-		System.out.println("초기세팅");
+		// TODO Auto-generated method stub
 
 	}
 

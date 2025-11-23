@@ -1,9 +1,9 @@
 package model;
 
-public class Product {
+public class Stuff {
 
 	public static void main(String[] args) {
-		//상품정보
+		// TODO Auto-generated method stub
 
 	}
 
