@@ -36,7 +36,7 @@ main이나 develop 브랜치에 직접 코딩 금지
 * 이 외에도 여러가지 Commit 가능
 
 ### (4) Pull Request & Merge
-1. 작업 마치면 Commit & Push
+1. 작업 마치면 Commit & Push : window --> Show view --> other --> Git Stagging --> ++버튼 눌러서 다 내리고 Commit메시지 작성후 Commit&Push 
 2. 깃허브에서 Pull Request 생성 후 팀원 태그
 3. 팀원들이 코드 확인 및 피드백하고 승인하면 Merge
 4. Merge가 완료된 브랜치는 삭제할 것
