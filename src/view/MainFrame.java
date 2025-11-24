@@ -1,12 +1,12 @@
 package view;
 
-public class MainFrame {
+import javax.swing.JFrame;
 
-	public static void main(String[] args) {
-		System.out.println("초기세팅");
-		//GUI - Swing,AWT
-		//전체 창 틀(JFrame상속)
+public class MainFrame extends JFrame {
 
-	}
-
+	public MainFrame() {
+	setTitle(" 임시 창 ");
+	setSize(800,600);
+	
+ }
 }
