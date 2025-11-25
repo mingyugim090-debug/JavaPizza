@@ -1,20 +1,41 @@
 package controller;
 
-import view.MainFrame;
+import Gui.Frame;
+import util.TimeThread;
 
 public class GameManager {    
-    private MainFrame mainframe; 
+    private Frame frame; 
+    private int myScore=0; //내 점수를 저장할 변수
     
     //생성자 : Main에서 넘겨준 화면 받는 곳
-    public GameManager(MainFrame frame) {
-            this.mainframe = frame;
+    public GameManager(Frame frame) {
+            this.frame = frame;
     }
     
     //초기화 메서드
     public void initGame() {
         System.out.println("게임 초기화 중");
-        // 이곳에 추후에 맵 불러오는거 , 점수 초기화하는 코드들 넣으면 될 듯
+        TimeThread timer = new TimeThread(this , 60);
+        timer.start();
+    }
     
-    
+    //[1]시간 관련 메서드 (TimeThread와 연결됨)
+    //시간이 1초 줄어들때마다 호출되어 실행됨
+    public void updateTime(int time) {
+        System.out.println("남은 시간: " + time + "초");
+            // 자연이가 화면에 시계모양(JLavel)만들어 주면 view.updateTimerLabel(time); 처럼 화면을 갱신할 예정
+        }
+
+    // 시간이 0이 되면 게임오버 호출
+    public void gameOver() {
+        System.out.println("Game Over! Times up!");
+            // 나중에 여기서 팝업창 띄우고 게임 정지 로직 timeThread.stopTimer(); 추가 예정
+        }
+
+        //[2] 점수 관련 메서드
+        // 기본 점수 추가
+        public void addScore(int point) {
+        	this.myScore += point; //점수 누적
+            System.out.println("점수 획득: " + point);
     }
 }
