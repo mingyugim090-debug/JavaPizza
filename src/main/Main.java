@@ -1,7 +1,10 @@
 package main;
 
+
 import view.MainFrame;
 import controller.GameManager;
+
+
 
 public class Main {
 	public static void main(String[] args) {
@@ -17,6 +20,6 @@ public class Main {
 		    mainframe.setVisible(true); //화면이 모니터에 보이도록 설정
 		    
 		    System.out.println("준비 완료되었습니다."); //완료 로그 출력!
-		    
-	    }
+   
+		}
 	}
