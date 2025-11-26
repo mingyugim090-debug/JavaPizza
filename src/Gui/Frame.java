@@ -32,5 +32,10 @@ public class Frame extends JFrame {
 	    revalidate();
 	    repaint();
 	}
+	
+	//MainPanel을 보여주는 메소드(gameover 후 다시 시작할 때)
+	public void showMainPanel() {
+	    changePanel(new MainPanel(this));
+	}
 
 }
