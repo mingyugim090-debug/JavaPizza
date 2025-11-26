@@ -38,7 +38,7 @@ public class GamePanel extends JPanel {
 		informationPanel = new InformationPanel(stage, coins, score); 
 		
 		//미션 라벨
-		missionLabel = new JLabel("배송해야 할 물건의 수 : 5", SwingConstants.CENTER);
+		missionLabel = new JLabel("최대한 빠르게 칸을 채우자!", SwingConstants.CENTER);
 	    missionLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		
 	    //타이머 라벨
