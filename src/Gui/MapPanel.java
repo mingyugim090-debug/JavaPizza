@@ -21,6 +21,7 @@ public class MapPanel extends JPanel{
 	private boolean isDragging = false; //드래그 중인가?
 	private Image draggingImage = null; //드래그 중 따라다니는 이미지
 	private int mouseX, mouseY; //현재 마우스 드래그 위치 
+	private boolean gameOver = false;
 	
 	//Map 데이터
 	private int[][] map;
@@ -37,6 +38,16 @@ public class MapPanel extends JPanel{
 
 	    addMouseListener(mouseListener);
 	    addMouseMotionListener(mouseMotionListener);
+	}
+	
+	public void setGameOver(boolean gameOver) {
+	    this.gameOver = gameOver;
+
+	    //gameOver == true 이면 드래그 인식 중지
+	    if (gameOver) {
+	        isDragging = false;
+	        draggingImage = null;
+	    }
 	}
 	
 	//스테이지에 따른 gridSize
@@ -56,6 +67,7 @@ public class MapPanel extends JPanel{
     }
 
     public void startDragging(Image img) {
+    	if (gameOver) return;
         isDragging = true;
         draggingImage = img;
     }
@@ -168,11 +180,13 @@ public class MapPanel extends JPanel{
        
     	//마우스 버튼을 눌렀을 때
         public void mousePressed(MouseEvent e) {
+        	if(gameOver) return;
             handleClick(e);
         }
 
         //마우스 버튼을 뗐을 때
         public void mouseReleased(MouseEvent e) {
+        	if(gameOver) return;
             if (isDragging) {
                 handleDrop(e);
             }
@@ -182,12 +196,14 @@ public class MapPanel extends JPanel{
     private MouseMotionListener mouseMotionListener = new MouseMotionAdapter() {
        
         public void mouseDragged(MouseEvent e) {
+        	if (gameOver) return;
             mouseX = e.getX();
             mouseY = e.getY();
             repaint();
         }
 
         public void mouseMoved(MouseEvent e) {
+        	if (gameOver) return;
             mouseX = e.getX();
             mouseY = e.getY();
             repaint();
