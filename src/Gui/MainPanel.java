@@ -10,6 +10,7 @@ public class MainPanel extends JPanel {
 	private JButton startButton;
     private JButton helpButton;
     private JLabel logoLabel;
+    private JLabel requestLabel;
     
     public MainPanel(Frame frame) {
         this.frame = frame;
@@ -54,6 +55,11 @@ public class MainPanel extends JPanel {
                 frame.changePanel(new HelpPanel(frame));
             }
         });  
+        
+        //미션 라벨
+        requestLabel = new JLabel("*전체 화면으로 이용해 주세요*", SwingConstants.CENTER);
+        requestLabel.setFont(new Font("맑은 고딕", Font.BOLD, 23));
+        add(requestLabel);
     }
     
     //화면이 리사이즈될 때마다 자동 호출
@@ -69,7 +75,6 @@ public class MainPanel extends JPanel {
         int logoHeight = logoLabel.getIcon().getIconHeight(); //로고 높이
         int logoX = (width - logoWidth) / 2; //로고 x좌표
         int logoY = (int)(height * 0.1); //로고 y좌표
-        
         logoLabel.setLocation(logoX,logoY);
         logoLabel.setSize(logoWidth,logoHeight);
 
@@ -78,14 +83,20 @@ public class MainPanel extends JPanel {
         int buttonHeight = (int)(height * 0.1); 
         int buttonX = (width - buttonWidth) / 2;
         int buttonY = (int)(height * 0.45);
-       
         startButton.setLocation(buttonX,buttonY);
         startButton.setSize(buttonWidth,buttonHeight);
 
         //HELP버튼 위치/크기
         int helpY = (int)(height * 0.6);
-        
         helpButton.setLocation(buttonX,helpY);
         helpButton.setSize(buttonWidth,buttonHeight);
+        
+      //"전체 화면으로 이용해 주세요" 문구 크기/위치
+        int requestWidth = (int)(width * 0.4);
+        int requestHeight = (int)(height * 0.05);
+        int requestX = (width - requestWidth) / 2;
+        int requestY = (int)(helpY + buttonHeight*2);
+        requestLabel.setLocation(requestX,requestY);
+        requestLabel.setSize(requestWidth,requestHeight);
     }
 }
