@@ -22,6 +22,8 @@ public class GamePanel extends JPanel {
 	private JLabel logoLabel;
 	private JLabel missionLabel; 
 	private JLabel timerLabel;
+	private DeliveryListPanel deliveryListPanel;
+	private RobotPanel robotPanel;
 	
 	private JLabel gameOverLabel;
 	private JPanel darkPanel;
@@ -40,6 +42,13 @@ public class GamePanel extends JPanel {
 	    ImageIcon logo = new ImageIcon(getClass().getResource("robohub_logo1.png"));
 	    logoLabel = new JLabel(logo);
 	        
+	    
+	    //DeliveryListPanel(배송목록)
+	    deliveryListPanel = new DeliveryListPanel();
+	   
+	  //RobotPanel(로봇목록)
+	    robotPanel = new RobotPanel();
+	    
 		//MapPanel
 		mapPanel = new MapPanel(stage);
 		
@@ -51,7 +60,7 @@ public class GamePanel extends JPanel {
 	    missionLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		
 	    //타이머 라벨
-	    timerLabel = new JLabel("Time : ", SwingConstants.CENTER);
+	    timerLabel = new JLabel(" ", SwingConstants.CENTER);
 	    timerLabel.setFont(new Font("맑은 고딕", Font.BOLD, 22));
 	    timerLabel.setForeground(Color.DARK_GRAY);
 	    
@@ -94,6 +103,8 @@ public class GamePanel extends JPanel {
         });
 	    
 		add(logoLabel);
+		add(deliveryListPanel);
+		add(robotPanel);
 		add(mapPanel);
 		add(informationPanel);
 		add(missionLabel);
@@ -134,7 +145,6 @@ public class GamePanel extends JPanel {
         int logoHeight = logoLabel.getPreferredSize().height;
         int logoX = (width - logoWidth) / 2;
         int logoY = (int)(height * 0.05);
-      
         logoLabel.setLocation(logoX,logoY);
         logoLabel.setSize(logoWidth,logoHeight);
 
@@ -143,7 +153,6 @@ public class GamePanel extends JPanel {
         int missionHeight = (int)(height * 0.05);
         int missionX = (width - missionWidth) / 2;
         int missionY = logoY + logoHeight + 10;
-       
         missionLabel.setLocation(missionX,missionY);
         missionLabel.setSize(missionWidth,missionHeight);
 
@@ -153,8 +162,24 @@ public class GamePanel extends JPanel {
         int mapY = missionY + missionHeight + 20;
         mapPanel.setLocation(mapX,mapY);
         mapPanel.setSize(mapSize,mapSize);
+        
+        //DeliveryListPanel 크기/위치
+        int deliveryWidth  = (int)(width * 0.33);   
+        int deliveryHeight = (int)(height * 0.75);  
+        int deliveryX      = (int)(width * 0.03);   
+        int deliveryY      = (int)(height * 0.06); ;               
+        deliveryListPanel.setLocation(deliveryX, deliveryY);
+        deliveryListPanel.setSize(deliveryWidth, deliveryHeight);
+        
+        //RobotPanel 크기/위치
+        int robotWidth  = (int)(width * 0.33);   
+        int robotHeight = (int)(height * 0.75);  
+        int robotX      = (int)(width * 0.97 - robotWidth);   
+        int robotY      = (int)(height * 0.06); ;               
+        robotPanel.setLocation(robotX, robotY);
+        robotPanel.setSize(robotWidth, robotHeight);
 
-
+        //타이머 크기/위치
         int timerWidth = (int)(width * 0.2);
         int timerHeight = (int)(height * 0.05);
         int timerX = (width - timerWidth) / 2;
@@ -171,7 +196,7 @@ public class GamePanel extends JPanel {
         informationPanel.setLocation(infoX,infoY);
         informationPanel.setSize(infoWidth, infoHeight);
         
-        //어두운 배경 크기/위치
+        //gameover시 나오는 어두운 배경 크기/위치
         darkPanel.setLocation(0,0);
         darkPanel.setSize(width, height);
         
@@ -188,7 +213,6 @@ public class GamePanel extends JPanel {
         int buttonHeight = 50;
         int buttonX = (width - buttonWidth) / 2;
         int buttonY = gameoverY + gameoverHeight + 20;  //텍스트 아래 20px 띄움
-
         gameOverButton.setLocation(buttonX,buttonY);
         gameOverButton.setSize(buttonWidth, buttonHeight);
         
