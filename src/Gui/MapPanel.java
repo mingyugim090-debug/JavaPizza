@@ -1,0 +1,215 @@
+package Gui;
+
+import javax.swing.*;
+
+import Gui.Frame;
+
+import java.awt.*;
+import java.awt.event.*;
+
+public class MapPanel extends JPanel{
+	
+//	private Frame frame;
+	private int gridSize; //맵 한줄의 개수 (3,4,5)
+	private int cellSize = 120; //칸 하나의 크기(px)
+	private int panelPadding = 60; //맵을 화면에 배치할 때 전체 여백
+	private int mapStartX; //맵의 위치
+	private int mapStartY;
+	private int stage;
+	
+	//드래그 상태
+	private boolean isDragging = false; //드래그 중인가?
+	private Image draggingImage = null; //드래그 중 따라다니는 이미지
+	private int mouseX, mouseY; //현재 마우스 드래그 위치 
+	
+	//Map 데이터
+	private int[][] map;
+	
+	//생성자
+	public MapPanel(int stage) {
+		
+		this.stage = stage;
+		
+		setLayout(null); 
+	    setStage(stage);  //stage 번호를 전달받아 gridSize 설정 
+	    setPreferredSize(new Dimension(600, 400));
+	    setBackground(new Color(0xEDEDED));
+
+	    addMouseListener(mouseListener);
+	    addMouseMotionListener(mouseMotionListener);
+	}
+	
+	//스테이지에 따른 gridSize
+	public void setStage(int stage) {
+		if(stage == 1) gridSize = 3; //3X3
+		if(stage == 2) gridSize = 4; //4X4
+		if(stage == 3) gridSize = 5; //5X5
+		
+		map = new int[gridSize][gridSize]; //스테이지에 따른 맵 초기화
+		
+		repaint();
+	}
+	
+    public void updateMap(int[][] newMap) {
+        this.map = newMap;
+        repaint();
+    }
+
+    public void startDragging(Image img) {
+        isDragging = true;
+        draggingImage = img;
+    }
+
+    public void stopDragging() {
+        isDragging = false;
+        draggingImage = null;
+        repaint();
+    }
+    
+    protected void paintComponent(Graphics g) {
+    	super.paintComponent(g);
+    	
+    	int width = getWidth();
+    	int height = getHeight();
+    	int boardSize = Math.min(width, height);
+    	
+    	cellSize = boardSize / gridSize;
+
+        int mapPixelSize = gridSize * cellSize; //맵의 전체 픽셀 크기 계산
+        //맵 배치
+        mapStartX = (width - mapPixelSize) / 2;
+        mapStartY = (height - mapPixelSize) / 2;
+
+        drawGrid(g);
+        drawMapObjects(g);
+
+        //물건을 드래그 중일 때
+        if (isDragging && draggingImage != null) {
+        	//마우스가 현재 어느 칸 위에 위치하는가
+        	int col = (mouseX - mapStartX) / cellSize;
+            int row = (mouseY - mapStartY) / cellSize;
+            
+            //현재 칸의 정중앙 위치(픽셀값으로)
+            int snapX = mapStartX + col * cellSize + cellSize/2;
+            int snapY = mapStartY + row * cellSize + cellSize/2;
+
+            //칸의 중앙 x값과 현재 마우스 위치 차이의 절댓값
+            int dx = Math.abs(mouseX - snapX);
+            int dy = Math.abs(mouseY - snapY);
+
+            //스냅 거리 30px 이내면 스냅 작동
+            if (dx < 30 && dy < 30) {
+                g.drawImage(draggingImage,
+                            snapX - draggingImage.getWidth(null)/2,
+                            snapY - draggingImage.getHeight(null)/2,
+                            60, 60, null);
+            }else {
+                g.drawImage(draggingImage, mouseX - 20, mouseY - 20, 60, 60, null);
+            }
+        }
+    }
+     
+    //맵 그리는 메소드
+    private void drawGrid(Graphics g) {
+
+        for (int r = 0; r < gridSize; r++) {
+            for (int c = 0; c < gridSize; c++) {
+
+                int x = mapStartX + c * cellSize;
+                int y = mapStartY + r * cellSize;
+
+                //칸 배경색
+                g.setColor(new Color(225, 225, 225));
+                g.fillRect(x, y, cellSize, cellSize);
+
+                //칸 테두리
+                g.setColor(Color.BLACK);
+                g.drawRect(x, y, cellSize, cellSize);
+            }
+        }
+    }
+    
+    //맵 위에 실제 물건(박스,로봇 등)을 그리는 메소드
+    private void drawMapObjects(Graphics g) {
+    	
+        //map[row][col] 값에 따라 그림 표시
+        for (int row = 0; row < gridSize; row++) {
+            for (int col = 0; col < gridSize; col++) {
+
+            	//해당하는 칸 위에 물체가 있으면
+                if (map[row][col] != 0) {
+                    g.setColor(new Color(150, 190, 220)); //임시
+                    int x = mapStartX + col * cellSize;
+                    int y = mapStartY + row * cellSize;
+                    //테두리 선과 겹치지 않게 조금 안쪽으로 물체를 그리기 위함
+                    g.fillRect(x + 2, y + 2, cellSize - 4, cellSize - 4);
+                }
+                
+            }
+        }
+    }
+    
+    //좌표
+    public Point getGridPosition(int mouseX, int mouseY) {
+        int col = (mouseX - mapStartX) / cellSize;
+        int row = (mouseY - mapStartY) / cellSize;
+
+        // 그리드 밖이면 -1, -1 반환
+        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+            return new Point(-1, -1);
+        }
+
+        return new Point(col, row);
+    }
+    
+ 
+    //마우스 이벤트
+    private MouseListener mouseListener = new MouseAdapter() {
+       
+    	//마우스 버튼을 눌렀을 때
+        public void mousePressed(MouseEvent e) {
+            handleClick(e);
+        }
+
+        //마우스 버튼을 뗐을 때
+        public void mouseReleased(MouseEvent e) {
+            if (isDragging) {
+                handleDrop(e);
+            }
+        }
+    };
+
+    private MouseMotionListener mouseMotionListener = new MouseMotionAdapter() {
+       
+        public void mouseDragged(MouseEvent e) {
+            mouseX = e.getX();
+            mouseY = e.getY();
+            repaint();
+        }
+
+        public void mouseMoved(MouseEvent e) {
+            mouseX = e.getX();
+            mouseY = e.getY();
+            repaint();
+        }
+    };
+    
+    private void handleClick(MouseEvent e) {
+        int row = (e.getY() - panelPadding) / cellSize; 
+        int col = (e.getX() - panelPadding) / cellSize;
+
+        System.out.println("Click : row=" + row + " col=" + col);
+        // → GameManager.clickCell(row, col);
+    }
+
+    //드래그해서 놓았을 때
+    private void handleDrop(MouseEvent e) {
+    	int col = (e.getX() - mapStartX) / cellSize;
+        int row = (e.getY() - mapStartY) / cellSize;
+
+        System.out.println("Drop : row=" + row + " col=" + col);
+
+        stopDragging();
+    }
+
+}

@@ -7,6 +7,8 @@ public class HelpPanel extends JPanel {
 	
 	private Frame frame;
 	private JButton closeButton;
+	private JPanel helpBox;
+	private JTextArea message;
 	
 	public HelpPanel(Frame frame) {
 		this.frame = frame;
@@ -15,16 +17,14 @@ public class HelpPanel extends JPanel {
 		setBackground(new Color(0xEDEDED));
 		
         //게임 설명칸
-        JPanel helpBox = new JPanel();
+        helpBox = new JPanel();
         helpBox.setLayout(null);
-        helpBox.setBackground(new Color(120, 120, 120)); 
+        helpBox.setBackground(Color.GRAY); 
         helpBox.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-        helpBox.setLocation(350,100); //위치
-        helpBox.setSize(800,530); //크기
         add(helpBox);
 
         //게임 방법 텍스트
-        JTextArea message = new JTextArea(
+        message = new JTextArea(
                 "당신은 ROBO HUB의 배송기사입니다.\n"
                 + "우측에 표시된 물건을 로봇의 도움을 받아 배송해야 합니다.\n\n"
                 + "[물건 배치]\n"
@@ -38,11 +38,9 @@ public class HelpPanel extends JPanel {
         );
 
         message.setEditable(false);
-        message.setBackground(new Color(120, 120, 120));
+        message.setBackground(Color.GRAY);
         message.setForeground(Color.WHITE);
         message.setFont(new Font("맑은 고딕", Font.BOLD, 25));
-        message.setLocation(50,30); //위치
-        message.setSize(700,450); //크기
         helpBox.add(message);
         
         
@@ -53,9 +51,6 @@ public class HelpPanel extends JPanel {
         closeButton.setOpaque(true); //배경색 적용
         closeButton.setFocusPainted(false);
         closeButton.setFont(new Font("맑은 고딕",Font.BOLD,30));
-        
-        closeButton.setLocation(600,650); //위치
-        closeButton.setSize(300,100); //크기
         add(closeButton); //부착
         
         //closeButton("알겠습니다")누르면 StartPanel로 돌아감, 익명 클래스로 이벤트 리스너 작성(교재 p566)
@@ -65,6 +60,40 @@ public class HelpPanel extends JPanel {
             }
         });
 	}
+	
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        //전체 패널의 폭/높이
+        int width = getWidth();
+        int height = getHeight();
+
+        //도움말상자 위치/크기
+        int boxWidth = (int)(width * 0.5);
+        int boxHeight = (int)(height * 0.60);
+        int boxX = (width - boxWidth) / 2;
+        int boxY = (int)(height * 0.15);
+   
+        helpBox.setLocation(boxX,boxY);
+        helpBox.setSize(boxWidth,boxHeight);
+
+        //도움말 내 텍스트상자 위치/크기
+        int msgWidth = (int)(boxWidth * 0.90); //message박스는 box보다 아주 조금 작게 만듦
+        int msgHeight = (int)(boxHeight * 0.92);
+        int msgX = (boxWidth - msgWidth) / 2;
+        int msgY = (boxHeight - msgHeight) / 2 - 10;
+
+        message.setLocation(msgX,msgY);
+        message.setSize(msgWidth,msgHeight);
+
+        //"알겠습니다"버튼 위치/크기
+        int buttonWidth = (int)(width * 0.20);
+        int buttonHeight = (int)(height * 0.10);
+        int buttonX = (width - buttonWidth) / 2;
+        int buttonY = (int)(height * 0.80);
+
+        closeButton.setLocation(buttonX,buttonY);
+        closeButton.setSize(buttonWidth,buttonHeight);
+    }
 
 }
-

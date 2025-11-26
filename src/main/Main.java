@@ -12,7 +12,8 @@ public class Main {
 
 		    // 관리자 Controller 생성
 		    GameManager gameManager = new GameManager(frame);
-		    gameManager.initGame(); //게임 데이터 초기화
+		    frame.setGameManager(gameManager);
+//		    gameManager.initGame(); //게임 데이터 초기화
 		    
 		    frame.setVisible(true); //화면이 모니터에 보이도록 설정
 		    
