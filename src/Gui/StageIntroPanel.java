@@ -1,6 +1,9 @@
 package Gui;
 
 import javax.swing.*;
+
+import controller.GameManager;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -31,9 +34,11 @@ public class StageIntroPanel extends JPanel{
 	        Timer timer = new Timer(2000, new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
 	            	GamePanel gamePanel = new GamePanel(frame,stage,coins,score);
-	            	frame.getGameManager().setGamePanel(gamePanel);
-//	                frame.changePanel(new GamePanel(frame, stage, coins, score));
+	            	GameManager gameManager = frame.getGameManager();
+	            	gameManager.setGamePanel(gamePanel);
 	            	frame.changePanel(gamePanel);
+	            	gameManager.initGame();
+	            	
 	            }
 	        });
 	        timer.setRepeats(false);
