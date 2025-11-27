@@ -1,10 +1,16 @@
 package model;
 
-public class CarryingBot {
+public class CarryingBot extends Robot{
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public SmallRobot(String name, String manual, int price) {
+		super("소형로봇", "5kg 미만의 물건을 옮길 수 있다.", 100);
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	protected int setVelocity() {
+		velocity = 3;
+		return velocity;
 	}
 
 }
