@@ -74,4 +74,6 @@ public class InformationPanel extends JPanel {
     public int getStage() { return stage; }
     public int getCoins() { return coins; }
     public int getScore() { return score; }
+    
+   
 }

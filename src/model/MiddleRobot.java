@@ -7,10 +7,6 @@ public class MiddleRobot extends Robot{
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Override
-	protected int setVelocity() {
-		velocity = 2;
-		return velocity;
-	}
+	
 
 }

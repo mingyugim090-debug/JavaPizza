@@ -11,11 +11,15 @@ public class MainPanel extends JPanel {
     private JButton helpButton;
     private JLabel logoLabel;
     private JLabel requestLabel;
+    private JButton rankingButton;
+    
+
     
     public MainPanel(Frame frame) {
         this.frame = frame;
         
         setLayout(null); //MainPanel 배치관리자 제거
+        
         
         //로고
         ImageIcon logo = new ImageIcon(getClass().getResource("robohub_logo.png"));
@@ -56,6 +60,24 @@ public class MainPanel extends JPanel {
             }
         });  
         
+        
+        //Ranking 버튼
+        rankingButton = new JButton("RANKING"); //문구
+        rankingButton.setBackground(Color.GRAY);
+        rankingButton.setForeground(Color.WHITE);
+        rankingButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        rankingButton.setOpaque(true);
+        rankingButton.setFocusPainted(false);
+        rankingButton.setFont(new Font("Arial",Font.BOLD,30));
+        add(rankingButton); //부착
+        
+        
+        //Ranking 버튼 누르면 RankPanel로 이동
+        rankingButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.changePanel(new RankingPanel(frame));
+            }
+        });  
         //미션 라벨
         requestLabel = new JLabel("*전체 화면으로 이용해 주세요*", SwingConstants.CENTER);
         requestLabel.setFont(new Font("맑은 고딕", Font.BOLD, 23));
@@ -91,6 +113,12 @@ public class MainPanel extends JPanel {
         helpButton.setLocation(buttonX,helpY);
         helpButton.setSize(buttonWidth,buttonHeight);
         
+        //Ranking버튼 위치/크기
+        int rankY = (int)(height * 0.3);
+        rankingButton.setLocation(buttonX,rankY);
+        rankingButton.setSize(buttonWidth,buttonHeight);
+        
+        
       //"전체 화면으로 이용해 주세요" 문구 크기/위치
         int requestWidth = (int)(width * 0.4);
         int requestHeight = (int)(height * 0.05);
@@ -98,5 +126,7 @@ public class MainPanel extends JPanel {
         int requestY = (int)(helpY + buttonHeight*2);
         requestLabel.setLocation(requestX,requestY);
         requestLabel.setSize(requestWidth,requestHeight);
+        
+       
     }
 }

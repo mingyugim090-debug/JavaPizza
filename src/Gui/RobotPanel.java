@@ -47,6 +47,7 @@ private JLabel titleLabel;
         g2.drawRect(boxX, boxY, boxWidth, boxHeight);
 
         //나중에 여기 안에 박스 그림을 추가하면 됨 (지금은 빈 영역만)
+        
     }
 
 }

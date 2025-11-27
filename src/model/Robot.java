@@ -21,6 +21,7 @@ public abstract class Robot{
 		this.limit = limit;
 	}
 	
+	
 	public String getName() {
 		return name;
 	}
@@ -62,3 +63,4 @@ public abstract class Robot{
 		int v = setVelocity();
 		return (1/v) * weight;
 	}
+}

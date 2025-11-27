@@ -7,10 +7,4 @@ public class SmallRobot extends Robot{
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Override
-	protected int setVelocity() {
-		velocity = 3;
-		return velocity;
-	}
-
 }
