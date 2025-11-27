@@ -1,7 +1,6 @@
 package Gui;
-
 import javax.swing.*;
-
+ 
 import Gui.Frame;
 
 import java.awt.*;
@@ -218,14 +217,31 @@ public class MapPanel extends JPanel{
         // → GameManager.clickCell(row, col);
     }
 
+    //=============GameManger와 MapPanel 이 연결되는 부분======================
+	// 외부에서 맵 데이터(int[][])를 받아서 화면을 갱신하는 메서드
+    public void setMapData(int[][] newMap) {
+               this.map = newMap;
+               repaint(); // 화면 다시 그리기
+           }   	
+
     //드래그해서 놓았을 때
     private void handleDrop(MouseEvent e) {
     	int col = (e.getX() - mapStartX) / cellSize;
         int row = (e.getY() - mapStartY) / cellSize;
 
         System.out.println("Drop : row=" + row + " col=" + col);
-
         stopDragging();
+        
+        //마우스로 물건을 놓았을 때 GameManager에게 물어보도록 하는 역할
+        Frame parentFrame = (Frame) SwingUtilities.getWindowAncestor(this);
+        //Frame을 통해 GameManager를 가져옴
+        if(parentFrame != null && parentFrame.getGameManager()!=null) {
+        	//GameManager에게 좌표 처리해달라고 요청
+        	parentFrame.getGameManager().handleMapAction(row,col);
+        
+     //=============GameManger와 MapPanel 이 연결되는 부분========================
+        
+    }
+    }
     }
 
-}
