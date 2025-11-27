@@ -1,10 +1,6 @@
 package controller;
+import model.Robot.*;
 
 public class ItemGenerator {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 }

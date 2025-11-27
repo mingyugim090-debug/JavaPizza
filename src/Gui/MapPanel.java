@@ -15,7 +15,8 @@ public class MapPanel extends JPanel{
 	private int mapStartX; //맵의 위치
 	private int mapStartY;
 	private int stage;
-	
+    private Box boxPanel; // box 크기 위치
+    
 	//드래그 상태
 	private boolean isDragging = false; //드래그 중인가?
 	private Image draggingImage = null; //드래그 중 따라다니는 이미지
@@ -25,6 +26,8 @@ public class MapPanel extends JPanel{
 	//Map 데이터
 	private int[][] map;
 	
+	
+    
 	//생성자
 	public MapPanel(int stage) {
 		
@@ -37,6 +40,8 @@ public class MapPanel extends JPanel{
 
 	    addMouseListener(mouseListener);
 	    addMouseMotionListener(mouseMotionListener);
+	    
+	    
 	}
 	
 	public void setGameOver(boolean gameOver) {
@@ -242,6 +247,10 @@ public class MapPanel extends JPanel{
      //=============GameManger와 MapPanel 이 연결되는 부분========================
         
     }
+        
+        
+
+        boxPanel.setBounds(boxX, boxY, boxW, boxH);
     }
     }
 

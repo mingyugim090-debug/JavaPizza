@@ -4,17 +4,20 @@ import javax.swing.JOptionPane;
 import Gui.Frame;
 import Gui.GamePanel;
 import util.TimeThread;
+import util.FileManager;
+import java.util.Scanner;
 
 public class GameManager {    
     private Frame frame; 
     private GamePanel gamePanel; 
     private TimeThread timer;    
+    private FileManager fileManager;
     
     // 게임 데이터
     private int myScore = 0; 
     private int currentStage = 1; // 현재 스테이지
     private int gridSize = 3;     // 맵 크기 (1단계:3x3, 2단계:4x4 로 점점 늘려나갈 예정)
-    
+   
     // 맵 데이터 (0: 빈칸, 1: 물건있음)
     private int[][] mapData; 
     
@@ -24,6 +27,7 @@ public class GameManager {
     // 생성자 : Main에서 넘겨준 화면 받는 곳
     public GameManager(Frame frame) {
         this.frame = frame;
+        this.fileManager = new FileManager();
     }
     
     //GamePanel이 생성되면 이 메서드를 통해 GameManager로 알려줌
@@ -31,7 +35,13 @@ public class GameManager {
         this.gamePanel = gamePanel;
     }
     
+    // 랭킹시스템
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+    
     // --- [1] 게임 흐름 제어 (초기화, 시작, 종료) ---
+    
     
     // 게임 시작 (초기화)
     public void initGame() {
@@ -60,6 +70,7 @@ public class GameManager {
     
     // 게임 오버 (TimeThread에서 호출)
     public void gameOver() {
+    	Scanner scanner =new Scanner(System.in);
         isGameRunning = false;
         System.out.println("Game Over!");
         
@@ -67,6 +78,7 @@ public class GameManager {
         JOptionPane.showMessageDialog(frame, "⏰ 시간 종료! 최종 점수: " + myScore);
         
         //나중에 여기에 랭킹 저장(FileManager) 코드 추가할 예정
+        // 사용자의 닉네임을 입력받으면 FileManager에 있는 rank(myScore, name)에 들어가야됨
         
         // 게임 끝나면 메인 화면으로 복귀 (Frame에 있는 메서드 호출)
         frame.showMainPanel();
