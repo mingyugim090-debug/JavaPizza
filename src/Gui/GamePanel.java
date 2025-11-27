@@ -130,10 +130,23 @@ public class GamePanel extends JPanel {
 	        mapPanel.setGameOver(true); //mapPanel에 gameover 알림
 	        gameOverButton.setVisible(true);
 	        repaint(); 
-
 	    }
 	}
-	  
+	
+	//=============GameManager와 GamePanel이 연결되는 부분=======================
+	//GameManager가 맵을 제어할 수 있도록 MapPanel을 건네주는 통로역할
+	 public MapPanel getMapPanel() {
+		 return mapPanel;
+	 }
+	 //GameManager가 점수 올랐다고 알려주면 화면을 갱신하는 역할
+	 public void updateScore(int score) {
+		 if(informationPanel != null) {
+			 informationPanel.setScore(score);
+	//=============GameManager와 GamePanel이 연결되는 부분========================		 
+			 
+		 }
+}
+	 
 	//GamePanel 위에 있는 요소들의 위치/크기 지정
     public void doLayout() {
 
@@ -216,10 +229,10 @@ public class GamePanel extends JPanel {
         gameOverButton.setLocation(buttonX,buttonY);
         gameOverButton.setSize(buttonWidth, buttonHeight);
         
-    }
     
-
-}
-
+     }
+    
+    }
+  
 
 
