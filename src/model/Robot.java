@@ -1,3 +1,5 @@
+package model;
+
 public abstract class Robot{
 	
 	protected String name;
