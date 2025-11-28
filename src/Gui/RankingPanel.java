@@ -21,14 +21,14 @@ public class RankingPanel extends JPanel {
         setLayout(null);
         setBackground(new Color(0xEDEDED));
 
-        // 랭킹 박스
+        //랭킹 박스
         rankBox = new JPanel();
         rankBox.setLayout(null);
         rankBox.setBackground(Color.GRAY);
         rankBox.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         add(rankBox);
 
-        // 랭킹 텍스트
+        //랭킹 텍스트
         rankText = new JTextArea();
         rankText.setEditable(false);
         rankText.setBackground(Color.GRAY);
@@ -36,7 +36,7 @@ public class RankingPanel extends JPanel {
         rankText.setFont(new Font("맑은 고딕", Font.BOLD, 25));
         rankBox.add(rankText);
 
-        // 뒤로가기 버튼
+        //뒤로가기 버튼
         backButton = new JButton("뒤로가기");
         backButton.setBackground(Color.GRAY);
         backButton.setForeground(Color.WHITE);
@@ -46,7 +46,7 @@ public class RankingPanel extends JPanel {
         backButton.setFont(new Font("맑은 고딕", Font.BOLD, 30));
         add(backButton);
 
-        // 뒤로가기 버튼 리스너
+        //뒤로가기 버튼 리스너
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.changePanel(new MainPanel(frame));
@@ -60,10 +60,10 @@ public class RankingPanel extends JPanel {
             }
         });
         
-        loadRanking();   //  랭킹 읽기
+        loadRanking();   //랭킹 읽기
     }
 
-    // 랭킹 불러오기
+    //랭킹 불러오기
     private void loadRanking() {
     
         String text = "RANKING \n\n";
@@ -78,7 +78,6 @@ public class RankingPanel extends JPanel {
         		text += (i + 1) + "위  " + fileManager.names.get(i) + "  -  " + fileManager.scores.get(i) + "점 \n";
              }
         }
-
         rankText.setText(text);
     }
 
@@ -88,7 +87,7 @@ public class RankingPanel extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        // 박스 크기
+        //박스 크기
         int boxWidth = (int) (width * 0.5);
         int boxHeight = (int) (height * 0.6);
         int boxX = (width - boxWidth) / 2;
@@ -96,7 +95,7 @@ public class RankingPanel extends JPanel {
 
         rankBox.setBounds(boxX, boxY, boxWidth, boxHeight);
 
-        // 텍스트 크기
+        //텍스트 크기
         int msgWidth = (int) (boxWidth * 0.90);
         int msgHeight = (int) (boxHeight * 0.92);
         int msgX = (boxWidth - msgWidth) / 2;
@@ -104,7 +103,7 @@ public class RankingPanel extends JPanel {
 
         rankText.setBounds(msgX, msgY, msgWidth, msgHeight);
 
-        // 뒤로가기 버튼 크기
+        //뒤로가기 버튼 크기
         int buttonWidth = (int) (width * 0.20);
         int buttonHeight = (int) (height * 0.10);
         int buttonX = (width - buttonWidth) / 2;
