@@ -11,7 +11,7 @@ public class GameManager {
     private Frame frame; //전체 창 
     private GamePanel gamePanel;  //게임 화면
     private TimeThread timer;     //시간
-    private FileManager fileManager; //랭킹 or 데이터 
+    private FileManager fileManager; //랭킹 or 데이터
     
     //게임 상태 변수
     private int myScore = 0; 
@@ -86,7 +86,7 @@ public class GameManager {
             fileManager.rank(myScore, name); 
             System.out.println("랭킹 저장 완료: " + name + " (" + myScore + "점)");
         }
-        
+        //skh
         //메인 화면으로 복귀
         frame.showMainPanel();
     }
