@@ -1,5 +1,5 @@
 package model;
-import java.awt.Color;
+import java.awt.Color;	
 import java.util.Random;
 
 public class Stuff_skh {
