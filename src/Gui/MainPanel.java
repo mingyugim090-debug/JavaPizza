@@ -18,8 +18,7 @@ public class MainPanel extends JPanel {
     public MainPanel(Frame frame) {
         this.frame = frame;
         
-        setLayout(null); //MainPanel 배치관리자 제거
-        
+        setLayout(null);
         
         //로고
         ImageIcon logo = new ImageIcon(getClass().getResource("robohub_logo.png"));
@@ -36,7 +35,7 @@ public class MainPanel extends JPanel {
         startButton.setFont(new Font("Arial",Font.BOLD,30));
         add(startButton); //부착
         
-      //Start버튼 누르면 StageIntroPanel로 이동, 익명 클래스로 이벤트 리스너 작성(교재 p566)
+        //Start버튼 누르면 StageIntroPanel로 이동, 익명 클래스로 이벤트 리스너 작성(교재 p566)
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.changePanel(new StageIntroPanel(frame,1));
