@@ -23,21 +23,20 @@ private JLabel titleLabel;
         int height = getHeight();
 
         //"로봇 목록" 글자 크기/위치
-        int labelWidth  = (int)(width  * 0.4);  
-        int labelHeight = (int)(height * 0.07);  
+        int labelWidth  = width  * 4 / 10;  
+        int labelHeight = height * 7 / 100;  
         int labelX      = (int)(width  * 0.95 - labelWidth*2.25);
-        int labelY      = (int)(height * 0.01); 
-
+        int labelY      = height / 100; 
         titleLabel.setLocation(labelX, labelY);
         titleLabel.setSize(labelWidth, labelHeight);
 
         //안쪽 흰색 영역 그리기
         Graphics2D g2 = (Graphics2D) g;
         
-        int margin = (int)(width * 0.03);
+        int margin = width * 3 / 100;
         int boxWidth   = width  - margin * 2;
-        int boxX   = (int)(width * 0.97 - boxWidth);
-        int boxY   = labelY + labelHeight + (int)(height * 0.01); 
+        int boxX   = width * 97 / 100 - boxWidth;
+        int boxY   = labelY + labelHeight + height / 100; 
         int boxHeight   = height - boxY - margin;
 
         g2.setColor(Color.WHITE);
@@ -45,9 +44,5 @@ private JLabel titleLabel;
 
         g2.setColor(Color.LIGHT_GRAY);
         g2.drawRect(boxX, boxY, boxWidth, boxHeight);
-
-        //나중에 여기 안에 박스 그림을 추가하면 됨 (지금은 빈 영역만)
-        
     }
-
 }

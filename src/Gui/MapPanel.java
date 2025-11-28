@@ -26,8 +26,6 @@ public class MapPanel extends JPanel{
 	//Map 데이터
 	private int[][] map;
 	
-	
-    
 	//생성자
 	public MapPanel(int stage) {
 		
@@ -69,7 +67,7 @@ public class MapPanel extends JPanel{
     }
 
     public void startDragging(Image img) {
-    	if (gameOver) return;
+    	if (gameOver) return; 
         isDragging = true;
         draggingImage = img;
     }

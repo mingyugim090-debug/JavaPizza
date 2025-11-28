@@ -38,7 +38,6 @@ public class StageIntroPanel extends JPanel{
 	            	gameManager.setGamePanel(gamePanel);
 	            	frame.changePanel(gamePanel);
 	            	gameManager.initGame();
-	            	
 	            }
 	        });
 	        timer.setRepeats(false);
@@ -53,11 +52,10 @@ public class StageIntroPanel extends JPanel{
 	        int height = getHeight();
 	        
 	        //"Stage N" 텍스트 위치/크기 
-	        int labelWidth = (int)(width * 0.4);
-	        int labelHeight = (int)(height * 0.3);
+	        int labelWidth = width * 4 / 10;
+	        int labelHeight = height * 3 / 10;
 	        int labelX = (width - labelWidth) / 2;
 	        int labelY = (int)(height - labelHeight) / 2;
-	   
 	        label.setLocation(labelX, labelY);
 	        label.setSize(labelWidth,labelHeight);
 	    }

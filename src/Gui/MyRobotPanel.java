@@ -6,14 +6,29 @@ import java.awt.*;
 public class MyRobotPanel extends JPanel{
 	
     private JLabel titleLabel;
+    
+    private RobotCardPanel convertCard;   //변환로봇
+    private RobotCardPanel deleteCard;    //삭제로봇
+    private RobotCardPanel metamongCard;  //메타몽로봇
 	
 	public MyRobotPanel() {
+		
         setLayout(null);             
         setBackground(new Color(0xF2F2F2)); 
 
         titleLabel = new JLabel("내 로봇 사용하기");
         titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
         add(titleLabel);
+        
+        //테스트 코드 (이후에 반드시 주석 처리)
+        convertCard = createCard("변환로봇", "changebot.png", 2, 0);
+        add(convertCard);
+
+        deleteCard = createCard("삭제로봇", "deletebot.png", 2, 1);
+        add(deleteCard);
+
+        metamongCard = createCard("메타몽로봇", "metamongbot.png", 2, 2);
+        add(metamongCard);
     }
 	
 	protected void paintComponent(Graphics g) {
@@ -23,19 +38,18 @@ public class MyRobotPanel extends JPanel{
         int height = getHeight();
 
         //"내 로봇" 글자 크기/위치
-        int labelWidth  = (int)(width  * 0.4);  
-        int labelHeight = (int)(height * 0.07);  
-        int labelX      = (int)(width  * 0.05);
-        int labelY      = (int)(height * 0.01); 
-
+        int labelWidth  = width  * 4 / 10;  
+        int labelHeight = height * 7 / 100;  
+        int labelX      = width  / 20;
+        int labelY      = height / 100;
         titleLabel.setLocation(labelX, labelY);
         titleLabel.setSize(labelWidth, labelHeight);
 
         //안쪽 흰색 영역 그리기
         Graphics2D g2 = (Graphics2D) g;
  
-        int boxX   = (int)(width * 0.03);
-        int boxY   = labelY + labelHeight + (int)(height * 0.01); 
+        int boxX   = width * 3 / 100;
+        int boxY   = labelY + labelHeight + height / 100; 
         int boxWidth   = width  - boxX * 2;
         int boxHeight   = height - boxY - boxX;
 
@@ -45,8 +59,98 @@ public class MyRobotPanel extends JPanel{
         g2.setColor(Color.LIGHT_GRAY);
         g2.drawRect(boxX, boxY, boxWidth, boxHeight);
 
-        //나중에 여기 안에 박스 그림을 추가하면 됨 (지금은 빈 영역만)
+        //로봇 하나를 담는 작은 박스
+        int areaX = boxX;
+        int areaY = boxY;
+        int areaWidth  = boxWidth;
+        int areaHeight = boxHeight;
+
+        // 현재 보유한 카드 개수
+        RobotCardPanel[] cards = {convertCard, deleteCard, metamongCard};
+        int cardCount = 0;
+        for (RobotCardPanel c : cards) {
+            if (c != null) cardCount++;
+        }
+
+        // 배치할 카드가 있을 때만 계산
+        if (cardCount > 0) {
+
+            double gapRatio = 0.03;    // 카드 간 간격 비율
+            int cardWidth  = (int)(areaWidth * (1.0 - gapRatio * (cardCount + 1)) / cardCount);
+            int cardHeight = areaHeight * 85 / 100;
+
+            int index = 0;
+            for (RobotCardPanel c : cards) {
+                if (c != null) {
+
+                    int x = areaX 
+                             + (int)(areaWidth * gapRatio) * (index + 1)
+                             + cardWidth * index;
+
+                    int y = areaY + areaHeight * 7 / 100;
+
+                    c.setLocation(x, y);
+                    c.setSize(cardWidth, cardHeight);
+                    index++;
+                }
+            }
+        }
     }
+	
+	 //로봇 구매 시 카드 추가
+	 public boolean addRobot(String robotName, int count) {
+
+	        switch (robotName) {
+
+	            case "변환로봇":
+	                if (convertCard != null) return false;
+	                convertCard = createCard(robotName, "changebot.png", count, 0);
+	                add(convertCard);
+	                break;
+
+	            case "삭제로봇":
+	                if (deleteCard != null) return false;
+	                deleteCard = createCard(robotName, "deletebot.png", count, 1);
+	                add(deleteCard);
+	                break;
+
+	            case "메타몽로봇":
+	                if (metamongCard != null) return false;
+	                metamongCard = createCard(robotName, "metamongbot.png", count, 2);
+	                add(metamongCard);
+	                break;
+	        }
+
+	        repaint();
+	        revalidate();
+	        return true;
+	    }
+	 
+	 //카드 생성 메소드
+	 private RobotCardPanel createCard(String name, String imageName, int count, int index) {
+
+	        ImageIcon icon = new ImageIcon(getClass().getResource(imageName));
+	        RobotCardPanel card = new RobotCardPanel(name, icon, count);
+
+	        return card;
+	    }
+	 
+	 //남은 횟수 업데이트 (게임 로직에서 호출하는 용도. 다른 클래스에서 작성해도 될듯)
+	 public void updateRobotCount(String robotName, int newCount) {
+	        switch (robotName) {
+	            case "변환로봇":
+	                if (convertCard != null) convertCard.setCount(newCount);
+	                break;
+	            case "삭제로봇":
+	                if (deleteCard != null) deleteCard.setCount(newCount);
+	                break;
+	            case "메타몽로봇":
+	                if (metamongCard != null) metamongCard.setCount(newCount);
+	                break;
+	        }
+	    }
+	
+
 
 	
 
