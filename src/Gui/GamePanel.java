@@ -133,7 +133,7 @@ public class GamePanel extends JPanel {
 	    }
 	}
 	
-	//=============GameManager와 GamePanel이 연결되는 부분=======================
+	//GameManager와 GamePanel이 연결되는 부분
 	//GameManager가 맵을 제어할 수 있도록 MapPanel을 건네주는 통로역할
 	 public MapPanel getMapPanel() {
 		 return mapPanel;
@@ -141,8 +141,7 @@ public class GamePanel extends JPanel {
 	 //GameManager가 점수 올랐다고 알려주면 화면을 갱신하는 역할
 	 public void updateScore(int score) {
 		 if(informationPanel != null) {
-			 informationPanel.setScore(score);
-	//=============GameManager와 GamePanel이 연결되는 부분========================		 
+			 informationPanel.setScore(score);	 
 			 
 		 }
 }

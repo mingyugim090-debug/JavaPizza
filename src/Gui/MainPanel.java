@@ -104,26 +104,25 @@ public class MainPanel extends JPanel {
         int buttonWidth = (int)(width * 0.25); 
         int buttonHeight = (int)(height * 0.1); 
         int buttonX = (width - buttonWidth) / 2;
-        int buttonY = (int)(height * 0.45);
+        int buttonY = (int)(height * 0.35);  
         startButton.setLocation(buttonX,buttonY);
         startButton.setSize(buttonWidth,buttonHeight);
 
-        //HELP버튼 위치/크기
-        int helpY = (int)(height * 0.6);
-        helpButton.setLocation(buttonX,helpY);
-        helpButton.setSize(buttonWidth,buttonHeight);
-        
         //Ranking버튼 위치/크기
-        int rankY = (int)(height * 0.3);
+        int rankY = (int)(height * 0.5);
         rankingButton.setLocation(buttonX,rankY);
         rankingButton.setSize(buttonWidth,buttonHeight);
         
+        //HELP버튼 위치/크기
+        int helpY = (int)(height * 0.65);
+        helpButton.setLocation(buttonX,helpY);
+        helpButton.setSize(buttonWidth,buttonHeight);
         
-      //"전체 화면으로 이용해 주세요" 문구 크기/위치
+        //"전체 화면으로 이용해 주세요" 문구 크기/위치
         int requestWidth = (int)(width * 0.4);
         int requestHeight = (int)(height * 0.05);
         int requestX = (width - requestWidth) / 2;
-        int requestY = (int)(helpY + buttonHeight*2);
+        int requestY = (int)(helpY + buttonHeight*1.5);
         requestLabel.setLocation(requestX,requestY);
         requestLabel.setSize(requestWidth,requestHeight);
         

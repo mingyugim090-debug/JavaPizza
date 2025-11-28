@@ -222,7 +222,7 @@ public class MapPanel extends JPanel{
         // → GameManager.clickCell(row, col);
     }
 
-    //=============GameManger와 MapPanel 이 연결되는 부분======================
+    //GameManger와 MapPanel 이 연결되는 부분
 	// 외부에서 맵 데이터(int[][])를 받아서 화면을 갱신하는 메서드
     public void setMapData(int[][] newMap) {
                this.map = newMap;
@@ -243,14 +243,7 @@ public class MapPanel extends JPanel{
         if(parentFrame != null && parentFrame.getGameManager()!=null) {
         	//GameManager에게 좌표 처리해달라고 요청
         	parentFrame.getGameManager().handleMapAction(row,col);
-        
-     //=============GameManger와 MapPanel 이 연결되는 부분========================
-        
-    }
-        
-        
-
-        boxPanel.setBounds(boxX, boxY, boxW, boxH);
-    }
-    }
+        }
+     }
+ }
 
