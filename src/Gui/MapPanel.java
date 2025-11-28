@@ -215,11 +215,18 @@ public class MapPanel extends JPanel{
     };
     
     private void handleClick(MouseEvent e) {
-        int row = (e.getY() - panelPadding) / cellSize; 
-        int col = (e.getX() - panelPadding) / cellSize;
+        //mapstart를 기준으로 좌표 계산
+        int col = (e.getX() - mapStartX) / cellSize;
+        int row = (e.getY() - mapStartY) / cellSize;
 
         System.out.println("Click : row=" + row + " col=" + col);
-        // → GameManager.clickCell(row, col);
+        
+        //맵 바깥을 클릭했을 때 오류 방지
+        if (row < 0 || col < 0 || row >= gridSize || col >= gridSize) {
+            return; // 맵 밖이면 무시
+        }
+        // GameManager 연결 로직 (기존 코드 유지)
+        // -> GameManager.clickCell(row, col);
     }
 
     //GameManger와 MapPanel 이 연결되는 부분
