@@ -23,7 +23,7 @@ public class HelpPanel extends JPanel {
         helpBox.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         add(helpBox);
 
-        //게임 방법 텍스트
+        //게임 방법 텍스트 kkkkkkkk
         message = new JTextArea(
                 "당신은 ROBO HUB의 배송기사입니다.\n"
                 + "우측에 표시된 물건을 로봇을 이용하여 배송해야 합니다.\n\n"
