@@ -5,43 +5,43 @@ import Gui.Frame;
 import Gui.GamePanel;
 import util.TimeThread;
 import util.FileManager;
-import java.util.Scanner;
 
+//멤버 변수 선언
 public class GameManager {    
-    private Frame frame; 
-    private GamePanel gamePanel; 
-    private TimeThread timer;    
-    private FileManager fileManager;
+    private Frame frame; //전체 창 
+    private GamePanel gamePanel;  //게임 화면
+    private TimeThread timer;     //시간
+    private FileManager fileManager; //랭킹 or 데이터 
     
-    // 게임 데이터
+    //게임 상태 변수
     private int myScore = 0; 
     private int currentStage = 1; // 현재 스테이지
     private int gridSize = 3;     // 맵 크기 (1단계:3x3, 2단계:4x4 로 점점 늘려나갈 예정)
    
     // 맵 데이터 (0: 빈칸, 1: 물건있음)
-    private int[][] mapData; 
+    private int[][] mapData;  //맵의 각 칸에 물건이 있으면 1 , 없으면 0으로 저장
     
-    // 게임 상태 플래그 (게임 중일 때만 클릭 되게 하도록 설정)
+    // 게임 상태 (게임 중일 때만 클릭 되게 하도록 설정)
     private boolean isGameRunning = false;
 
-    // 생성자 : Main에서 넘겨준 화면 받는 곳
+    // 생성자 : frame 전달받아서 저장하고 , FileManager 새로 생성
     public GameManager(Frame frame) {
         this.frame = frame;
         this.fileManager = new FileManager();
     }
     
-    //GamePanel이 생성되면 이 메서드를 통해 GameManager로 알려줌
+    
+    //GamePael이 생성되면 이 메서드를 통해 GameManager로 알려줌
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
     
-    // 랭킹시스템
+    // 랭킹시스템 연결
     public FileManager getFileManager() {
         return fileManager;
     }
     
     // --- [1] 게임 흐름 제어 (초기화, 시작, 종료) ---
-    
     
     // 게임 시작 (초기화)
     public void initGame() {
@@ -54,7 +54,7 @@ public class GameManager {
         else if (currentStage == 2) gridSize = 4;
         else gridSize = 5;
         
-        // 맵 데이터 생성
+        // 각 스테이지의 격자 크기에 맞게 맵 데이터 생성
         mapData = new int[gridSize][gridSize];
         
         // 타이머 스레드
@@ -62,7 +62,7 @@ public class GameManager {
         timer = new TimeThread(this, 60);     // 60초 제한
         timer.start();
         
-        // 화면 갱신 요청
+        // 화면 갱신 frame에게 요청
         if (gamePanel != null) {
             frame.repaint();
         }
@@ -70,23 +70,30 @@ public class GameManager {
     
     // 게임 오버 (TimeThread에서 호출)
     public void gameOver() {
-    	Scanner scanner =new Scanner(System.in);
         isGameRunning = false;
+        if (timer != null) timer.stopTimer();
         System.out.println("Game Over!");
         
-        // 게임 끝나면 알림 메시지
-        JOptionPane.showMessageDialog(frame, "⏰ 시간 종료! 최종 점수: " + myScore);
+       
+     // 사용자에게 이름 입력받기
+        String name = JOptionPane.showInputDialog(frame, 
+            "⏰ Times up!! final_score : " + myScore + "\n이름 :");
+
+        //이름이 있으면 FileManager에게 저장 요청
+        if (name != null && !name.trim().isEmpty()) {
+            
+            // FileManager의 rank 메서드 호출
+            fileManager.rank(myScore, name); 
+            System.out.println("랭킹 저장 완료: " + name + " (" + myScore + "점)");
+        }
         
-        //나중에 여기에 랭킹 저장(FileManager) 코드 추가할 예정
-        // 사용자의 닉네임을 입력받으면 FileManager에 있는 rank(myScore, name)에 들어가야됨
-        
-        // 게임 끝나면 메인 화면으로 복귀 (Frame에 있는 메서드 호출)
+        //메인 화면으로 복귀
         frame.showMainPanel();
     }
 
     // --- [2] 시간 및 점수 관리 (TimeThread 연결) ---
     
-    // 시간이 1초 줄어들 때마다 호출됨
+    //TimeThread가 1초마다 이 메서드 호출하여 남은시간을 받아 GamePanel의 숫자를 바꿈
     public void updateTime(int time) {
         System.out.println("남은 시간: " + time + "초");
         
@@ -102,7 +109,9 @@ public class GameManager {
         System.out.println("점수 획득: " + point + " / 총점: " + myScore);
         
         // 1. 화면 갱신 (점수판이 있다면 갱신 요청)
-        // if(gamePanel != null) gamePanel.updateScore(myScore);
+        if(gamePanel != null) {
+        	gamePanel.updateScore(myScore);
+        }
         
         // 2. 스테이지 클리어 조건 확인
         checkStageClear(); 
@@ -133,6 +142,7 @@ public class GameManager {
 
         // 5. 화면 갱신 요청
         frame.repaint(); 
+        //즉 모든 검사를 통과하면 데이터 1(물건이 놓여짐)로 바꾸고 , 점수 추가하고 화면 갱신
     }
     
     // 스테이지 클리어 조건 확인
@@ -145,7 +155,7 @@ public class GameManager {
             }
         }
         
-        // 맵이 꽉 찼다면?
+        // 맵이 꽉 찼다면? (게임 Clear 했다면)
         if (count == gridSize * gridSize) {
             isGameRunning = false;
             timer.stopTimer(); // 타이머 정지
@@ -164,3 +174,17 @@ public class GameManager {
         }
     }
 }
+
+
+//GameManager의 역할
+//게임 규칙 : 점수 , clear , 스테이지 관리 등 게임의 모든 규칙 판단
+//데이터 관리 : 맵의 상태 , 점수 등 데이터관리
+//여러 클래스들의 중매역할 
+//TimeThread --> GameManager --> GamePanel
+//MapPanel --> GameManager --> GamePanel
+//Main클래스에 의해 생성되어서 Frame을 통해 화면을 제어하고 , 패널을 교체함
+//GamePanel , MapPanel , TimeThread과 상호작용
+
+
+
+
