@@ -8,7 +8,7 @@ import java.awt.event.*;
 
 public class MapPanel extends JPanel{
 	
-//	private Frame frame;
+//    private Frame frame;
 	private int gridSize; //맵 한줄의 개수 (3,4,5)
 	private int cellSize = 120; //칸 하나의 크기(px)
 	private int panelPadding = 60; //맵을 화면에 배치할 때 전체 여백
@@ -40,8 +40,6 @@ public class MapPanel extends JPanel{
 
 	    addMouseListener(mouseListener);
 	    addMouseMotionListener(mouseMotionListener);
-	    
-	    
 	}
 	
 	public void setGameOver(boolean gameOver) {
@@ -56,8 +54,8 @@ public class MapPanel extends JPanel{
 	
 	//스테이지에 따른 gridSize
 	public void setStage(int stage) {
-		if(stage == 1) gridSize = 3; //3X3
-		if(stage == 2) gridSize = 4; //4X4
+		if(stage == 1) gridSize = 4; //4X4
+		if(stage == 2) gridSize = 3; //3X3
 		if(stage == 3) gridSize = 5; //5X5
 		
 		map = new int[gridSize][gridSize]; //스테이지에 따른 맵 초기화

@@ -26,22 +26,26 @@ public class HelpPanel extends JPanel {
         //게임 방법 텍스트 kkkkkkkk
         message = new JTextArea(
                 "당신은 ROBO HUB의 배송기사입니다.\n"
-                + "우측에 표시된 물건을 로봇을 이용하여 배송해야 합니다.\n\n"
-                + "[물건 배치]\n"
-                + "맵 주변의 물건을 드래그해 중앙으로 옮기세요.\n"
-                + "물건은 빈 공간에 배치해야하며, 되돌릴 수 없습니다.\n\n"
+                + "[Stage 1]\n"
+                + "중앙 맵을 물류 상자로 채워 코인을 획득하세요.\n"
+                + "같은 색상을 가로열, 세로행에 맞추면 Coin과 Score가 상승합니다.\n"
+                + "물건은 빈 공간에 배치해야합니다.\n\n"
+                + "[Stage 2]\n"
+                + "Stage 1과 마찬가지로 중앙 맵을 물류 상자로 채워 주세요.\n"
+                + "Stage 1과 2에서 획득한 Coin으로 Stage 3을 클리어합니다.\n\n"
+                + "[Stage 3]\n"
+                + "제한 시간은 60초 입니다.\n"
+                + "가로/세로 줄이 가득 차면 그 줄이 비워지면서 Score를 얻을 수 있습니다.\n"
+                + "60초 안에 최대한 많은 score를 얻어야 합니다.\n\n"
                 + "[로봇 구매]\n"
-                + "우측에 있는 \"로봇 목록\"에서 로봇을 구매할 수 있습니다.\n"
-                + "로봇을 적절히 구매해 전략적으로 수행하세요.\n\n"
-                + "[코인]\n"
-                + "stage에 따른 초기 자금이 주어지고,\n"
-                + "물건을 중앙에 배치하면 코인을 획득합니다.\n"
+                + "모든 스테이지에서 로봇을 구매하고 사용할 수 있습니다.\n"
+                + "높은 score를 얻기 위해서 게임의 규칙을 전략적으로 활용하세요.\n"
         );
 
         message.setEditable(false);
         message.setBackground(Color.GRAY);
         message.setForeground(Color.WHITE);
-        message.setFont(new Font("맑은 고딕", Font.BOLD, 23));
+        message.setFont(new Font("맑은 고딕", Font.BOLD, 17));
         helpBox.add(message);
         
         

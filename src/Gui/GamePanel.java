@@ -24,6 +24,7 @@ public class GamePanel extends JPanel {
 	private JLabel timerLabel;
 	private DeliveryListPanel deliveryListPanel;
 	private RobotPanel robotPanel;
+	private MyRobotPanel myRobotPanel;
 	
 	private JLabel gameOverLabel;
 	private JPanel darkPanel;
@@ -46,8 +47,11 @@ public class GamePanel extends JPanel {
 	    //DeliveryListPanel(배송목록)
 	    deliveryListPanel = new DeliveryListPanel();
 	   
-	  //RobotPanel(로봇목록)
+	    //RobotPanel(로봇목록)
 	    robotPanel = new RobotPanel();
+	    
+	    //MyRobotPanel(내 로봇)
+	    myRobotPanel = new MyRobotPanel();
 	    
 		//MapPanel
 		mapPanel = new MapPanel(stage);
@@ -56,11 +60,11 @@ public class GamePanel extends JPanel {
 		informationPanel = new InformationPanel(stage, coins, score); 
 		
 		//미션 라벨
-		missionLabel = new JLabel("최대한 빠르게 칸을 채우자!", SwingConstants.CENTER);
+		missionLabel = new JLabel("", SwingConstants.CENTER);
 	    missionLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		
 	    //타이머 라벨
-	    timerLabel = new JLabel(" ", SwingConstants.CENTER);
+	    timerLabel = new JLabel("", SwingConstants.CENTER);
 	    timerLabel.setFont(new Font("맑은 고딕", Font.BOLD, 22));
 	    timerLabel.setForeground(Color.DARK_GRAY);
 	    
@@ -105,6 +109,7 @@ public class GamePanel extends JPanel {
 		add(logoLabel);
 		add(deliveryListPanel);
 		add(robotPanel);
+		add(myRobotPanel);
 		add(mapPanel);
 		add(informationPanel);
 		add(missionLabel);
@@ -116,6 +121,18 @@ public class GamePanel extends JPanel {
 		setComponentZOrder(gameOverButton, 0);
 		setComponentZOrder(gameOverLabel, 1); //컨테이너 안에서 가장 맨 위로 오도록 설정
 		setComponentZOrder(darkPanel, 2); //그 아래에는 darkPanel이 오도록
+	
+		//stage별 missionLabel 설정
+		if (stage == 1) {
+		    missionLabel.setText("최대한 많은 코인을 얻자!");
+		} else if (stage == 2) {
+		    missionLabel.setText("최대한 많은 코인을 얻자!");
+		} else if (stage == 3) {
+		    missionLabel.setText("최고 점수를 향하여!");
+		}
+		
+		//stage 3에서만 타이머가 보임
+		timerLabel.setVisible(stage == 3);
 	}
 	
 	public void updateTimer(int time) {                      
@@ -169,7 +186,7 @@ public class GamePanel extends JPanel {
         missionLabel.setSize(missionWidth,missionHeight);
 
         //맵 크기/위치
-        int mapSize = (int)Math.min(width * 0.25, height * 0.4);
+        int mapSize = (int)Math.min(width * 0.2, height * 0.4); //map은 정사각형이므로, 가로와 세로 길이 통합
         int mapX = (width - mapSize) / 2;
         int mapY = missionY + missionHeight + 20;
         mapPanel.setLocation(mapX,mapY);
@@ -177,7 +194,7 @@ public class GamePanel extends JPanel {
         
         //DeliveryListPanel 크기/위치
         int deliveryWidth  = (int)(width * 0.33);   
-        int deliveryHeight = (int)(height * 0.75);  
+        int deliveryHeight = (int)(height * 0.37);  
         int deliveryX      = (int)(width * 0.03);   
         int deliveryY      = (int)(height * 0.06); ;               
         deliveryListPanel.setLocation(deliveryX, deliveryY);
@@ -190,6 +207,14 @@ public class GamePanel extends JPanel {
         int robotY      = (int)(height * 0.06); ;               
         robotPanel.setLocation(robotX, robotY);
         robotPanel.setSize(robotWidth, robotHeight);
+        
+        //MyRobotPanel 크기/위치
+        int MyRobotWidth  = (int)(width * 0.33);   
+        int MyRobotHeight = (int)(height * 0.35);  
+        int MyRobotX      = (int)(width * 0.03);   
+        int MyRobotY      = (int)(deliveryY + deliveryHeight + deliveryHeight*0.08); ;               
+        myRobotPanel.setLocation(MyRobotX, MyRobotY);
+        myRobotPanel.setSize(MyRobotWidth, MyRobotHeight);
 
         //타이머 크기/위치
         int timerWidth = (int)(width * 0.2);

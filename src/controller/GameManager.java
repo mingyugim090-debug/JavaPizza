@@ -31,7 +31,7 @@ public class GameManager {
     }
     
     
-    //GamePael이 생성되면 이 메서드를 통해 GameManager로 알려줌
+    //GamePanel이 생성되면 이 메서드를 통해 GameManager로 알려줌
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
@@ -41,41 +41,49 @@ public class GameManager {
         return fileManager;
     }
     
-    // --- [1] 게임 흐름 제어 (초기화, 시작, 종료) ---
+    //[1] 게임 흐름 제어(초기화, 시작, 종료)
     
-    // 게임 시작 (초기화)
+    //게임 시작 (초기화)
     public void initGame() {
         System.out.println("GameManager: 게임 초기화 및 시작");
         this.myScore = 0;
         this.isGameRunning = true;
         
-        // 스테이지에 따른 맵 크기 설정
+        //스테이지에 따른 맵 크기 설정
         if (currentStage == 1) gridSize = 3;
         else if (currentStage == 2) gridSize = 4;
         else gridSize = 5;
         
-        // 각 스테이지의 격자 크기에 맞게 맵 데이터 생성
+        //각 스테이지의 격자 크기에 맞게 맵 데이터 생성
         mapData = new int[gridSize][gridSize];
         
-        // 타이머 스레드
+        //타이머 스레드
         if (timer != null) timer.stopTimer(); 
-        timer = new TimeThread(this, 60);     // 60초 제한
-        timer.start();
         
-        // 화면 갱신 frame에게 요청
+        if(currentStage == 3) {
+        	timer = new TimeThread(this, 60);    
+        	timer.start();
+        } else {
+        	 if (gamePanel != null) {
+        	       //timer는 stage 1,2에서는 사용하지 않는다. 
+        	    }
+        }
+        
+        
+        //화면 갱신 frame에게 요청
         if (gamePanel != null) {
             frame.repaint();
         }
     }
     
-    // 게임 오버 (TimeThread에서 호출)
+    //게임 오버 (TimeThread에서 호출)
     public void gameOver() {
         isGameRunning = false;
         if (timer != null) timer.stopTimer();
         System.out.println("Game Over!");
         
        
-     // 사용자에게 이름 입력받기
+     //사용자에게 이름 입력받기
         String name = JOptionPane.showInputDialog(frame, 
             "⏰ Times up!! final_score : " + myScore + "\n이름 :");
 
