@@ -53,8 +53,8 @@ public class MapPanel extends JPanel{
 	//스테이지에 따른 gridSize
 	public void setStage(int stage) {
 		if(stage == 1) gridSize = 4; //4X4
-		if(stage == 2) gridSize = 3; //3X3
-		if(stage == 3) gridSize = 5; //5X5
+		else if(stage == 2) gridSize = 3; //3X3
+		else if(stage == 3) gridSize = 5; //5X5
 		
 		map = new int[gridSize][gridSize]; //스테이지에 따른 맵 초기화
 		
@@ -79,6 +79,12 @@ public class MapPanel extends JPanel{
     }
     
     protected void paintComponent(Graphics g) {
+    	Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+    	if(parent != null && parent.getGameManager() !=null) {
+    		this.map = parent.getGameManager().getMapData();
+    		this.gridSize = parent.getGameManager().getGridSize();
+    	}
+    	
     	super.paintComponent(g);
     	
     	int width = getWidth();
