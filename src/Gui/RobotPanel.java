@@ -15,7 +15,7 @@ private JLabel trans_manual;
 private JLabel delete_manual;
 private JLabel meta_manual;
 
-
+	
 private JButton trans_coin;
 private JButton delete_coin;
 private JButton meta_coin;
