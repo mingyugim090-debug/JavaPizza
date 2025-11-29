@@ -46,6 +46,28 @@ public class GameManager {
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
+    //로봇 사용 모드 설정(0:기본,1:변환,2:삭제,3:메타몽)
+    public void setRobotMode(int mode) {
+    	this.currentRobotMode = mode;
+    	System.out.println("로봇 변경" + mode);
+    	if(mode != 0) {
+    		JOptionPane.showMessageDialog(frame, "로봇스킬 활성화!");
+    	}
+    }
+    
+    //로봇 아이템 사용 완료 후 차감 처리
+    public void useRobotItem(String robotName) {
+    	//MyRobotPanel에게 1회 차감해달라고 요청
+    	gamePanel.getMyRobotPanel().useRobotOnce(robotName);
+    	this.currentRobotMode = 0; //사용 후 기본 로봇으로 복귀
+    }
+    //변환 로봇 기능(다음 블록 색상 변경되도록)
+    public void handleConvertRobot() {
+        System.out.println("변환 로봇 사용!");
+        generateNextBlock(); // 다음 블록 랜덤 변경됨
+        frame.repaint();
+        useRobotItem("변환로봇"); // 횟수 차감됨
+    }
     
     // 랭킹시스템 연결
     public FileManager getFileManager() {
@@ -140,11 +162,14 @@ public class GameManager {
 
     //점수 추가
     public void addScore(int point , int coin) {
+    	if (currentStage ==3) {
+    		coin = 0;
+    	}
         this.myScore += point;
         this.myCoins += coin;
         System.out.println("점수 획득: " + point + " / 총점: " + myScore);
         
-        // 1. 화면 갱신 (점수판이 있다면 갱신 요청)
+        //  화면 갱신 (점수판이 있다면 갱신 요청)
         if(gamePanel != null) {
         	gamePanel.updateScore(myScore);
         	gamePanel.updateCoins(myCoins);
@@ -161,7 +186,33 @@ public class GameManager {
 
         // 맵 범위를 벗어났거나, 이미 물건이 있는 경우
         if (row < 0 || col < 0 || row >= gridSize || col >= gridSize) return;
-        //추후에 삭제/변환 로봇일 때의 로직 여기에 추가
+         
+        
+        // --- 로봇 모드에 따른 분류 ---
+        //삭제 로봇
+        if (currentRobotMode == 2) {
+            if (mapData[row][col] != 0) {
+                mapData[row][col] = 0; // 블록 삭제
+                System.out.println("블록 삭제 완료!");
+                useRobotItem("삭제로봇"); // 횟수 차감
+                frame.repaint();
+            }
+            return; 
+        }
+        
+        // 메타몽 로봇
+        if (currentRobotMode == 3) { 
+            if (mapData[row][col] == 0) {
+                mapData[row][col] = 5; //5번 색깔을 무지개색으로 설정
+                useRobotItem("메타몽로봇");
+                checkLineMatch(row, col);
+                generateNextBlock();
+                frame.repaint();
+            }
+            return;
+        }
+        
+        
         if (mapData[row][col] != 0) {
             System.out.println("이미 물건이 있습니다!");
             return; // 실패
@@ -195,14 +246,14 @@ public class GameManager {
     	
     	//가로 줄 검사
     	for (int c=0; c < gridSize; c++) {
-    		if(mapData[row][c] != color) {
+    		if(mapData[row][c] != color && mapData[row][c] !=5) {
     			rowMatch = false;
     			break;
     		}
     	}
     	//세로 줄 검사
     	for (int r=0; r < gridSize; r++) {
-    		if(mapData[r][col] != color) {
+    		if(mapData[r][col] != color && mapData[r][col] !=5) {
     			colMatch = false;
     			break;
     		}
@@ -269,9 +320,31 @@ public class GameManager {
     public int getGridSize() {
     	return gridSize;
     }
+    // 로봇 구매 메서드
+    public void buyRobot(String robotName, int price) {
+    	if (myCoins >= price) {
+    		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
+    		
+    		if(success) {
+    			myCoins -= price;
+    			addScore(0,0);
+    			gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
+        		System.out.println(robotName + "구매완료. 남은 코인 : " + myCoins);
+    		
+    	} else {
+    		System.out.println("이미 보유 중인 로봇입니다.!");
+    		JOptionPane.showMessageDialog(frame, "이미 보유 중인 로봇입니다.");
+    			
+    		}
+    	}else {
+    		System.out.println("코인 부족");
+    		JOptionPane.showMessageDialog(frame, "코인부족");
+    	}
+    	}
+    }
     
     
-}
+
 //GameManager의 역할
 //게임 규칙 : 점수 , clear , 스테이지 관리 등 게임의 모든 규칙 판단
 //데이터 관리 : 맵의 상태 , 점수 등 데이터관리

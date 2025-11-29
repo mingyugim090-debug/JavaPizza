@@ -30,6 +30,11 @@ public class GamePanel extends JPanel {
 	private JPanel darkPanel;
 	private JButton gameOverButton;
 	
+	//GameManager가 RobotPanel에 접근하기 위한 연결고리 역할
+	public RobotPanel getRobotPanel() {
+		return robotPanel;
+	}
+	
 	public GamePanel(Frame frame, int stage, int coins, int score) {
 		this.frame = frame;
 		this.stage = stage;
@@ -46,7 +51,7 @@ public class GamePanel extends JPanel {
 	    deliveryListPanel = new DeliveryListPanel();
 	   
 	    //RobotPanel(로봇목록)
-	    robotPanel = new RobotPanel();
+	    robotPanel = new RobotPanel(frame.getGameManager());
 	    
 	    //MyRobotPanel(내 로봇)
 	    myRobotPanel = new MyRobotPanel();
@@ -114,6 +119,7 @@ public class GamePanel extends JPanel {
 		
 		add(darkPanel);
 		add(gameOverLabel);
+		add(gameOverButton);
 		
 		setComponentZOrder(gameOverButton, 0);
 		setComponentZOrder(gameOverLabel, 1); //컨테이너 안에서 가장 맨 위로 오도록 설정
@@ -154,6 +160,9 @@ public class GamePanel extends JPanel {
 	//GameManager가 맵을 제어할 수 있도록 MapPanel을 건네주는 통로역할
 	 public MapPanel getMapPanel() {
 		 return mapPanel;
+	 }
+	 public MyRobotPanel getMyRobotPanel() {
+		 return myRobotPanel;
 	 }
 	 //GameManager가 점수 올랐다고 알려주면 화면을 갱신하는 역할
 	 public void updateScore(int score) {

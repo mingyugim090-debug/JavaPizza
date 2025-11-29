@@ -2,6 +2,8 @@ package Gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import controller.GameManager;
 
 public class RobotPanel extends JPanel {
 	
@@ -18,7 +20,7 @@ private JLabel meta_manual;
 private JButton trans_coin;
 private JButton delete_coin;
 private JButton meta_coin;
-private JButton buying;
+private JButton buying; 
 
 private ImageIcon trans_icon; 
 private ImageIcon delete_icon;
@@ -28,8 +30,12 @@ private Image trans_img;
 private Image delete_img;
 private Image meta_img;
 
-	
-	public RobotPanel() {
+//GameManager 변수 선언
+private GameManager gameManager;
+
+	//파라미터에 GameManager 추가함
+	public RobotPanel(GameManager gameManager) {
+		this.gameManager = gameManager;
         setLayout(null);
         
         //연한 회색으로 배경색 지정
@@ -51,10 +57,34 @@ private Image meta_img;
         add(deleteBot);
         add(metaBot);
         
+        //=======================================================
+        //버튼 생성하고 GameManager와 기능 연결하는 코드 추가
         //coin 버튼
+        
+        //1. 변환로봇
         trans_coin = new JButton("1500");
+        trans_coin.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		gameManager.buyRobot("변환로봇" , 1500);
+        	}
+        });
+        
+        //2.삭제 로봇
         delete_coin = new JButton("2500");
+        delete_coin.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		gameManager.buyRobot("삭제로봇" , 2500);
+        	}
+        });
+        
+        //3.메타몽 로봇
         meta_coin = new JButton("4000");
+        meta_coin.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		gameManager.buyRobot("메타몽로봇" , 4000);
+        	}
+        });
+        //======================================================
         add(trans_coin);
         add(delete_coin);
         add(meta_coin);
@@ -64,9 +94,9 @@ private Image meta_img;
         add(buying);
         
         //이미지
-        trans_icon = new ImageIcon("changebot.png");
-        delete_icon = new ImageIcon("deletebot.png");
-        meta_icon = new ImageIcon("metamongbot.png");
+        trans_icon = new ImageIcon(getClass().getResource("changebot.png"));
+        delete_icon = new ImageIcon(getClass().getResource("deletebot.png"));
+        meta_icon = new ImageIcon(getClass().getResource("metamongbot.png"));
         
         trans_img = trans_icon.getImage();
         delete_img = delete_icon.getImage();
@@ -103,6 +133,9 @@ private Image meta_img;
         int gap = fullboxHeight / 33;
         int boxHeight = ((fullboxHeight-loss) / 3) - (2 * gap / 3); 
         
+        int image_width = boxWidth / 4;
+        int image_height = boxHeight *6/10;
+        
         
         //1) 변환로봇
         
@@ -128,15 +161,10 @@ private Image meta_img;
         int lasty = boxY + boxHeight - d;
         trans_coin.setBounds(lastx - coinWidth, lasty - coinHeight, coinWidth, coinHeight);
         trans_coin.setBackground(new Color(255, 250, 200));
-        
-        //changebot 이미지 삽입
-        int image_width = boxWidth / 4;
-        int image_height = boxHeight * 6 / 10;
-        //g.setColor(Color.RED);
-        g.drawRect(boxX+d, boxY+(2*d), image_width, image_height);
-        g.drawImage(trans_img, boxX+d, boxY+(2*d), image_width, image_height, this);
-        g.drawImage(trans_img, boxX+d, boxY+(2*d), this);
-        
+       
+        if (trans_img != null) {
+            g.drawImage(trans_img, boxX+d, boxY+(2*d), image_width, image_height, this);
+        }
         
         //2) 삭제로봇
         //외곽선 그리기(LIGHT GRAY)
@@ -153,6 +181,10 @@ private Image meta_img;
         int diff =  boxY + 2 * boxHeight + gap - d - coinHeight;
         delete_coin.setBounds(lastx - coinWidth, diff, coinWidth, coinHeight);
         delete_coin.setBackground(new Color(255, 250, 200));
+        
+        if (delete_img != null) {
+            g.drawImage(delete_img, boxX+d, boxY + boxHeight + gap + (2*d), image_width, image_height, this);
+        }
         
         //3) 메타몽로봇
         //외곽선 그리기(LIGHT GRAY)
@@ -171,6 +203,10 @@ private Image meta_img;
         meta_coin.setBounds(lastx - coinWidth, metacoin, coinWidth, coinHeight);
         meta_coin.setBackground(new Color(255, 250, 200));
         
+        if (meta_img != null) {
+            g.drawImage(meta_img, boxX+d, boxY + (2 * boxHeight) + (2 * gap) + (2*d), image_width, image_height, this);
+        }
+        
         //구매버튼
         int dis = d * 4;
         int buying_y = metacoin +coinHeight + dis;
@@ -178,6 +214,36 @@ private Image meta_img;
         int buying_height = coinHeight * 3 /2;
         buying.setBounds(lastx - buying_width, buying_y,  buying_width, buying_height);
         buying.setBackground(new Color(255, 228, 195));
+	}
+	
+	//GameManager가 이 메서드 호출해서 로봇 구매완료 시 버튼 상태 변경함.
+    public void setPurchased(String robotName) {
+    	switch(robotName) {
+    	case "변환로봇":
+    		trans_coin.setText("구매완료");
+    		trans_coin.setEnabled(false); //구매하면 버튼 비활성화
+    		break;
+    	case "삭제로봇":
+    		delete_coin.setText("구매완료");
+    		delete_coin.setEnabled(false);
+    		break;
+    	case "메타몽로봇":
+    		meta_coin.setText("구매완료");
+    		meta_coin.setEnabled(false);
+    		break;
+    	}
         
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
