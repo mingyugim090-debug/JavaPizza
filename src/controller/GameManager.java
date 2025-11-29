@@ -242,29 +242,70 @@ public class GameManager {
         }
     
     private void checkLineMatch(int row , int col) {
-    	int color = mapData[row][col];
-    	boolean rowMatch = true;
-    	boolean colMatch = true;
     	
     	//가로 줄 검사
+    	boolean rowMatch = true;
+    	int targetColor = -1;
     	for (int c=0; c < gridSize; c++) {
-    		if(mapData[row][c] != color && mapData[row][c] !=5) {
-    			rowMatch = false;
-    			break;
-    		}
-    	}
+    		int cell = mapData[row][c];
+            if (cell != 0 && cell != 5) {
+                targetColor = cell;
+                break; // 색깔을 찾았으면 중단
+            }
+        }
+    	//라인 매칭 판단
+        if (targetColor == -1) { 
+            for (int c = 0; c < gridSize; c++) {
+                if (mapData[row][c] == 0) {
+                    rowMatch = false;
+                    break;
+                }
+            }
+        } else {
+            // 기준 색상을 찾았다면 -> 모든 칸이 '그 색깔' 이거나 '메타몽'이어야 함
+            for (int c = 0; c < gridSize; c++) {
+                if (mapData[row][c] != targetColor && mapData[row][c] != 5) {
+                    rowMatch = false;
+                    break;
+                }
+            }
+        }
+        
     	//세로 줄 검사
-    	for (int r=0; r < gridSize; r++) {
-    		if(mapData[r][col] != color && mapData[r][col] !=5) {
-    			colMatch = false;
-    			break;
-    		}
-    	}
+        boolean colMatch = true;
+        int targetColColor = -1;
+       
+        for (int r = 0; r < gridSize; r++) {
+            int cell = mapData[r][col];
+            if (cell != 0 && cell != 5) {
+                targetColColor = cell;
+                break;
+            }
+        }
+
+        // 세로 줄 매칭 판단
+        if (targetColColor == -1) {
+            for (int r = 0; r < gridSize; r++) {
+                if (mapData[r][col] == 0) {
+                    colMatch = false;
+                    break;
+                }
+            }
+        } else {
+            for (int r = 0; r < gridSize; r++) {
+                if (mapData[r][col] != targetColColor && mapData[r][col] != 5) {
+                    colMatch = false;
+                    break;
+                }
+            }
+        }
     	//보상 지급 및 라인처리
     	if (rowMatch) processLineClear(true, row);
     	if (colMatch) processLineClear(false, col);
     	
     }
+    
+    
     private void processLineClear(boolean isRow , int index) {
     	System.out.println("라인 보너스!" + (isRow ? "가로" : "세로")+"줄 완성");
     	addScore(100,300); //보상: +300코인 , + 100 점수
