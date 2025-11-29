@@ -146,7 +146,7 @@ public class GamePanel extends JPanel {
 	        repaint(); 
 	    }
 	}
-	
+//=======================GameManager와 연결되는 부분========================	
 	//GameManager와 GamePanel이 연결되는 부분
 	//GameManager가 맵을 제어할 수 있도록 MapPanel을 건네주는 통로역할
 	 public MapPanel getMapPanel() {
@@ -157,7 +157,21 @@ public class GamePanel extends JPanel {
 		 if(informationPanel != null) {
 			 informationPanel.setScore(score);	 
 		 }
-}
+	 }
+	 public void updateCoins(int coins) {
+		 if(informationPanel != null) {
+			 informationPanel.setCoins(coins);
+		 }
+	 }
+	 public void updateNextBlock(int color) {
+		 if(deliveryListPanel != null) {
+			 deliveryListPanel.setNextBlockColor(color);
+		 }
+	 }
+	 
+//=================================================================== 
+	 
+	 
 	 
 	//GamePanel 위에 있는 요소들의 위치/크기 지정
     public void doLayout() {
@@ -261,6 +275,6 @@ public class GamePanel extends JPanel {
         g2.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight, this);
     }
 }
-  
+
 
 
