@@ -15,12 +15,19 @@ private JLabel trans_manual;
 private JLabel delete_manual;
 private JLabel meta_manual;
 
-	
 private JButton trans_coin;
 private JButton delete_coin;
 private JButton meta_coin;
-
 private JButton buying;
+
+private ImageIcon trans_icon; 
+private ImageIcon delete_icon;
+private ImageIcon meta_icon;
+
+private Image trans_img;
+private Image delete_img;
+private Image meta_img;
+
 	
 	public RobotPanel() {
         setLayout(null);
@@ -55,6 +62,17 @@ private JButton buying;
         //구매버튼
         buying = new JButton("구매하기");
         add(buying);
+        
+        //이미지
+        trans_icon = new ImageIcon("changebot.png");
+        delete_icon = new ImageIcon("deletebot.png");
+        meta_icon = new ImageIcon("metamongbot.png");
+        
+        trans_img = trans_icon.getImage();
+        delete_img = delete_icon.getImage();
+        meta_img = meta_icon.getImage();
+        
+        
     }
 	
 	protected void paintComponent(Graphics g) {
@@ -87,6 +105,7 @@ private JButton buying;
         
         
         //1) 변환로봇
+        
         //외곽선 그리기(LIGHT GRAY)
         g.setColor(Color.LIGHT_GRAY);
         g.drawRect(boxX, boxY, boxWidth, boxHeight);
@@ -109,7 +128,15 @@ private JButton buying;
         int lasty = boxY + boxHeight - d;
         trans_coin.setBounds(lastx - coinWidth, lasty - coinHeight, coinWidth, coinHeight);
         trans_coin.setBackground(new Color(255, 250, 200));
-       
+        
+        //changebot 이미지 삽입
+        int image_width = boxWidth / 4;
+        int image_height = boxHeight * 6 / 10;
+        //g.setColor(Color.RED);
+        g.drawRect(boxX+d, boxY+(2*d), image_width, image_height);
+        g.drawImage(trans_img, boxX+d, boxY+(2*d), image_width, image_height, this);
+        g.drawImage(trans_img, boxX+d, boxY+(2*d), this);
+        
         
         //2) 삭제로봇
         //외곽선 그리기(LIGHT GRAY)
@@ -145,8 +172,12 @@ private JButton buying;
         meta_coin.setBackground(new Color(255, 250, 200));
         
         //구매버튼
-        //int buying_height = robotY - d - coinHeight;
+        int dis = d * 4;
+        int buying_y = metacoin +coinHeight + dis;
+        int buying_width = coinWidth * 3 /2;
+        int buying_height = coinHeight * 3 /2;
+        buying.setBounds(lastx - buying_width, buying_y,  buying_width, buying_height);
+        buying.setBackground(new Color(255, 228, 195));
         
-        //나중에 여기 안에 박스 그림을 추가하면 됨 (지금은 빈 영역만)
 	}
 }
