@@ -30,10 +30,7 @@ public class GamePanel extends JPanel {
 	private JPanel darkPanel;
 	private JButton gameOverButton;
 	
-	//GameManager가 RobotPanel에 접근하기 위한 연결고리 역할
-	public RobotPanel getRobotPanel() {
-		return robotPanel;
-	}
+	
 	
 	public GamePanel(Frame frame, int stage, int coins, int score) {
 		this.frame = frame;
@@ -155,6 +152,24 @@ public class GamePanel extends JPanel {
 	        repaint(); 
 	    }
 	}
+    public void updateStage(int stage) {
+      
+        if (informationPanel != null) {
+            informationPanel.setStage(stage);
+        }
+        if (stage == 1 || stage == 2) {
+            missionLabel.setText("최대한 많은 코인을 얻자!");
+        } else if (stage == 3) {
+            missionLabel.setText("최고 점수를 향하여!");
+        }
+        if (timerLabel != null) {
+            timerLabel.setVisible(stage == 3);
+        }
+    }
+  //GameManager가 RobotPanel에 접근하기 위한 연결고리 역할
+    public RobotPanel getRobotPanel() {
+        return robotPanel;
+    }
 //=======================GameManager와 연결되는 부분========================	
 	//GameManager와 GamePanel이 연결되는 부분
 	//GameManager가 맵을 제어할 수 있도록 MapPanel을 건네주는 통로역할
@@ -180,7 +195,7 @@ public class GamePanel extends JPanel {
 			 deliveryListPanel.setNextBlockColor(color);
 		 }
 	 }
-	 
+	  
 //=================================================================== 
 	 
 	 

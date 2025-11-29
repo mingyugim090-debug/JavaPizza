@@ -173,6 +173,8 @@ public class GameManager {
         if(gamePanel != null) {
         	gamePanel.updateScore(myScore);
         	gamePanel.updateCoins(myCoins);
+        	
+        	gamePanel.updateStage(currentStage);
         } 
     }
     

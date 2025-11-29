@@ -100,7 +100,7 @@ public class MyRobotPanel extends JPanel{
 	 //로봇 구매 시 카드 추가
 	 public boolean addRobot(String robotName, int count) {
 		 RobotCardPanel targetCard = null;
-		 int modeIndex = 0;
+		 int modeIndex = 0; //1:변환 , 2:삭제 , 3:메타몽
 
 	        switch (robotName) {
 
