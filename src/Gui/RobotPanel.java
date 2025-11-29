@@ -66,9 +66,8 @@ private JButton buying;
         //"로봇 목록" 글자 크기/위치
         int labelWidth  = width  * 4 / 10;  
         int labelHeight = height * 7 / 100;  
-        int labelX      = (width  * 95 / 100) - (labelWidth*225 / 100);
-        int labelY      = height * 1 / 100; 
-
+        int labelX      = (int)(width  * 0.95 - labelWidth*2.25);
+        int labelY      = height / 100; 
         titleLabel.setLocation(labelX, labelY);
         titleLabel.setSize(labelWidth, labelHeight);
 
@@ -76,78 +75,14 @@ private JButton buying;
         
         int margin = width * 3 / 100;
         int boxWidth   = width  - margin * 2;
-        int boxX   = (width * 97 / 100) - boxWidth;
-        int boxY   = labelY + labelHeight + (height * 1 / 100); 
-        int fullboxHeight   = (height - boxY - margin);
-        int loss = boxWidth / 6;
-        
-        int gap = fullboxHeight / 33;
-        int boxHeight = ((fullboxHeight-loss) / 3) - (2 * gap / 3); 
-        
-        
-        //1) 변환로봇
-        //외곽선 그리기(LIGHT GRAY)
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawRect(boxX, boxY, boxWidth, boxHeight);
-        //안쪽 흰색으로 채우기(WHITE)
-        g.setColor(Color.WHITE);
-        g.fillRect(boxX, boxY, boxWidth, boxHeight);
-        
-        //체크박스 위치
-        int d = boxHeight / 14; 	//흰색 박스와의 거리
-        int checkWidth = 10 * d;
-        int checkHeight = 2 * d;
-        //체크박스
-        transferBot.setBounds(boxX+d, boxY+d, checkWidth, checkHeight);
-        transferBot.setOpaque(false); //배경색 지우기
-        
-        //coin 버튼
-        int coinWidth = boxWidth / 7;
-        int coinHeight = coinWidth / 2;
-        int lastx = boxX + boxWidth - d;
-        int lasty = boxY + boxHeight - d;
-        trans_coin.setBounds(lastx - coinWidth, lasty - coinHeight, coinWidth, coinHeight);
-        trans_coin.setBackground(new Color(255, 250, 200));
-       
-        
-        //2) 삭제로봇
-        //외곽선 그리기(LIGHT GRAY)
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawRect(boxX, boxY + boxHeight + gap, boxWidth, boxHeight);
-        //안쪽 흰색으로 채우기(WHITE)
-        g.setColor(Color.WHITE);
-        g.fillRect(boxX, boxY + boxHeight + gap, boxWidth, boxHeight);
-        //체크박스
-        deleteBot.setBounds(boxX+d, boxY + boxHeight + gap+d, checkWidth, checkHeight);
-        deleteBot.setOpaque(false); //배경색 지우기
-        
-        //coin 버튼
-        int diff =  boxY + 2 * boxHeight + gap - d - coinHeight;
-        delete_coin.setBounds(lastx - coinWidth, diff, coinWidth, coinHeight);
-        delete_coin.setBackground(new Color(255, 250, 200));
-        
-        //3) 메타몽로봇
-        //외곽선 그리기(LIGHT GRAY)
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawRect(boxX, boxY + (2 * boxHeight) + (2 * gap), boxWidth, boxHeight);
-        //안쪽 흰색으로 채우기(WHITE)
-        g.setColor(Color.WHITE);
-        g.fillRect(boxX, boxY + (2 * boxHeight) + (2 * gap), boxWidth, boxHeight);
-        
-        //체크박스
-        metaBot.setBounds(boxX+d, boxY + (2 * boxHeight) + (2 * gap) +d, checkWidth, checkHeight);
-        metaBot.setOpaque(false); //배경색 지우기
-        
-        //coin 버튼
-        int metacoin = boxY + (2 * boxHeight) + (2 * gap) + boxHeight - d - coinHeight;
-        meta_coin.setBounds(lastx - coinWidth, metacoin, coinWidth, coinHeight);
-        meta_coin.setBackground(new Color(255, 250, 200));
-        
-        //구매버튼
-        //int buying_height = robotY - d - coinHeight;
-        
-        //나중에 여기 안에 박스 그림을 추가하면 됨 (지금은 빈 영역만)
-        
-    }
+        int boxX   = width * 97 / 100 - boxWidth;
+        int boxY   = labelY + labelHeight + height / 100; 
+        int boxHeight   = height - boxY - margin;
 
+        g2.setColor(Color.WHITE);
+        g2.fillRect(boxX, boxY, boxWidth, boxHeight);
+
+        g2.setColor(Color.LIGHT_GRAY);
+        g2.drawRect(boxX, boxY, boxWidth, boxHeight);
+    }
 }

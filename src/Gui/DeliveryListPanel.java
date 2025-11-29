@@ -23,19 +23,18 @@ public class DeliveryListPanel extends JPanel {
         int height = getHeight();
 
         //"배송 목록" 글자 크기/위치
-        int labelWidth  = (int)(width  * 0.4);  
-        int labelHeight = (int)(height * 0.07);  
-        int labelX      = (int)(width  * 0.05);
-        int labelY      = (int)(height * 0.01); 
-
+        int labelWidth  = width  * 4 / 10;  
+        int labelHeight = height * 7 / 100;  
+        int labelX      = width  * 5 / 100;
+        int labelY      = height * 1 / 100; 
         titleLabel.setLocation(labelX, labelY);
         titleLabel.setSize(labelWidth, labelHeight);
 
         //안쪽 흰색 영역 그리기
         Graphics2D g2 = (Graphics2D) g;
  
-        int boxX   = (int)(width * 0.03);
-        int boxY   = labelY + labelHeight + (int)(height * 0.01); 
+        int boxX   = width * 3 / 100;
+        int boxY   = labelY + labelHeight + height * 1 / 100; 
         int boxWidth   = width  - boxX * 2;
         int boxHeight   = height - boxY - boxX;
 
@@ -44,8 +43,5 @@ public class DeliveryListPanel extends JPanel {
 
         g2.setColor(Color.LIGHT_GRAY);
         g2.drawRect(boxX, boxY, boxWidth, boxHeight);
-
-        //나중에 여기 안에 박스 그림을 추가하면 됨 (지금은 빈 영역만)
     }
-
 }

@@ -13,7 +13,6 @@ public class MainPanel extends JPanel {
     private JLabel requestLabel;
     private JButton rankingButton;
     
-
     
     public MainPanel(Frame frame) {
         this.frame = frame;
@@ -59,7 +58,6 @@ public class MainPanel extends JPanel {
             }
         });  
         
-        
         //Ranking 버튼
         rankingButton = new JButton("RANKING"); //문구
         rankingButton.setBackground(Color.GRAY);
@@ -69,7 +67,6 @@ public class MainPanel extends JPanel {
         rankingButton.setFocusPainted(false);
         rankingButton.setFont(new Font("Arial",Font.BOLD,30));
         add(rankingButton); //부착
-        
         
         //Ranking 버튼 누르면 RankPanel로 이동
         rankingButton.addActionListener(new ActionListener() {
@@ -95,36 +92,34 @@ public class MainPanel extends JPanel {
         int logoWidth = logoLabel.getIcon().getIconWidth(); //로고 폭
         int logoHeight = logoLabel.getIcon().getIconHeight(); //로고 높이
         int logoX = (width - logoWidth) / 2; //로고 x좌표
-        int logoY = (int)(height * 0.1); //로고 y좌표
+        int logoY = height / 10; //로고 y좌표
         logoLabel.setLocation(logoX,logoY);
         logoLabel.setSize(logoWidth,logoHeight);
 
         //START버튼 위치/크기
-        int buttonWidth = (int)(width * 0.25); 
-        int buttonHeight = (int)(height * 0.1); 
+        int buttonWidth = width / 4; 
+        int buttonHeight = height / 10; 
         int buttonX = (width - buttonWidth) / 2;
-        int buttonY = (int)(height * 0.35);  
+        int buttonY = height * 35 / 100;  
         startButton.setLocation(buttonX,buttonY);
         startButton.setSize(buttonWidth,buttonHeight);
 
         //Ranking버튼 위치/크기
-        int rankY = (int)(height * 0.5);
+        int rankY = height / 2;
         rankingButton.setLocation(buttonX,rankY);
         rankingButton.setSize(buttonWidth,buttonHeight);
         
         //HELP버튼 위치/크기
-        int helpY = (int)(height * 0.65);
+        int helpY = height * 65 / 100;
         helpButton.setLocation(buttonX,helpY);
         helpButton.setSize(buttonWidth,buttonHeight);
         
         //"전체 화면으로 이용해 주세요" 문구 크기/위치
-        int requestWidth = (int)(width * 0.4);
-        int requestHeight = (int)(height * 0.05);
+        int requestWidth = width * 4 / 10;
+        int requestHeight = height / 20;
         int requestX = (width - requestWidth) / 2;
-        int requestY = (int)(helpY + buttonHeight*1.5);
+        int requestY = helpY + buttonHeight * 3 / 2 ;
         requestLabel.setLocation(requestX,requestY);
         requestLabel.setSize(requestWidth,requestHeight);
-        
-       
     }
 }

@@ -59,7 +59,6 @@ public class RankingPanel extends JPanel {
                 frame.changePanel(new MainPanel(frame));
             }
         });
-        
         loadRanking();   //랭킹 읽기
     }
 
@@ -67,8 +66,6 @@ public class RankingPanel extends JPanel {
     private void loadRanking() {
     
         String text = "RANKING \n\n";
-        
-        
 
         if (fileManager.names.size() == 0) {
             text = "등록된 기록이 없습니다.";
@@ -88,27 +85,27 @@ public class RankingPanel extends JPanel {
         int height = getHeight();
 
         //박스 크기
-        int boxWidth = (int) (width * 0.5);
-        int boxHeight = (int) (height * 0.6);
+        int boxWidth = width / 2;
+        int boxHeight = height * 3 / 5;
         int boxX = (width - boxWidth) / 2;
-        int boxY = (int) (height * 0.15);
-
-        rankBox.setBounds(boxX, boxY, boxWidth, boxHeight);
+        int boxY = height * 3 / 20;
+        rankBox.setLocation(boxX, boxY);
+        rankBox.setSize(boxWidth, boxHeight);
 
         //텍스트 크기
-        int msgWidth = (int) (boxWidth * 0.90);
-        int msgHeight = (int) (boxHeight * 0.92);
+        int msgWidth = boxWidth * 9 / 10;
+        int msgHeight = boxHeight * 92 / 100;
         int msgX = (boxWidth - msgWidth) / 2;
         int msgY = (boxHeight - msgHeight) / 2 - 10;
-
-        rankText.setBounds(msgX, msgY, msgWidth, msgHeight);
+        rankText.setLocation(msgX, msgY);
+        rankText.setSize(msgWidth, msgHeight);
 
         //뒤로가기 버튼 크기
-        int buttonWidth = (int) (width * 0.20);
-        int buttonHeight = (int) (height * 0.10);
+        int buttonWidth = width / 5;
+        int buttonHeight = height / 10;
         int buttonX = (width - buttonWidth) / 2;
-        int buttonY = (int) (height * 0.80);
-
-        backButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+        int buttonY = height * 4 / 5;
+        backButton.setLocation(buttonX, buttonY);
+        backButton.setSize(buttonWidth, buttonHeight);
     }
 }

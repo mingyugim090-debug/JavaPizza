@@ -1,4 +1,4 @@
-	package Gui;
+package Gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -23,7 +23,7 @@ public class HelpPanel extends JPanel {
         helpBox.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         add(helpBox);
 
-        //게임 방법 텍스트 kkkkkkkk
+        //게임 방법 텍스트 
         message = new JTextArea(
                 "당신은 ROBO HUB의 배송기사입니다.\n"
                 + "[Stage 1]\n"
@@ -74,29 +74,28 @@ public class HelpPanel extends JPanel {
         int height = getHeight();
 
         //도움말상자 위치/크기
-        int boxWidth = (int)(width * 0.5);
-        int boxHeight = (int)(height * 0.60);
+        int boxWidth = width / 2;
+        int boxHeight = height * 6 / 10;
         int boxX = (width - boxWidth) / 2;
-        int boxY = (int)(height * 0.15);
-   
+//        int boxY = height * 15 / 100;
+        int boxY = height / 7;
         helpBox.setLocation(boxX,boxY);
         helpBox.setSize(boxWidth,boxHeight);
 
         //도움말 내 텍스트상자 위치/크기
-        int msgWidth = (int)(boxWidth * 0.90); //message박스는 box보다 아주 조금 작게 만듦
-        int msgHeight = (int)(boxHeight * 0.92);
+        int msgWidth = boxWidth * 9 / 10; //message박스는 box보다 아주 조금 작게 만듦
+        int msgHeight = boxHeight * 92 / 100;
         int msgX = (boxWidth - msgWidth) / 2;
-        int msgY = (boxHeight - msgHeight) / 2 - 10;
-
+//        int msgY = (boxHeight - msgHeight) / 2 - 10;
+        int msgY = height / 35;
         message.setLocation(msgX,msgY);
         message.setSize(msgWidth,msgHeight);
 
         //"알겠습니다"버튼 위치/크기
-        int buttonWidth = (int)(width * 0.20);
-        int buttonHeight = (int)(height * 0.10);
+        int buttonWidth = width * 2 / 10;
+        int buttonHeight = height / 10;
         int buttonX = (width - buttonWidth) / 2;
-        int buttonY = (int)(height * 0.80);
-
+        int buttonY = height * 8 / 10;
         closeButton.setLocation(buttonX,buttonY);
         closeButton.setSize(buttonWidth,buttonHeight);
     }
