@@ -1,6 +1,8 @@
 package controller;
 
 import javax.swing.JOptionPane;
+import java.util.Random;
+import java.awt.Color;
 import Gui.Frame;
 import Gui.GamePanel;
 import util.TimeThread;
@@ -12,17 +14,26 @@ public class GameManager {
     private GamePanel gamePanel;  //게임 화면
     private TimeThread timer;     //시간
     private FileManager fileManager; //랭킹 or 데이터
+     
     
     //게임 상태 변수
     private int myScore = 0; 
+    private int myCoins = 0;
     private int currentStage = 1; // 현재 스테이지
-    private int gridSize = 3;     // 맵 크기 (1단계:3x3, 2단계:4x4 로 점점 늘려나갈 예정)
+    private int gridSize = 4;     // 맵 크기 (1단계:4x4, 2단계:3x3 , 3단계 : 5X5)
    
-    // 맵 데이터 (0: 빈칸, 1: 물건있음)
-    private int[][] mapData;  //맵의 각 칸에 물건이 있으면 1 , 없으면 0으로 저장
+    // 맵 데이터 (0: 빈칸,1:파랑,2:분홍,3:노랑,4:초록)
+    private int[][] mapData; 
+    
+    //다음에 놓을 블록 생상(1~4)
+    private int nextBlockColor;
+    private Random random = new Random();
     
     // 게임 상태 (게임 중일 때만 클릭 되게 하도록 설정)
     private boolean isGameRunning = false;
+    
+    //로봇 모드 (0:기본 , 1:변환로봇 , 2:삭제로봇 , 3:메타몽 로봇) 추후 구현
+    private int currentRobotMode = 0;
 
     // 생성자 : frame 전달받아서 저장하고 , FileManager 새로 생성
     public GameManager(Frame frame) {
@@ -45,33 +56,36 @@ public class GameManager {
     
     //게임 시작 (초기화)
     public void initGame() {
-        System.out.println("GameManager: 게임 초기화 및 시작");
-        this.myScore = 0;
+        System.out.println("GameManager : Stage" + currentStage + "초기화");
+        
+        if (currentStage ==1) {
+            this.myScore = 0;
+            this.myCoins = 0;
+        }
         this.isGameRunning = true;
         
         //스테이지에 따른 맵 크기 설정
-        if (currentStage == 1) gridSize = 3;
-        else if (currentStage == 2) gridSize = 4;
+        if (currentStage == 1) gridSize = 4;
+        else if (currentStage == 2) gridSize = 3;
         else gridSize = 5;
         
         //각 스테이지의 격자 크기에 맞게 맵 데이터 생성
         mapData = new int[gridSize][gridSize];
         
+        //첫번 째 랜덤 박스 생성
+        generateNextBlock();
+        
         //타이머 스레드
         if (timer != null) timer.stopTimer(); 
         
         if(currentStage == 3) {
-        	timer = new TimeThread(this, 60);    
+        	timer = new TimeThread(this, 60);    //Stage 3만 60초 제한
         	timer.start();
-        } else {
-        	 if (gamePanel != null) {
-        	       //timer는 stage 1,2에서는 사용하지 않는다. 
-        	    }
-        }
-        
+        } 
         
         //화면 갱신 frame에게 요청
         if (gamePanel != null) {
+        	gamePanel.updateNextBlock(nextBlockColor);
             frame.repaint();
         }
     }
@@ -92,19 +106,24 @@ public class GameManager {
             
             // FileManager의 rank 메서드 호출
             fileManager.rank(myScore, name); 
-            System.out.println("랭킹 저장 완료: " + name + " (" + myScore + "점)");
         }
-        //skh
         //메인 화면으로 복귀
         frame.showMainPanel();
     }
 
-    // --- [2] 시간 및 점수 관리 (TimeThread 연결) ---
-    
+    // --- [2] 데이터 관리 (박스 생성 , 점수 , 코인) ---
+    private void generateNextBlock() {
+    	nextBlockColor = random.nextInt(4) + 1;
+    	System.out.println("다음 블록 색상 : " + nextBlockColor);
+    	
+    	if(gamePanel != null) gamePanel.updateNextBlock(nextBlockColor);
+    }
+    public int getNextBlockColor() {
+    	return nextBlockColor;
+    }
+
     //TimeThread가 1초마다 이 메서드 호출하여 남은시간을 받아 GamePanel의 숫자를 바꿈
     public void updateTime(int time) {
-        System.out.println("남은 시간: " + time + "초");
-        
         // 화면에 시간 표시 갱신
         if(gamePanel != null) {
             gamePanel.updateTimer(time);
@@ -112,17 +131,16 @@ public class GameManager {
     }
 
     //점수 추가
-    public void addScore(int point) {
+    public void addScore(int point , int coin) {
         this.myScore += point;
+        this.myCoins += coin;
         System.out.println("점수 획득: " + point + " / 총점: " + myScore);
         
         // 1. 화면 갱신 (점수판이 있다면 갱신 요청)
         if(gamePanel != null) {
         	gamePanel.updateScore(myScore);
-        }
-        
-        // 2. 스테이지 클리어 조건 확인
-        checkStageClear(); 
+        	gamePanel.updateCoins(myCoins);
+        } 
     }
     
     // --- [3] 상호작용 및 판정 (MapPanel과 연결) ---
@@ -130,33 +148,80 @@ public class GameManager {
     
     //사용자가 맵의 (row, col) 위치에 물건을 놓았을 때 MapPanel에서 호출하는 메서드 
     public void handleMapAction(int row, int col) {
-        // 1. 게임 중이 아니면 무시
+        // 게임 중이 아니면 무시
         if (!isGameRunning) return;
 
-        // 2.맵 범위를 벗어났거나, 이미 물건이 있는 경우
+        // 맵 범위를 벗어났거나, 이미 물건이 있는 경우
         if (row < 0 || col < 0 || row >= gridSize || col >= gridSize) return;
-        
+        //추후에 삭제/변환 로봇일 때의 로직 여기에 추가
         if (mapData[row][col] != 0) {
             System.out.println("이미 물건이 있습니다!");
             return; // 실패
         }
 
-        // 3. 성공 처리 (데이터 갱신: 1은 '물건 있음' 표시)
-        mapData[row][col] = 1; 
-        System.out.println("적재 성공! 좌표: " + row + "," + col);
+        // 맵이 현재 대기 중인 블록 배치
+        mapData[row][col] = nextBlockColor;
+        System.out.println("적재 성공! (" + row + "," + col +") 색상 : " + nextBlockColor);
+        
 
-        // 4. 점수 추가
-        addScore(100); 
-
-        // 5. 화면 갱신 요청
+        // 기본 적재 보상(+100 coins)
+        addScore(0,100); 
+        //라인 매칭(가로/세로)확인
+        checkLineMatch(row,col);
+        //다음 블록 생성
+        generateNextBlock();
+        //화면 갱신
         frame.repaint(); 
-        //즉 모든 검사를 통과하면 데이터 1(물건이 놓여짐)로 바꾸고 , 점수 추가하고 화면 갱신
+        //스테이지 클리어 확인(Stage1 , Stage2만 해당)
+        if (currentStage < 3) {
+        	checkStageClear();
+        } else {
+        	checkGameOverStage3(); // Stage3는 꽉 차면 게임 오버
+        }
+        }
+    
+    private void checkLineMatch(int row , int col) {
+    	int color = mapData[row][col];
+    	boolean rowMatch = true;
+    	boolean colMatch = true;
+    	
+    	//가로 줄 검사
+    	for (int c=0; c < gridSize; c++) {
+    		if(mapData[row][c] != color) {
+    			rowMatch = false;
+    			break;
+    		}
+    	}
+    	//세로 줄 검사
+    	for (int r=0; r < gridSize; r++) {
+    		if(mapData[r][col] != color) {
+    			colMatch = false;
+    			break;
+    		}
+    	}
+    	//보상 지급 및 라인처리
+    	if (rowMatch) processLineClear(true, row);
+    	if (colMatch) processLineClear(false, col);
+    	
+    }
+    private void processLineClear(boolean isRow , int index) {
+    	System.out.println("라인 보너스!" + (isRow ? "가로" : "세로")+"줄 완성");
+    	addScore(100,300); //보상: +300코인 , + 100 점수
+    	//Stage3인 경우 줄 삭제하는 로직
+    	if (currentStage == 3) {
+    		if (isRow) {
+    			for(int c = 0; c < gridSize; c++) mapData[index][c] = 0;
+    		} else {
+    			for (int r = 0 ; r < gridSize; r++) mapData[r][index] = 0;
+    		}
+    	}
+    
     }
     
-    // 스테이지 클리어 조건 확인
+    // 스테이지 1,2 클리어 조건(꽉 차면 다음 스테이지)
     private void checkStageClear() {
         int count = 0;
-        // 맵 전체를 검사해서 물건(1)이 몇 개인지 셈
+        // 맵 전체를 검사해서 물건이 몇 개인지 셈
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 if (mapData[i][j] != 0) count++;
@@ -165,25 +230,38 @@ public class GameManager {
         
         // 맵이 꽉 찼다면? (게임 Clear 했다면)
         if (count == gridSize * gridSize) {
-            isGameRunning = false;
-            timer.stopTimer(); // 타이머 정지
-            
-            System.out.println("♨ Stage clear! ♨");
-            JOptionPane.showMessageDialog(frame, "Congratulations! Stage Clear");
+        	timer.stopTimer();
+            JOptionPane.showMessageDialog(frame, "stage" + currentStage + "Clear! \n 다음단계로 이동합니다.");
             
             // 다음 스테이지로 넘어가는 로직
             if (currentStage < 3) {
                 currentStage++;
                 initGame(); // 다음 스테이지로 초기화 및 시작
-            } else {
-                JOptionPane.showMessageDialog(frame, "모든 스테이지를 완료했습니다! 게임 종료.");
-                frame.showMainPanel();
+            
             }
         }
     }
+    private void checkGameOverStage3() {
+    	int count = 0;
+    	for(int i = 0; i < gridSize; i++) {
+    		for(int j = 0; j < gridSize; j++) {
+    			if(mapData[i][j] != 0) count++;
+    		}
+    	}
+    	if (count == gridSize * gridSize) {
+    		gameOver();
+    	}
+    }
+    public int[][] getMapData(){
+    	return mapData;
+    	
+    }
+    public int getGridSize() {
+    	return gridSize;
+    }
+    
+    
 }
-
-
 //GameManager의 역할
 //게임 규칙 : 점수 , clear , 스테이지 관리 등 게임의 모든 규칙 판단
 //데이터 관리 : 맵의 상태 , 점수 등 데이터관리
@@ -192,7 +270,3 @@ public class GameManager {
 //MapPanel --> GameManager --> GamePanel
 //Main클래스에 의해 생성되어서 Frame을 통해 화면을 제어하고 , 패널을 교체함
 //GamePanel , MapPanel , TimeThread과 상호작용
-
-
-
-

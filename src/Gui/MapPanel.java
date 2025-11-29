@@ -141,26 +141,36 @@ public class MapPanel extends JPanel{
         }
     }
     
+//====================GameManager와 연결되는 메서드================================
     //맵 위에 실제 물건(박스,로봇 등)을 그리는 메소드
     private void drawMapObjects(Graphics g) {
     	
         //map[row][col] 값에 따라 그림 표시
         for (int row = 0; row < gridSize; row++) {
             for (int col = 0; col < gridSize; col++) {
-
-            	//해당하는 칸 위에 물체가 있으면
-                if (map[row][col] != 0) {
-                    g.setColor(new Color(150, 190, 220)); //임시
-                    int x = mapStartX + col * cellSize;
-                    int y = mapStartY + row * cellSize;
-                    //테두리 선과 겹치지 않게 조금 안쪽으로 물체를 그리기 위함
-                    g.fillRect(x + 2, y + 2, cellSize - 4, cellSize - 4);
-                }
-                
+            	
+            	int value = map[row][col]; //0:빈칸,1~4:색상
+            	if (value!=0) {
+            		Color boxColor = Color.GRAY; //기본색상 회색
+            		
+            		switch(value) {
+            		    case 1: boxColor = new Color(100,149,237); break; // 파랑
+            		    case 2: boxColor = new Color(255,182,193); break; // 분홍
+            		    case 3: boxColor = new Color(255,255,100); break; // 노랑
+            		    case 4: boxColor = new Color(144,238,144); break; // 초록
+            		    
+            		}
+            		g.setColor(boxColor);
+            		int x = mapStartX + col * cellSize;
+            		int y = mapStartY + row * cellSize;
+            		g.fillRect(x + 2 , y + 2, cellSize - 4 , cellSize -4);
+            		g.setColor(Color.BLACK);
+            		g.drawRect(x+2 ,  y+2 ,  cellSize - 4 ,cellSize - 4);
+            	}
             }
         }
     }
-    
+//============================================================================
     //좌표
     public Point getGridPosition(int mouseX, int mouseY) {
         int col = (mouseX - mapStartX) / cellSize;
@@ -210,8 +220,9 @@ public class MapPanel extends JPanel{
         }
     };
     
+    //GameManager에게 클릭한 것 알려주는 역할
     private void handleClick(MouseEvent e) {
-        //mapstart를 기준으로 좌표 계산
+        //클릭한 위치의 좌표(row,col)계산
         int col = (e.getX() - mapStartX) / cellSize;
         int row = (e.getY() - mapStartY) / cellSize;
 
@@ -221,11 +232,13 @@ public class MapPanel extends JPanel{
         if (row < 0 || col < 0 || row >= gridSize || col >= gridSize) {
             return; // 맵 밖이면 무시
         }
-        // GameManager 연결 로직 (기존 코드 유지)
-        // -> GameManager.clickCell(row, col);
+        Frame parentFrame = (Frame) SwingUtilities.getWindowAncestor(this);
+        if(parentFrame != null && parentFrame.getGameManager() != null) {
+        	parentFrame.getGameManager().handleMapAction(row,col);
+        }
     }
 
-    //GameManger와 MapPanel 이 연결되는 부분
+    // GameManger와 MapPanel 이 연결되는 부분
 	// 외부에서 맵 데이터(int[][])를 받아서 화면을 갱신하는 메서드
     public void setMapData(int[][] newMap) {
                this.map = newMap;
