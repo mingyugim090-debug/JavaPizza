@@ -48,11 +48,42 @@ private GameManager gameManager;
         
         //manual
         trans_manual = new JLabel("대기중인 물건의 색상을 랜덤 변경.");
+        delete_manual = new JLabel("원하는 1칸 삭제 가능.");
+        meta_manual = new JLabel("모든 색상과 매칭되는 무지개 아이템으로 변환.");
+        
+        trans_manual.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
+        delete_manual.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
+        meta_manual.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
+        
+        add(trans_manual);
+        add(delete_manual);
+        add(meta_manual);
+        
         
         //체크박스
         transferBot = new JCheckBox("변환 로봇");
+        transferBot.addItemListener(new ItemListener(){
+        	public void itemStateChanged(ItemEvent e) {
+        		
+        	}
+        });
         deleteBot = new JCheckBox("삭제 로봇");
+        deleteBot.addItemListener(new ItemListener(){
+        	public void itemStateChanged(ItemEvent e) {
+        		
+        	}
+        });
         metaBot = new JCheckBox("메타몽 로봇");
+        metaBot.addItemListener(new ItemListener(){
+        	public void itemStateChanged(ItemEvent e) {
+        		
+        	}
+        });
+        
+        transferBot.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+        deleteBot.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+        metaBot.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+        
         add(transferBot);
         add(deleteBot);
         add(metaBot);
@@ -91,6 +122,11 @@ private GameManager gameManager;
         
         //구매버튼
         buying = new JButton("구매하기");
+        buying.addItemListener(new ItemListener(){
+        	public void itemStateChanged(ItemEvent e) {
+        		
+        	}
+        });
         add(buying);
         
         //이미지
@@ -150,8 +186,10 @@ private GameManager gameManager;
         int d = boxHeight / 14; 	//흰색 박스와의 거리
         int checkWidth = 10 * d;
         int checkHeight = 2 * d;
+        int checkX = boxX+d;
+        int checkY = boxY+d;
         //체크박스
-        transferBot.setBounds(boxX+d, boxY+d, checkWidth, checkHeight);
+        transferBot.setBounds(checkX, checkY, checkWidth, checkHeight);
         transferBot.setOpaque(false); //배경색 지우기
         
         //coin 버튼
@@ -161,10 +199,21 @@ private GameManager gameManager;
         int lasty = boxY + boxHeight - d;
         trans_coin.setBounds(lastx - coinWidth, lasty - coinHeight, coinWidth, coinHeight);
         trans_coin.setBackground(new Color(255, 250, 200));
-       
+        
+        //changebot.png 이미지 그리기(크기 조정)
         if (trans_img != null) {
-            g.drawImage(trans_img, boxX+d, boxY+(2*d), image_width, image_height, this);
+            g.drawImage(trans_img, boxX+d, boxY+(4*d), image_width, image_height, this);
         }
+        
+        //설명
+        int xd = boxWidth / 3;
+        int manualX = boxX + xd;
+        int manualWidth = boxWidth * 75 / 100;
+        int manualHeight = boxHeight / 3;
+        int manualY = boxY + (boxHeight-manualHeight) / 2;
+        trans_manual.setLocation(manualX, manualY);
+        trans_manual.setSize(manualWidth, manualHeight);
+        
         
         //2) 삭제로봇
         //외곽선 그리기(LIGHT GRAY)
@@ -182,9 +231,15 @@ private GameManager gameManager;
         delete_coin.setBounds(lastx - coinWidth, diff, coinWidth, coinHeight);
         delete_coin.setBackground(new Color(255, 250, 200));
         
+        //deletebot.png 이미지 그리기(크기 조정)
         if (delete_img != null) {
-            g.drawImage(delete_img, boxX+d, boxY + boxHeight + gap + (2*d), image_width, image_height, this);
+            g.drawImage(delete_img, boxX+d, boxY + boxHeight + gap + (4*d), image_width, image_height, this);
         }
+        
+        //설명
+        int del_manualY = boxY + boxHeight + gap + (boxHeight - manualHeight) / 2;
+        delete_manual.setLocation(manualX, del_manualY);
+        delete_manual.setSize(manualWidth, manualHeight);
         
         //3) 메타몽로봇
         //외곽선 그리기(LIGHT GRAY)
@@ -203,8 +258,9 @@ private GameManager gameManager;
         meta_coin.setBounds(lastx - coinWidth, metacoin, coinWidth, coinHeight);
         meta_coin.setBackground(new Color(255, 250, 200));
         
+        //metabot.png 이미지 그리기(크기 조정)
         if (meta_img != null) {
-            g.drawImage(meta_img, boxX+d, boxY + (2 * boxHeight) + (2 * gap) + (2*d), image_width, image_height, this);
+            g.drawImage(meta_img, boxX+d, boxY + (2 * boxHeight) + (4 * gap) + (2*d), image_width, image_height, this);
         }
         
         //구매버튼
@@ -214,6 +270,11 @@ private GameManager gameManager;
         int buying_height = coinHeight * 3 /2;
         buying.setBounds(lastx - buying_width, buying_y,  buying_width, buying_height);
         buying.setBackground(new Color(255, 228, 195));
+        
+        //설명
+        int meta_manualY = boxY + 2 * boxHeight + 2 * gap + (boxHeight- manualHeight) / 2;
+        meta_manual.setLocation(manualX, meta_manualY);
+        meta_manual.setSize(manualWidth, manualHeight);
 	}
 	
 	//GameManager가 이 메서드 호출해서 로봇 구매완료 시 버튼 상태 변경함.
