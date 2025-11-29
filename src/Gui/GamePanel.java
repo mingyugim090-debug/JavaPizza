@@ -132,7 +132,10 @@ public class GamePanel extends JPanel {
 		timerLabel.setVisible(stage == 3);
 	}
 	
-	public void updateTimer(int time) {                      
+	public void updateTimer(int time) {  
+		if (!timerLabel.isVisible()) {
+			timerLabel.setVisible(true);
+		}
 	    timerLabel.setText("남은 시간 : " + time + "초");
 	    
 	    //time이 0이 되면 Game Over

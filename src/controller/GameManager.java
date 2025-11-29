@@ -72,6 +72,14 @@ public class GameManager {
         //각 스테이지의 격자 크기에 맞게 맵 데이터 생성
         mapData = new int[gridSize][gridSize];
         
+        if (gamePanel != null && gamePanel.getMapPanel() !=null) {
+        	gamePanel.getMapPanel().setStage(currentStage);
+        }
+        if (gamePanel != null) {
+        	gamePanel.updateScore(myScore);
+        	gamePanel.updateCoins(myCoins);
+        }
+        
         //첫번 째 랜덤 박스 생성
         generateNextBlock();
         
@@ -230,7 +238,9 @@ public class GameManager {
         
         // 맵이 꽉 찼다면? (게임 Clear 했다면)
         if (count == gridSize * gridSize) {
-        	timer.stopTimer();
+        	if (timer != null) {
+                timer.stopTimer();	
+        	}
             JOptionPane.showMessageDialog(frame, "stage" + currentStage + "Clear! \n 다음단계로 이동합니다.");
             
             // 다음 스테이지로 넘어가는 로직
