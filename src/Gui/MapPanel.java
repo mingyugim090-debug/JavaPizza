@@ -164,7 +164,7 @@ public class MapPanel extends JPanel{
             		    case 2: boxColor = new Color(255,182,193); break; // 분홍
             		    case 3: boxColor = new Color(255,255,100); break; // 노랑
             		    case 4: boxColor = new Color(144,238,144); break; // 초록
-            		    
+            		    case 5: boxColor = new Color(204, 50, 204); break; // 보라색(메타몽)
             		}
             		g.setColor(boxColor);
             		int x = mapStartX + col * cellSize;

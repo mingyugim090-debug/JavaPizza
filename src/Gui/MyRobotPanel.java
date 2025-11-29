@@ -21,14 +21,14 @@ public class MyRobotPanel extends JPanel{
         add(titleLabel);
         
         //테스트 코드 (이후에 반드시 주석 처리)
-        convertCard = createCard("변환로봇", "changebot.png", 2, 0);
-        add(convertCard);
+        //convertCard = createCard("변환로봇", "changebot.png", 2, 0);
+        //add(convertCard);
 
-        deleteCard = createCard("삭제로봇", "deletebot.png", 2, 1);
-        add(deleteCard);
+        //deleteCard = createCard("삭제로봇", "deletebot.png", 2, 1);
+        //add(deleteCard);
 
-        metamongCard = createCard("메타몽로봇", "metamongbot.png", 2, 2);
-        add(metamongCard);
+        //metamongCard = createCard("메타몽로봇", "metamongbot.png", 2, 2);
+        //add(metamongCard);
     }
 	
 	protected void paintComponent(Graphics g) {
@@ -99,6 +99,8 @@ public class MyRobotPanel extends JPanel{
 	
 	 //로봇 구매 시 카드 추가
 	 public boolean addRobot(String robotName, int count) {
+		 RobotCardPanel targetCard = null;
+		 int modeIndex = 0;
 
 	        switch (robotName) {
 
@@ -106,26 +108,58 @@ public class MyRobotPanel extends JPanel{
 	                if (convertCard != null) return false;
 	                convertCard = createCard(robotName, "changebot.png", count, 0);
 	                add(convertCard);
+	                targetCard = convertCard;
+	                modeIndex = 1;
 	                break;
 
 	            case "삭제로봇":
 	                if (deleteCard != null) return false;
 	                deleteCard = createCard(robotName, "deletebot.png", count, 1);
 	                add(deleteCard);
+	                targetCard = deleteCard;
+	                modeIndex = 2;
 	                break;
 
 	            case "메타몽로봇":
 	                if (metamongCard != null) return false;
 	                metamongCard = createCard(robotName, "metamongbot.png", count, 2);
 	                add(metamongCard);
+	                targetCard = metamongCard;
+	                modeIndex = 3;
 	                break;
+	        }
+	        //생성된 카드의 버튼에 실제 기능을 연결하는 부분
+	        if (targetCard != null) {
+	        	final int selectMode = modeIndex;
+	        	targetCard.getUseButton().addActionListener(new java.awt.event.ActionListener(){
+	        		public void actionPerformed(java.awt.event.ActionEvent e) {
+	        			//GameManager에게 모드 변경 요청
+	        			Frame parent = (Frame) SwingUtilities.getWindowAncestor(MyRobotPanel.this);
+	        			if(parent != null) {
+	        				if(selectMode == 1) {
+	        					//변환 로봇은 맵 클릭이 아니라 즉시발동하도록 처리
+	        					parent.getGameManager().handleConvertRobot();
+	        				}else {
+	        					//메타몽은 맵 클릭해야하므로 모드 변경
+	        					parent.getGameManager().setRobotMode(selectMode);
+	        				}
+	        			}
+	        		}
+	        	});
 	        }
 
 	        repaint();
 	        revalidate();
 	        return true;
 	    }
-	 
+	 //아이템 사용시 화면 바뀌도록하는 메서드
+	 public void useRobotOnce(String robotName) {
+		 switch (robotName) {
+		 case "변환로봇" : if(convertCard != null) convertCard.useOnce(); break;
+		 case "삭제로봇": if(deleteCard != null) deleteCard.useOnce(); break;
+         case "메타몽로봇": if(metamongCard != null) metamongCard.useOnce(); break;
+     }
+ }
 	 //카드 생성 메소드
 	 private RobotCardPanel createCard(String name, String imageName, int count, int index) {
 
