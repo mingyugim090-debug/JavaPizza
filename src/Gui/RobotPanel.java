@@ -185,7 +185,7 @@ private GameManager gameManager;
         int boxHeight = ((fullboxHeight-loss) / 3) - (2 * gap / 3); 
         
         int image_width = boxWidth / 4;
-        int image_height = boxHeight *6/10;
+        int image_height = boxHeight * 6/10;
         
         
         //1) 변환로봇

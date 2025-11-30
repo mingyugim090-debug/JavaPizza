@@ -30,8 +30,6 @@ public class GamePanel extends JPanel {
 	private JPanel darkPanel;
 	private JButton gameOverButton;
 	
-	
-	
 	public GamePanel(Frame frame, int stage, int coins, int score) {
 		this.frame = frame;
 		this.stage = stage;
