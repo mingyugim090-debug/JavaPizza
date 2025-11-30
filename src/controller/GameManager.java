@@ -3,8 +3,12 @@ package controller;
 import javax.swing.JOptionPane;
 import java.util.Random;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import Gui.Frame;
 import Gui.GamePanel;
+import Gui.StageIntroPanel;
 import util.TimeThread;
 import util.FileManager;
 
@@ -340,8 +344,8 @@ public class GameManager {
             // 다음 스테이지로 넘어가는 로직
             if (currentStage < 3) {
                 currentStage++;
+                frame.changePanel(new StageIntroPanel(frame,currentStage));
                 initGame(); // 다음 스테이지로 초기화 및 시작
-            
             }
         }
     }

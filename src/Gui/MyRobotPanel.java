@@ -19,16 +19,6 @@ public class MyRobotPanel extends JPanel{
         titleLabel = new JLabel("내 로봇 사용하기");
         titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
         add(titleLabel);
-        
-        //테스트 코드 (이후에 반드시 주석 처리)
-        //convertCard = createCard("변환로봇", "changebot.png", 2, 0);
-        //add(convertCard);
-
-        //deleteCard = createCard("삭제로봇", "deletebot.png", 2, 1);
-        //add(deleteCard);
-
-        //metamongCard = createCard("메타몽로봇", "metamongbot.png", 2, 2);
-        //add(metamongCard);
     }
 	
 	protected void paintComponent(Graphics g) {
@@ -64,39 +54,8 @@ public class MyRobotPanel extends JPanel{
         int areaY = boxY;
         int areaWidth  = boxWidth;
         int areaHeight = boxHeight;
-
-        // 현재 보유한 카드 개수
-        RobotCardPanel[] cards = {convertCard, deleteCard, metamongCard};
-        int cardCount = 0;
-        for (RobotCardPanel c : cards) {
-            if (c != null) cardCount++;
         }
 
-        // 배치할 카드가 있을 때만 계산
-        if (cardCount > 0) {
-
-            double gapRatio = 0.03;    // 카드 간 간격 비율
-            int cardWidth  = (int)(areaWidth * (1.0 - gapRatio * (cardCount + 1)) / cardCount);
-            int cardHeight = areaHeight * 85 / 100;
-
-            int index = 0;
-            for (RobotCardPanel c : cards) {
-                if (c != null) {
-
-                    int x = areaX 
-                             + (int)(areaWidth * gapRatio) * (index + 1)
-                             + cardWidth * index;
-
-                    int y = areaY + areaHeight * 7 / 100;
-
-                    c.setLocation(x, y);
-                    c.setSize(cardWidth, cardHeight);
-                    index++;
-                }
-            }
-        }
-    }
-	
 	 //로봇 구매 시 카드 추가
 	 public boolean addRobot(String robotName, int count) {
 		 RobotCardPanel targetCard = null;
@@ -147,7 +106,7 @@ public class MyRobotPanel extends JPanel{
 	        		}
 	        	});
 	        }
-
+            placeCards();
 	        repaint();
 	        revalidate();
 	        return true;
@@ -184,8 +143,32 @@ public class MyRobotPanel extends JPanel{
 	        }
 	    }
 	
+     //내 보유 로봇 카드 고정 위치
+	 private void placeCards() {
 
+		    int width = getWidth();
+		    int height = getHeight();
 
-	
+		    int cardW = width / 4;   
+		    int cardH = height * 2 / 3;   
+		    int y = height / 2 - cardH / 2 + 2;  
 
+		    //card 위치 3개 고정
+		    int card1X = width / 10;
+		    int card2X = width / 2 - cardW / 2;
+		    int card3X = width - width / 10 - cardW;
+
+		    if (convertCard != null) {
+		        convertCard.setLocation(card1X, y);
+		        convertCard.setSize(cardW, cardH);
+		    }
+		    if (deleteCard != null) {
+		        deleteCard.setLocation(card2X, y);
+		        deleteCard.setSize(cardW, cardH);
+		    }
+		    if (metamongCard != null) {
+		        metamongCard.setLocation(card3X, y);
+		        metamongCard.setSize(cardW, cardH);
+		    }
+		}
 }
