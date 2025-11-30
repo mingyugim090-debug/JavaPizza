@@ -7,7 +7,6 @@ public abstract class Robot{
 	protected int price;
 	protected int limit;
 	protected boolean canMove;
-	protected int velocity;
 	
 	public Robot(String name, String manual, int price) {
 		this.name = name;
@@ -54,15 +53,18 @@ public abstract class Robot{
 		
 		return canMove;
 	}
-	
-	protected int setVelocity() {
-		velocity = 0;
+	public void skills() {
 		
-		return velocity;
-	};
-	
-	protected int calTime(int weight) {
-		int v = setVelocity();
-		return (1/v) * weight;
 	}
+	
+//	protected int setVelocity() {
+//		velocity = 0;
+//		
+//		return velocity;
+//	};
+	
+//	protected int calTime(int weight) {
+//		int v = setVelocity();
+//		return (1/v) * weight;
+//	}
 }
