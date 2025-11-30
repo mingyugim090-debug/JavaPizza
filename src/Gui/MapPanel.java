@@ -101,30 +101,30 @@ public class MapPanel extends JPanel{
         drawGrid(g);
         drawMapObjects(g);
 
-        //물건을 드래그 중일 때
-        if (isDragging && draggingImage != null) {
-        	//마우스가 현재 어느 칸 위에 위치하는가
-        	int col = (mouseX - mapStartX) / cellSize;
-            int row = (mouseY - mapStartY) / cellSize;
-            
-            //현재 칸의 정중앙 위치(픽셀값으로)
-            int snapX = mapStartX + col * cellSize + cellSize/2;
-            int snapY = mapStartY + row * cellSize + cellSize/2;
+//        //물건을 드래그 중일 때
+//        if (isDragging && draggingImage != null) {
+//        	//마우스가 현재 어느 칸 위에 위치하는가
+//        	int col = (mouseX - mapStartX) / cellSize;
+//            int row = (mouseY - mapStartY) / cellSize;
+//            
+//            //현재 칸의 정중앙 위치(픽셀값으로)
+//            int snapX = mapStartX + col * cellSize + cellSize/2;
+//            int snapY = mapStartY + row * cellSize + cellSize/2;
+//
+//            //칸의 중앙 x값과 현재 마우스 위치 차이의 절댓값
+//            int dx = Math.abs(mouseX - snapX);
+//            int dy = Math.abs(mouseY - snapY);
 
-            //칸의 중앙 x값과 현재 마우스 위치 차이의 절댓값
-            int dx = Math.abs(mouseX - snapX);
-            int dy = Math.abs(mouseY - snapY);
-
-            //스냅 거리 30px 이내면 스냅 작동
-            if (dx < 30 && dy < 30) {
-                g.drawImage(draggingImage,
-                            snapX - draggingImage.getWidth(null)/2,
-                            snapY - draggingImage.getHeight(null)/2,
-                            60, 60, null);
-            }else {
-                g.drawImage(draggingImage, mouseX - 20, mouseY - 20, 60, 60, null);
-            }
-        }
+//            //스냅 거리 30px 이내면 스냅 작동
+//            if (dx < 30 && dy < 30) {
+//                g.drawImage(draggingImage,
+//                            snapX - draggingImage.getWidth(null)/2,
+//                            snapY - draggingImage.getHeight(null)/2,
+//                            60, 60, null);
+//            }else {
+//                g.drawImage(draggingImage, mouseX - 20, mouseY - 20, 60, 60, null);
+//            }
+//        }
     }
      
     //맵 그리는 메소드
