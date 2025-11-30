@@ -87,6 +87,7 @@ public class MyRobotPanel extends JPanel{
 	                modeIndex = 3;
 	                break;
 	        }
+	        
 	        //생성된 카드의 버튼에 실제 기능을 연결하는 부분
 	        if (targetCard != null) {
 	        	final int selectMode = modeIndex;
