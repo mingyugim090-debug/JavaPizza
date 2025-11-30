@@ -1,9 +1,6 @@
 package controller;
 
 import javax.swing.JOptionPane;
-import javax.swing.*;
-
-import java.util.ArrayList;
 import java.util.Random;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -80,7 +77,6 @@ public class GameManager {
     	this.currentRobotMode = 0; 
     }
     //변환 로봇 기능(다음 블록 색상 변경되도록)
-    //*변환로봇 클래스에서 정의 - TransferRobot.skills() 메소드
     public void handleConvertRobot() {
         generateNextBlock(); 
         frame.repaint();
@@ -159,6 +155,7 @@ public class GameManager {
 
     //===============[데이터 관리(박스 생성,점수,코인)]=================
     //다음 블록 색상 랜덤 생성(1~4)
+
     private void generateNextBlock() {
     	nextBlockColor = random.nextInt(4) + 1;
     	if(gamePanel != null) gamePanel.updateNextBlock(nextBlockColor);
@@ -365,87 +362,8 @@ public class GameManager {
     public int getGridSize() {
     	return gridSize;
     }
-    
-    //체크박스 선택되면 total coin 변경, 해제되면 감소
-//	    public void setTotalCoin(JCheckBox C_robot, Robot robot, int[] total_price) {
-//	    	if(C_robot.isSelected()) {
-//	    		total_price[0] += robot.getPrice(); 
-//	        }
-//	    	else {
-//	    		total_price[0] -= robot.getPrice();
-//	    	}
-//	    }
-	    
-	    //체크박스 선택된 robot 목록(ArrayList) 반환
-	    public void addSelectedRobots(JCheckBox C_robot, Robot robot, ArrayList<Robot> selected_robots) {
-	    	if(C_robot.isSelected()) {
-	    		if (!selected_robots.contains(robot)) {
-	                selected_robots.add(robot);   // 중복 방지
-	            }
-	        } else {
-	            selected_robots.remove(robot); 
-	    	}
-	    }
-	    
-	    // 로봇 구매 메서드
-	    public void buyRobot(String robotName, int price) {
-	    	if (myCoins >= price) {
-	    		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
-	    		
-	    		if(success) {
-	    			myCoins -= price;
-	    			addScore(0,0);
-	    			gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
-	        		System.out.println(robotName + "구매완료. 남은 코인 : " + myCoins);
-	    		
-	    	} else {
-	    		System.out.println("이미 보유 중인 로봇입니다.!");
-	    		JOptionPane.showMessageDialog(frame, "이미 보유 중인 로봇입니다.");
-	    			
-	    		}
-	    	}else {
-	    		System.out.println("코인 부족");
-	    		JOptionPane.showMessageDialog(frame, "코인부족");
-	    		}
-	    	}
-	    
-	  //로봇 구매 메서드(수정)
-	    public void buyMain(ArrayList<Robot> selected_robots) {
-	    	if(selected_robots.size() == 0) {
-	    		System.out.println("선택된 로봇이 없습니다.");
-	    		JOptionPane.showMessageDialog(frame, "구매할 로봇을 선택해주세요");
-	    	}
-	    	else {
-	    		int result = JOptionPane.showConfirmDialog(frame, "구매하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
-	    		if(result == JOptionPane.CLOSED_OPTION) {
-	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
-	    			System.out.println("구매에 실패했습니다.");
-	    		}
-	    		else if (result == JOptionPane.YES_OPTION) {
-	    			for(Robot selected_robot : selected_robots) {
-	    				buyRobot(selected_robot.getName(), selected_robot.getPrice());
-	    			}
-	    			selected_robots.clear();
-	    			
-	    		}
-	    		else {
-	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
-	    			System.out.println("구매에 실패했습니다.");
-	    		}
-	    			
-	    			
-	    	}
-	    	
-	    }
-	    
-	    //*금액버튼을 누를때 메세지 띄우기
-	    public void PrintRobot(String robotName, int price) {
-	    	String strings = robotName + "은 " + price + " coin 입니다.";
-	    	System.out.println(strings);
-	    	JOptionPane.showMessageDialog(frame, strings);
-	    	
-	    	}
-    // 로봇 상점 구매 메서드
+
+    // 로봇 구매 메서드
     public void buyRobot(String robotName, int price) {
     	if (myCoins >= price) {
     		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
@@ -453,9 +371,8 @@ public class GameManager {
     		if(success) {
     			myCoins -= price;
     			addScore(0,0);
-    			gamePanel.getRobotPanel().setPurchased(robotName); 
-        		System.out.println(robotName + "구매완료. 남은 코인 : " + myCoins);
-    		
+    			gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
+        	
     	} else {
     		JOptionPane.showMessageDialog(frame, "이미 보유 중인 로봇입니다.");
     			
