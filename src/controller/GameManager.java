@@ -359,7 +359,65 @@ public class GameManager {
     	return gridSize;
     }
 
-//========================[로봇 구매 메서드]=====================================
+    //체크박스 선택되면 total coin 변경, 해제되면 감소
+//	    public void setTotalCoin(JCheckBox C_robot, Robot robot, int[] total_price) {
+//	    	if(C_robot.isSelected()) {
+//	    		total_price[0] += robot.getPrice(); 
+//	        }
+//	    	else {
+//	    		total_price[0] -= robot.getPrice();
+//	    	}
+//	    }
+	    
+	    //체크박스 선택된 robot 목록(ArrayList) 반환
+	    public void addSelectedRobots(JCheckBox C_robot, Robot robot, ArrayList<Robot> selected_robots) {
+	    	if(C_robot.isSelected()) {
+	    		if (!selected_robots.contains(robot)) {
+	                selected_robots.add(robot);   // 중복 방지
+	            }
+	        } else {
+	            selected_robots.remove(robot); 
+	    	}
+	    }
+
+	    
+	  //로봇 구매 메서드(수정)
+	    public void buyMain(ArrayList<Robot> selected_robots) {
+	    	if(selected_robots.size() == 0) {
+	    		System.out.println("선택된 로봇이 없습니다.");
+	    		JOptionPane.showMessageDialog(frame, "구매할 로봇을 선택해주세요");
+	    	}
+	    	else {
+	    		int result = JOptionPane.showConfirmDialog(frame, "구매하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+	    		if(result == JOptionPane.CLOSED_OPTION) {
+	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
+	    			System.out.println("구매에 실패했습니다.");
+	    		}
+	    		else if (result == JOptionPane.YES_OPTION) {
+	    			for(Robot selected_robot : selected_robots) {
+	    				buyRobot(selected_robot.getName(), selected_robot.getPrice());
+	    			}
+	    			selected_robots.clear();
+	    			
+	    		}
+	    		else {
+	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
+	    			System.out.println("구매에 실패했습니다.");
+	    		}
+	    			
+	    			
+	    	}
+	    	
+	    }
+	    
+  
+	    //*금액버튼을 누를때 메세지 띄우기
+	    public void PrintRobot(String robotName, int price) {
+	    	String strings = robotName + "은 " + price + " coin 입니다.";
+	    	System.out.println(strings);
+	    	JOptionPane.showMessageDialog(frame, strings);
+	    	
+	    	}
 
     public void buyRobot(String robotName, int price) {
     	if (myCoins >= price) {
