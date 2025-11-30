@@ -59,7 +59,7 @@ public class MapPanel extends JPanel{
 		map = new int[gridSize][gridSize]; //스테이지에 따른 맵 초기화
 		
 		repaint();
-	}
+}
 	
     public void updateMap(int[][] newMap) {
         this.map = newMap;
