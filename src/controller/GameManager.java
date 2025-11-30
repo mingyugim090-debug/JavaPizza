@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 
 import Gui.Frame;
 import Gui.GamePanel;
-import model.Robot;
 import Gui.StageIntroPanel;
 import util.TimeThread;
 import util.FileManager;
@@ -76,7 +75,7 @@ public class GameManager {
     	gamePanel.getMyRobotPanel().useRobotOnce(robotName);
     	this.currentRobotMode = 0; 
     }
-    //변환 로봇 기능(다음 블록 색상 변경되도록)
+    //변환 로봇 기능 : 다음 블록 색상을 즉시 랜덤 변경
     public void handleConvertRobot() {
         generateNextBlock(); 
         frame.repaint();
@@ -364,6 +363,7 @@ public class GameManager {
     }
 
     // 로봇 구매 메서드
+
     public void buyRobot(String robotName, int price) {
     	if (myCoins >= price) {
     		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
