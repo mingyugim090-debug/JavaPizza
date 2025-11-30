@@ -386,28 +386,7 @@ public class GameManager {
 	            selected_robots.remove(robot); 
 	    	}
 	    }
-	    
-	    // 로봇 구매 메서드
-	    public void buyRobot(String robotName, int price) {
-	    	if (myCoins >= price) {
-	    		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
-	    		
-	    		if(success) {
-	    			myCoins -= price;
-	    			addScore(0,0);
-	    			gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
-	        		System.out.println(robotName + "구매완료. 남은 코인 : " + myCoins);
-	    		
-	    	} else {
-	    		System.out.println("이미 보유 중인 로봇입니다.!");
-	    		JOptionPane.showMessageDialog(frame, "이미 보유 중인 로봇입니다.");
-	    			
-	    		}
-	    	}else {
-	    		System.out.println("코인 부족");
-	    		JOptionPane.showMessageDialog(frame, "코인부족");
-	    		}
-	    	}
+
 	    
 	  //로봇 구매 메서드(수정)
 	    public void buyMain(ArrayList<Robot> selected_robots) {
