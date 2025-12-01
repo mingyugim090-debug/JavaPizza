@@ -19,10 +19,6 @@ public class DeliveryListPanel extends JPanel {
         titleLabel = new JLabel("배송 목록");
         titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
         add(titleLabel);
-        
-        box = new Box(Color.GRAY, x_set, y_set);
-        box.setOpaque(false);
-        add(box);
     }
 //==========GameManager --> GamePanel 거쳐서 호출되는 메서드==============
 	public void setNextBlockColor(int colorNumber) {
@@ -77,18 +73,10 @@ public class DeliveryListPanel extends JPanel {
             y_set[0] = 0;
             y_set[1] = blockSize;
             
-            box.setColor(c);
-            box.setOpaque(false);
-            box.setBounds(blockX, blockY, blockSize, blockSize);
-            box.setX(x_set);
-            box.setY(y_set);
-            
-            box.repaint();
-            
-//            g2.setColor(c);
-//            g2.fillRect(blockX, blockY, blockSize, blockSize);
-//            g2.setColor(Color.BLACK);
-//            g2.drawRect(blockX, blockY, blockSize, blockSize);
+            g.setColor(c);
+            g.fillRect(blockX, blockY, blockSize, blockSize);
+            g.setColor(Color.BLACK);
+            g.drawRect(blockX, blockY, blockSize, blockSize);
         }
 	}
 }

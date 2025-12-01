@@ -394,15 +394,7 @@ public class GameManager {
     	return score;
     }
 
-    //체크박스 선택되면 total coin 변경, 해제되면 감소
-//	    public void setTotalCoin(JCheckBox C_robot, Robot robot, int[] total_price) {
-//	    	if(C_robot.isSelected()) {
-//	    		total_price[0] += robot.getPrice(); 
-//	        }
-//	    	else {
-//	    		total_price[0] -= robot.getPrice();
-//	    	}
-//	    }
+    
 	    
 	    //체크박스 선택된 robot 목록(ArrayList) 반환
 	    public void addSelectedRobots(JCheckBox C_robot, Robot robot, ArrayList<Robot> selected_robots) {
@@ -417,61 +409,74 @@ public class GameManager {
 
 	    
 	  //로봇 구매 메서드(수정)
-	    public void buyMain(ArrayList<Robot> selected_robots) {
+	    public void buyMain(ArrayList<Robot> selected_robots, int total_price) {
 	    	if(selected_robots.size() == 0) {
 	    		System.out.println("선택된 로봇이 없습니다.");
 	    		JOptionPane.showMessageDialog(frame, "구매할 로봇을 선택해주세요");
+	    		return;
 	    	}
 	    	else {
 	    		int result = JOptionPane.showConfirmDialog(frame, "구매하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
 	    		if(result == JOptionPane.CLOSED_OPTION) {
 	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
 	    			System.out.println("구매에 실패했습니다.");
+	    			selected_robots.clear();
+	    			return;
 	    		}
 	    		else if (result == JOptionPane.YES_OPTION) {
-	    			for(Robot selected_robot : selected_robots) {
-	    				buyRobot(selected_robot.getName(), selected_robot.getPrice());
+	    			
+	    			if(coins < total_price) {
+	    				JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
+		    			System.out.println("구매에 실패했습니다.");
+		    			selected_robots.clear();
+		    			return;
 	    			}
+	    			
+	    			else{
+	    				//금액 차감은 한번만
+	    				coins -= total_price;
+						addScore(0,0);
+						
+	    				for(Robot selected_robot : selected_robots) {
+	    					String robotName = selected_robot.getName();
+	    					boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
+	    	    		
+	    					if(success) {
+	    						gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
+	    					}
+	    				}
+	    	    	}
 	    			selected_robots.clear();
 	    			
 	    		}
-	    		else {
-	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
-	    			System.out.println("구매에 실패했습니다.");
-	    		}
-	    			
-	    			
 	    	}
-	    	
 	    }
-	    
   
-	    //*금액버튼을 누를때 메세지 띄우기
-	    public void PrintRobot(String robotName, int price) {
-	    	String strings = robotName + "은 " + price + " coin 입니다.";
-	    	System.out.println(strings);
-	    	JOptionPane.showMessageDialog(frame, strings);
+	//*금액버튼을 누를때 메세지 띄우기
+	public void PrintRobot(String robotName, int price) {
+	    String strings = robotName + "은 " + price + " coin 입니다.";
+	    System.out.println(strings);
+	    JOptionPane.showMessageDialog(frame, strings);
 	    	
-	    	}
+	}
 
-    public void buyRobot(String robotName, int price) {
-    	if (coins >= price) {
-    		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
-    		
-    		if(success) {
-    			coins -= price;
-    			addScore(0,0);
-
-    			gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
-        	
-    	} else {
-    		JOptionPane.showMessageDialog(frame, "이미 보유 중인 로봇입니다.");
-    		
-    		}
-    	}else {
-    		JOptionPane.showMessageDialog(frame, "코인부족");
-    	}
-    }	
-    }
+//    public void buyRobot(String robotName, int total_price) {
+//    	if (coins >= total_price) {
+//    		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
+//    		
+//    		if(success) {
+//    			coins -= total_price;
+//    			addScore(0,0);
+//
+//    			gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
+//    		}   
+//    	}
+//    	
+//    	else {
+//    		JOptionPane.showMessageDialog(frame, "코인부족");
+//    		return;
+//    	}
+//    }	
+}
     
    

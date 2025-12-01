@@ -43,6 +43,7 @@ public MetaRobot mbot;
 
 //private int[] total_price;
 public ArrayList <Robot> selected_robots;
+int total_price;
 
 
 
@@ -54,7 +55,6 @@ private GameManager gameManager;
 		this.gameManager = gameManager;
         setLayout(null);
         
-        
         tbot = new TransferRobot("변환 로봇", "대기중인 물건의 색상을 랜덤 변경.", 1500);
         dbot = new DeleteRobot("삭제 로봇", "원하는 1칸 삭제 가능.", 2500);
         mbot = new MetaRobot("메타몽 로봇", "모든 색상과 매칭되는 무지개 아이템으로 변환.", 4000);
@@ -64,7 +64,7 @@ private GameManager gameManager;
         setBackground(new Color(0xF2F2F2)); 
         
         //title - 로봇목록
-        titleLabel = new JLabel("로봇 목록");
+        titleLabel = new JLabel("로봇 상점");
         titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
         add(titleLabel);
         
@@ -93,6 +93,7 @@ private GameManager gameManager;
                 public void itemStateChanged(ItemEvent e) {
                 	//gameManager.setTotalCoin(CRobots[idx], Robots[idx], total_price);
                 	gameManager.addSelectedRobots(CRobots[idx], Robots[idx], selected_robots);
+                	setTotalCoin(selected_robots);
                 }
             }); 
 
@@ -136,7 +137,7 @@ private GameManager gameManager;
         buying = new JButton("구매하기");
         buying.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e) {
-        		gameManager.buyMain(selected_robots);
+        		gameManager.buyMain(selected_robots, total_price);
         		
         	}
         });
@@ -308,6 +309,15 @@ private GameManager gameManager;
     	}
         
 	}
+    
+  //체크박스 선택되면 total coin 변경, 해제되면 감소
+    public void setTotalCoin(ArrayList<Robot> selected_robots) {
+    	total_price = 0;
+    	for(Robot robot : selected_robots) {
+    		total_price += robot.getPrice();													
+    	}
+    }
+    
 }
 
 
