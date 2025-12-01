@@ -86,7 +86,6 @@ public class GameManager {
     public void setRobotMode(int robotmode) {
     	this.robotMode = robotmode;
     	if(robotmode != 0) {
-
     		JOptionPane.showMessageDialog(frame, "로봇스킬 활성화!");
     	}
     }
@@ -160,10 +159,14 @@ public class GameManager {
         isGameRunning = false;
         if (timer != null) timer.stopTimer();
         
+        if(gamePanel != null) {
+        	gamePanel.showGameOver();
+        }
+        frame.repaint();
        
      //사용자에게 이름 입력받아 랭킹 저장
         String name = JOptionPane.showInputDialog(frame, 
-            "Game Over \nfinal_score : " + score + "\n이름 :");
+            "Game Over! \n점수: " + score + "\n이름을 입력하세요");
 
         if (name != null && !name.trim().isEmpty()) {
 
@@ -201,11 +204,9 @@ public class GameManager {
         
         //  화면갱신
         if(gamePanel != null) {
-
         	gamePanel.updateScore(this.score);
         	gamePanel.updateCoins(this.coins);
         	gamePanel.updateStage(stage);
-
         } 
     }
     
@@ -215,7 +216,6 @@ public class GameManager {
     public void handleMapAction(int row, int col) {
         if (!isGameRunning) return;
         if (row < 0 || col < 0 || row >= gridSize || col >= gridSize) return;
-         
         
         // --- 로봇 스킬 모드일 경우 따른 분류 ---
         //삭제 로봇 : 클릭한 로봇 제거
@@ -351,7 +351,7 @@ public class GameManager {
         	if (timer != null) {
                 timer.stopTimer();	
         	}
-            JOptionPane.showMessageDialog(frame, "stage" + stage + "Clear! \n 다음단계로 이동합니다.");
+            JOptionPane.showMessageDialog(frame, "Stage " + stage + " Clear ! \n 다음단계로 이동합니다.");
             
             if (stage < 3) {
                 stage++;
@@ -382,7 +382,6 @@ public class GameManager {
     	return gridSize;
     }
     
-    //stage값 return(GamePanel에서 쓸거임,GamePanel의 15째줄 참고)
     public int getStage() {
     	return stage;
     }

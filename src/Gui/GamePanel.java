@@ -14,12 +14,7 @@ public class GamePanel extends JPanel {
 	
 	private boolean gameOver = false;
 	
-	
 	private Frame frame;
-	
-//	private int stage;
-//	private int coins;
-//	private int score;
 	
 	private MapPanel mapPanel;
 	private InformationPanel informationPanel;
@@ -29,25 +24,13 @@ public class GamePanel extends JPanel {
 	private DeliveryListPanel deliveryListPanel;
 	private RobotPanel robotPanel;
 	private MyRobotPanel myRobotPanel;
-	
-	//Game Over가 되었을 때 뜨는 것들 그러나 문제가 있음!!
-	//Game Over가 되는 경우는 두 가지. (맵을 다 채운 경우 / 타이머가 다 된 경우)
-	//아래에 정의된 것들은 타이머가 다 되었을 경우에만 뜸
-	private JLabel gameOverLabel;
 	private JPanel darkPanel;
-	private JButton gameOverButton;
-	
 	
 	public GamePanel(Frame frame) {
 		this.frame = frame;
 		this.gameManager = frame.getGameManager();
 		
-		//선택적 참조 (나중에 다시 확인할 것 !!!!!!!!!!!!!!!!!!!!!!!!!)
-//		this.stage = gameManager.getStage();
-//		this.coins = gameManager.getCoins();
-//		this.score = gameManager.getScore();
-		
-		setLayout(null); //배치관리자 없음(자유 배치)
+		setLayout(null); 
 		setBackground(new Color(0xEDEDED));
 		
 		//로고 이미지 불러오기
@@ -65,8 +48,7 @@ public class GamePanel extends JPanel {
 		//MapPanel(중앙 맵)
 		mapPanel = new MapPanel(gameManager.getStage());
 		
-		//InformaionPanel(stage, coins, score을 표시하는 패널 / 하단 중앙 )
-//		informationPanel = new InformationPanel(stage, coins, score); 
+		//InformaionPanel(stage, coins, score을 표시하는 패널 / 하단 중앙 ) 
 		informationPanel = new InformationPanel(gameManager.getStage(), gameManager.getCoins(), gameManager.getScore());
 		
 		//미션 라벨
@@ -77,12 +59,6 @@ public class GamePanel extends JPanel {
 	    timerLabel = new JLabel("", SwingConstants.CENTER);
 	    timerLabel.setFont(new Font("맑은 고딕", Font.BOLD, 22));
 	    timerLabel.setForeground(Color.RED);
-	    
-	    //GameOver라벨
-	    gameOverLabel = new JLabel("GAME OVER", SwingConstants.CENTER);
-	    gameOverLabel.setFont(new Font("맑은 고딕", Font.BOLD, 80));
-	    gameOverLabel.setForeground(Color.RED);
-	    gameOverLabel.setVisible(false);
 	    
 	    //어두운 화면
 	    darkPanel = new JPanel() {
@@ -97,25 +73,6 @@ public class GamePanel extends JPanel {
 	    darkPanel.setOpaque(false);   
 	    darkPanel.setVisible(false);
 	    
-	    //gameover 시 메인으로 돌아가는 버튼 (이거 뭔가 수정해야할 것 같음 왜냐하면 쓰이지가 않음)
-	    gameOverButton = new JButton("메인 화면으로"); //버튼 문구
-	    gameOverButton.setBackground(Color.WHITE); //배경색
-	    gameOverButton.setForeground(Color.BLACK); //글씨색
-	    gameOverButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5)); //테두리
-	    gameOverButton.setOpaque(true); //배경색 적용
-	    gameOverButton.setFocusPainted(false);
-	    gameOverButton.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-	    gameOverButton.setVisible(false);
-	    
-	    gameOverButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	 if (timer != null) {
-     	            timer.stop();
-     	        }
-     	        frame.showMainPanel();
-            }
-        });
-	    
 		add(deliveryListPanel);
 		add(robotPanel);
 		add(myRobotPanel);
@@ -123,14 +80,14 @@ public class GamePanel extends JPanel {
 		add(informationPanel);
 		add(missionLabel);
 		add(timerLabel);
-		
 		add(darkPanel);
-		add(gameOverLabel);
-		add(gameOverButton);
-		
-		setComponentZOrder(gameOverButton, 0);
-		setComponentZOrder(gameOverLabel, 1); //컨테이너 안에서 가장 맨 위로 오도록 배치 설정
-		setComponentZOrder(darkPanel, 2); //그 아래에는 darkPanel이 오도록
+
+		setComponentZOrder(darkPanel, 0); //darkPanel이 가장 위에 위치
+	}
+	
+	public void showGameOver() {
+		darkPanel.setVisible(true);
+		repaint();
 	}
 	
 	//타이머가 줄어들 때마다 실시간 호출되는 메소드
@@ -143,11 +100,7 @@ public class GamePanel extends JPanel {
 	    //time이 0이 되면 Game Over
 	    if (time <= 0) {
 	        gameOver = true;
-	        
-	        gameOverLabel.setVisible(true);
 	        darkPanel.setVisible(true);
-	        gameOverButton.setVisible(true);
-	        
 	        mapPanel.setGameOver(true); //mapPanel에 gameover 알림
 	        repaint(); 
 	    }
@@ -159,51 +112,48 @@ public class GamePanel extends JPanel {
         return robotPanel;
     }
     
-//=======================GameManager와 연결되는 부분========================	
-    
-	//GameManager와 GamePanel이 연결되는 부분
-	//GameManager가 맵을 제어할 수 있도록 MapPanel을 건네주는 통로역할
 	 public MapPanel getMapPanel() {
 		 return mapPanel;
 	 }
+	 
 	 public MyRobotPanel getMyRobotPanel() {
 		 return myRobotPanel;
 	 }
+	 
 	 //GameManager가 점수 올랐다고 알려주면 화면을 갱신하는 역할
 	 public void updateScore(int score) {
 		 if(informationPanel != null) {
 			 informationPanel.setScore(score);	 
 		 }
 	 }
+	 
 	 public void updateCoins(int coins) {
 		 if(informationPanel != null) {
 			 informationPanel.setCoins(coins);
 		 }
 	 }
 	 
-	//위의 코드랑 중복되지만 이 메소드를 빼면 게임 진행이 되지 않음 (Gamemanager에서 호출하니까)
-	    public void updateStage(int stage) {
+	 //위의 코드랑 중복되지만 이 메소드를 빼면 게임 진행이 되지 않음 (Gamemanager에서 호출하니까)
+	 public void updateStage(int stage) {
 	      
-	        if (informationPanel != null) {
-	            informationPanel.setStage(stage);
-	        }
-	        if (stage == 1 || stage == 2) {
-//	            missionLabel.setText("최대한 많은 코인을 얻자!");
-	        } else if (stage == 3) {
-//	            missionLabel.setText("최고 점수를 향하여!");
-	        }
-	        if (timerLabel != null) {
-	            timerLabel.setVisible(stage == 3);
-	        }
-	    }
+	     if (informationPanel != null) {
+	         informationPanel.setStage(stage);
+	     }
+	     if (stage == 1 || stage == 2) {
+         missionLabel.setText("최대한 많은 코인을 얻자!");
+	     } else if (stage == 3) {
+         missionLabel.setText("최고 점수를 향하여!");
+	     }
+	     if (timerLabel != null) {
+	         timerLabel.setVisible(stage == 3);
+	     }
+	 }
 	    
 	 public void updateNextBlock(int color) {
 		 if(deliveryListPanel != null) {
 			 deliveryListPanel.setNextBlockColor(color);
 		 }
 	 }
-	  
-//=================================================================== 
 	
 	//GamePanel 위에 있는 요소들의 위치/크기 지정
     public void doLayout() {
@@ -269,22 +219,6 @@ public class GamePanel extends JPanel {
         //gameover시 나오는 어두운 배경 크기/위치
         darkPanel.setLocation(0,0);
         darkPanel.setSize(width, height);
-        
-        //gameover 문구 
-        int gameoverWidth = width * 8 / 10;
-        int gameoverHeight = height * 15 / 100;
-        int gameoverX = (width - gameoverWidth) / 2;
-        int gameoverY = (height - gameoverHeight) / 2;
-        gameOverLabel.setLocation(gameoverX,gameoverY);
-        gameOverLabel.setSize(gameoverWidth, gameoverHeight);
-        
-        //gameover버튼(메인으로) 크기/위치
-        int buttonWidth = 220;
-        int buttonHeight = 50;
-        int buttonX = (width - buttonWidth) / 2;
-        int buttonY = gameoverY + gameoverHeight + 20;  //텍스트 아래 20px 띄움
-        gameOverButton.setLocation(buttonX,buttonY);
-        gameOverButton.setSize(buttonWidth, buttonHeight);
      }
     
     protected void paintComponent(Graphics g) {
