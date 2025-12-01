@@ -68,12 +68,5 @@ public class InformationPanel extends JPanel {
     public void setScore(int score) {
         this.score = score;
         scoreLabel.setText("Score : " + score);
-    }
-
-    // 필요하면 값도 가져갈 수 있게 getter도 만들어 둠
-    public int getStage() { return stage; }
-    public int getCoins() { return coins; }
-    public int getScore() { return score; }
-    
-   
+    } 
 }

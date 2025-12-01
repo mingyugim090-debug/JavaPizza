@@ -13,7 +13,6 @@ public class MainPanel extends JPanel {
     private JLabel requestLabel;
     private JButton rankingButton;
     
-    
     public MainPanel(Frame frame) {
         this.frame = frame;
         
@@ -93,7 +92,7 @@ public class MainPanel extends JPanel {
         int logoWidth = logoLabel.getIcon().getIconWidth(); //로고 폭
         int logoHeight = logoLabel.getIcon().getIconHeight(); //로고 높이
         int logoX = (width - logoWidth) / 2; //로고 x좌표
-        int logoY = height / 10; //로고 y좌표
+        int logoY = height / 13; //로고 y좌표
         logoLabel.setLocation(logoX,logoY);
         logoLabel.setSize(logoWidth,logoHeight);
 
