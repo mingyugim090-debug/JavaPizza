@@ -2,14 +2,15 @@ package Gui;
 
 import javax.swing.*;
 import java.awt.*;
+import model.Robot;
 
 public class MyRobotPanel extends JPanel{
 	
     private JLabel titleLabel;
     
-    private RobotCardPanel convertCard;   //변환로봇
+    private RobotCardPanel transCard;   //변환로봇
     private RobotCardPanel deleteCard;    //삭제로봇
-    private RobotCardPanel metamongCard;  //메타몽로봇
+    private RobotCardPanel metaCard;  //메타몽로봇
 	
 	public MyRobotPanel() {
 		
@@ -57,33 +58,32 @@ public class MyRobotPanel extends JPanel{
         }
 
 	 //로봇 구매 시 카드 추가
-	 public boolean addRobot(String robotName, int count) {
+	 public boolean addRobot(String name, int count) {
 		 RobotCardPanel targetCard = null;
 		 int modeIndex = 0; //1:변환 , 2:삭제 , 3:메타몽
 
-	        switch (robotName) {
-
-	            case "변환로봇":
-	                if (convertCard != null) return false;
-	                convertCard = createCard(robotName, "changebot.png", count, 0);
-	                add(convertCard);
-	                targetCard = convertCard;
+	        switch (name) {
+	            case "변환 로봇":
+	                if (transCard != null) return false;
+	                transCard = createCard(name, "changebot.png", count, 0);
+	                add(transCard);
+	                targetCard = transCard;
 	                modeIndex = 1;
 	                break;
 
-	            case "삭제로봇":
+	            case "삭제 로봇":
 	                if (deleteCard != null) return false;
-	                deleteCard = createCard(robotName, "deletebot.png", count, 1);
+	                deleteCard = createCard(name, "deletebot.png", count, 1);
 	                add(deleteCard);
 	                targetCard = deleteCard;
 	                modeIndex = 2;
 	                break;
 
-	            case "메타몽로봇":
-	                if (metamongCard != null) return false;
-	                metamongCard = createCard(robotName, "metamongbot.png", count, 2);
-	                add(metamongCard);
-	                targetCard = metamongCard;
+	            case "메타몽 로봇":
+	                if (metaCard != null) return false;
+	                metaCard = createCard(name, "metamongbot.png", count, 2);
+	                add(metaCard);
+	                targetCard = metaCard;
 	                modeIndex = 3;
 	                break;
 	        }
@@ -115,9 +115,9 @@ public class MyRobotPanel extends JPanel{
 	 //아이템 사용시 화면 바뀌도록하는 메서드
 	 public void useRobotOnce(String robotName) {
 		 switch (robotName) {
-		 case "변환로봇" : if(convertCard != null) convertCard.useOnce(); break;
-		 case "삭제로봇": if(deleteCard != null) deleteCard.useOnce(); break;
-         case "메타몽로봇": if(metamongCard != null) metamongCard.useOnce(); break;
+		 case "변환 로봇" : if(transCard != null) transCard.useOnce(); break;
+		 case "삭제 로봇": if(deleteCard != null) deleteCard.useOnce(); break;
+         case "메타몽 로봇": if(metaCard != null) metaCard.useOnce(); break;
      }
  }
 	 //카드 생성 메소드
@@ -132,14 +132,14 @@ public class MyRobotPanel extends JPanel{
 	 //남은 횟수 업데이트 (게임 로직에서 호출하는 용도. 다른 클래스에서 작성해도 될듯)
 	 public void updateRobotCount(String robotName, int newCount) {
 	        switch (robotName) {
-	            case "변환로봇":
-	                if (convertCard != null) convertCard.setCount(newCount);
+	            case "변환 로봇":
+	                if (transCard != null) transCard.setCount(newCount);
 	                break;
-	            case "삭제로봇":
+	            case "삭제 로봇":
 	                if (deleteCard != null) deleteCard.setCount(newCount);
 	                break;
-	            case "메타몽로봇":
-	                if (metamongCard != null) metamongCard.setCount(newCount);
+	            case "메타몽 로봇":
+	                if (metaCard != null) metaCard.setCount(newCount);
 	                break;
 	        }
 	    }
@@ -159,17 +159,17 @@ public class MyRobotPanel extends JPanel{
 		    int card2X = width / 2 - cardW / 2;
 		    int card3X = width - width / 10 - cardW;
 
-		    if (convertCard != null) {
-		        convertCard.setLocation(card1X, y);
-		        convertCard.setSize(cardW, cardH);
+		    if (transCard != null) {
+		        transCard.setLocation(card1X, y);
+		        transCard.setSize(cardW, cardH);
 		    }
 		    if (deleteCard != null) {
 		        deleteCard.setLocation(card2X, y);
 		        deleteCard.setSize(cardW, cardH);
 		    }
-		    if (metamongCard != null) {
-		        metamongCard.setLocation(card3X, y);
-		        metamongCard.setSize(cardW, cardH);
+		    if (metaCard != null) {
+		        metaCard.setLocation(card3X, y);
+		        metaCard.setSize(cardW, cardH);
 		    }
 		}
 }

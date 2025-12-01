@@ -30,35 +30,56 @@ public class Box extends JPanel{
 		super.paintComponent(g);
 		g.setColor(color);
 		
-		int []x = x_set;
-		int []y = y_set;
+		int w = getWidth();
+		int h = getHeight();
+		
+//		int []x = x_set;
+//		int []y = y_set;
 		
 		//사각형 그림 (fill - 색상 칠해짐)
 		//x[0] ~ x[1] / y[0] ~ y[1] 범위
 		//width = x[1] - x[0], height = y[1] - y[0]
-		g.fillRect(x[0], y[0], x[1]-x[0], y[1]-y[0]);
+		g.fillRect(0, 0, w, h);
+		//g.fillRect(x[0], y[0], x[1]-x[0], y[1]-y[0]);
 		
 		//박스모양 그리기
 		int d = 5;	//큰 사각형에서 얼마나 떨어져있는지
+		//g.setColor(Color.BLACK); //검은색으로 선 그리기
 		//1) 상단 선 그리기
-		g.drawLine(x[0], y[1]-d, x[1], y[1]-d);
-		//2) 하단 선 그리기
-		g.drawLine(x[0], y[0]+d, x[1], y[0]+d);
-		//3) 왼쪽 선 그리기
-		g.drawLine(x[0]+d, y[0]+d, x[0]+d, y[1]-d);
-		//4) 오른쪽 선 그리기
-		g.drawLine(x[1]-d, y[0]+d, x[1]-d, y[1]-d);
+//		g.drawLine(x[0], y[1]-d, x[1], y[1]-d);
+//		//2) 하단 선 그리기
+//		g.drawLine(x[0], y[0]+d, x[1], y[0]+d);
+//		//3) 왼쪽 선 그리기
+//		g.drawLine(x[0]+d, y[0]+d, x[0]+d, y[1]-d);
+//		//4) 오른쪽 선 그리기
+//		g.drawLine(x[1]-d, y[0]+d, x[1]-d, y[1]-d);
+		
+		g.drawLine(0, d, w, d);         // 상
+		g.drawLine(0, h-d, w, h-d);     // 하
+		g.drawLine(d, d, d, h-d);       // 좌
+		g.drawLine(w-d, d, w-d, h-d);   // 우
 		
 		//대각선 그리기
 		int s = 2;	//대각선끼리의 간격
 		//1) 큰 대각선 그리기
-		g.drawLine(x[0]+d, y[0]+d, x[1]-d, y[1]-d);
-		//2) 하단 대각선 그리기
-		g.drawLine(x[0]+d+s, y[0]+d, x[1]-d, y[1]-d-s);
-		g.drawLine(x[0]+d+(2*s), y[0]+d, x[1]-d, y[1]-d-(2*s));
-		//3) 상단 대각선 그리기
-		g.drawLine(x[0]+d, y[0]+d+s, x[0]+d+(2*s), y[1]-d);
-		g.drawLine(x[0]+d, y[0]+d+(2*s), x[0]+d+s, y[1]-d);
+//		g.drawLine(x[0]+d, y[0]+d, x[1]-d, y[1]-d);
+//		//2) 하단 대각선 그리기
+//		g.drawLine(x[0]+d+s, y[0]+d, x[1]-d, y[1]-d-s);
+//		g.drawLine(x[0]+d+(2*s), y[0]+d, x[1]-d, y[1]-d-(2*s));
+//		//3) 상단 대각선 그리기
+//		g.drawLine(x[0]+d, y[0]+d+s, x[0]+d+(2*s), y[1]-d);
+//		g.drawLine(x[0]+d, y[0]+d+(2*s), x[0]+d+s, y[1]-d);
+		
+		g.drawLine(d, d, w-d, h-d);
+		g.drawLine(d+s, d, w-d, h-d-s);
+		g.drawLine(d+2*s, d, w-d, h-d-2*s);
+
+		g.drawLine(d, d+s, d+2*s, h-d);
+		g.drawLine(d, d+2*s, d+s, h-d);
+		
+		g.setColor(color.BLACK);
+		g.drawRect(0, 0, w, h);
+		
 	}
 	
 	//색상 설정

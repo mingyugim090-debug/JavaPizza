@@ -70,8 +70,12 @@ private GameManager gameManager;
         
         //manual
         trans_manual = new JLabel(tbot.getManual());
-        delete_manual = new JLabel(tbot.getManual());
-        meta_manual = new JLabel(tbot.getManual());
+        delete_manual = new JLabel(dbot.getManual());
+        meta_manual = new JLabel(mbot.getManual());
+        
+        add(trans_manual);
+        add(delete_manual);
+        add(meta_manual);
         
         //체크박스
         transferBot = new JCheckBox(tbot.getName());
@@ -202,7 +206,7 @@ private GameManager gameManager;
         transferBot.setOpaque(false); //배경색 지우기
         
         //coin 버튼
-        int coinWidth = boxWidth / 7;
+        int coinWidth = boxWidth / 6;
         int coinHeight = coinWidth / 2;
         int lastx = boxX + boxWidth - d;
         int lasty = boxY + boxHeight - d;
@@ -259,7 +263,7 @@ private GameManager gameManager;
         g.fillRect(boxX, boxY + (2 * boxHeight) + (2 * gap), boxWidth, boxHeight);
         
         //체크박스
-        metaBot.setBounds(boxX+d, boxY + (2 * boxHeight) + (2 * gap) +d, checkWidth, checkHeight);
+        metaBot.setBounds(boxX+d, boxY + (2 * boxHeight) + (2 * gap) +d, checkWidth*2, checkHeight);
         metaBot.setOpaque(false); //배경색 지우기
         
         //coin 버튼
@@ -273,9 +277,9 @@ private GameManager gameManager;
         }
         
         //구매버튼
-        int dis = d * 4;
+        int dis = d * 3;
         int buying_y = metacoin +coinHeight + dis;
-        int buying_width = coinWidth * 3 /2;
+        int buying_width = coinWidth * 2;
         int buying_height = coinHeight * 3 /2;
         buying.setBounds(lastx - buying_width, buying_y,  buying_width, buying_height);
         buying.setBackground(new Color(255, 228, 195));
@@ -289,15 +293,15 @@ private GameManager gameManager;
 	//GameManager가 이 메서드 호출해서 로봇 구매완료 시 버튼 상태 변경함.
     public void setPurchased(String robotName) {
     	switch(robotName) {
-    	case "변환로봇":
+    	case "변환 로봇":
     		trans_coin.setText("구매완료");
     		trans_coin.setEnabled(false); //구매하면 버튼 비활성화
     		break;
-    	case "삭제로봇":
+    	case "삭제 로봇":
     		delete_coin.setText("구매완료");
     		delete_coin.setEnabled(false);
     		break;
-    	case "메타몽로봇":
+    	case "메타몽 로봇":
     		meta_coin.setText("구매완료");
     		meta_coin.setEnabled(false);
     		break;

@@ -99,7 +99,7 @@ public class GameManager {
     public void handleConvertRobot() {
         generateNextBlock(); 
         frame.repaint();
-        useRobotItem("변환로봇"); 
+        useRobotItem("변환 로봇"); 
     }
     
     // 랭킹시스템 연결
