@@ -4,18 +4,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import controller.GameManager;
+
 public class GamePanel extends JPanel {
 	
 	private javax.swing.Timer timer;
-	private int timeLeft = 60;  //확인필요
+	
+	private GameManager gameManager;
 	
 	private boolean gameOver = false;
 	
+	
 	private Frame frame;
 	
-	private int stage;
-	private int coins;
-	private int score;
+//	private int stage;
+//	private int coins;
+//	private int score;
 	
 	private MapPanel mapPanel;
 	private InformationPanel informationPanel;
@@ -33,11 +37,15 @@ public class GamePanel extends JPanel {
 	private JPanel darkPanel;
 	private JButton gameOverButton;
 	
-	public GamePanel(Frame frame, int stage, int coins, int score) {
+	
+	public GamePanel(Frame frame) {
 		this.frame = frame;
-		this.stage = stage;
-		this.coins = coins;
-		this.score = score;
+		this.gameManager = frame.getGameManager();
+		
+		//선택적 참조 (나중에 다시 확인할 것 !!!!!!!!!!!!!!!!!!!!!!!!!)
+//		this.stage = gameManager.getStage();
+//		this.coins = gameManager.getCoins();
+//		this.score = gameManager.getScore();
 		
 		setLayout(null); //배치관리자 없음(자유 배치)
 		setBackground(new Color(0xEDEDED));
@@ -55,10 +63,11 @@ public class GamePanel extends JPanel {
 	    myRobotPanel = new MyRobotPanel();
 	    
 		//MapPanel(중앙 맵)
-		mapPanel = new MapPanel(stage);
+		mapPanel = new MapPanel(gameManager.getStage());
 		
 		//InformaionPanel(stage, coins, score을 표시하는 패널 / 하단 중앙 )
-		informationPanel = new InformationPanel(stage, coins, score); 
+//		informationPanel = new InformationPanel(stage, coins, score); 
+		informationPanel = new InformationPanel(gameManager.getStage(), gameManager.getCoins(), gameManager.getScore());
 		
 		//미션 라벨
 		missionLabel = new JLabel("", SwingConstants.CENTER); //라벨 안에서 글자를 가로 방향으로 가운데 정렬
@@ -122,20 +131,6 @@ public class GamePanel extends JPanel {
 		setComponentZOrder(gameOverButton, 0);
 		setComponentZOrder(gameOverLabel, 1); //컨테이너 안에서 가장 맨 위로 오도록 배치 설정
 		setComponentZOrder(darkPanel, 2); //그 아래에는 darkPanel이 오도록
-	
-		
-	    //코드가 중복됩니다
-		//stage별 missionLabel 설정
-//		if (stage == 1) {
-//		    missionLabel.setText("최대한 많은 코인을 얻자!");
-//		} else if (stage == 2) {
-//		    missionLabel.setText("최대한 많은 코인을 얻자!");
-//		} else if (stage == 3) {
-//		    missionLabel.setText("최고 점수를 향하여!");
-//		}
-		
-		//stage 3에서만 타이머가 보임
-//		timerLabel.setVisible(stage == 3);
 	}
 	
 	//타이머가 줄어들 때마다 실시간 호출되는 메소드
@@ -158,21 +153,6 @@ public class GamePanel extends JPanel {
 	    }
 	}
 	
-	//위의 코드랑 중복되지만 이 메소드를 빼면 게임 진행이 되지 않음
-    public void updateStage(int stage) {
-      
-        if (informationPanel != null) {
-            informationPanel.setStage(stage);
-        }
-        if (stage == 1 || stage == 2) {
-//            missionLabel.setText("최대한 많은 코인을 얻자!");
-        } else if (stage == 3) {
-//            missionLabel.setText("최고 점수를 향하여!");
-        }
-        if (timerLabel != null) {
-            timerLabel.setVisible(stage == 3);
-        }
-    }
     
    //GameManager가 RobotPanel에 접근하기 위한 연결고리 역할
     public RobotPanel getRobotPanel() {
@@ -200,6 +180,23 @@ public class GamePanel extends JPanel {
 			 informationPanel.setCoins(coins);
 		 }
 	 }
+	 
+	//위의 코드랑 중복되지만 이 메소드를 빼면 게임 진행이 되지 않음 (Gamemanager에서 호출하니까)
+	    public void updateStage(int stage) {
+	      
+	        if (informationPanel != null) {
+	            informationPanel.setStage(stage);
+	        }
+	        if (stage == 1 || stage == 2) {
+//	            missionLabel.setText("최대한 많은 코인을 얻자!");
+	        } else if (stage == 3) {
+//	            missionLabel.setText("최고 점수를 향하여!");
+	        }
+	        if (timerLabel != null) {
+	            timerLabel.setVisible(stage == 3);
+	        }
+	    }
+	    
 	 public void updateNextBlock(int color) {
 		 if(deliveryListPanel != null) {
 			 deliveryListPanel.setNextBlockColor(color);
