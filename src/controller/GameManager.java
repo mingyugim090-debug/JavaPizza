@@ -181,7 +181,7 @@ public class GameManager {
     	if(gamePanel != null) gamePanel.updateNextBlock(colorNumber);
     }
     public int getNextBlockColor() {
-    	return color;
+    	return colorNumber;
     }
 
     //TimeThread가 1초마다 이 메서드 호출하여 남은시간을 받아 GamePanel의 숫자를 바꿈
