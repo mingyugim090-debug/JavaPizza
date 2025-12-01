@@ -65,4 +65,7 @@ public abstract class Robot{
 		int v = setVelocity();
 		return (1/v) * weight;
 	}
+	public void skills() {
+		
+	}
 }
