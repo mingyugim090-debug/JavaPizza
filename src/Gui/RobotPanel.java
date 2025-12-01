@@ -3,9 +3,16 @@ package Gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import controller.GameManager;
 
+import model.Robot;
+import model.TransferRobot;
+import model.DeleteRobot;
+import model.MetaRobot;
+
 public class RobotPanel extends JPanel {
+	
 	
 private JLabel titleLabel;
 
@@ -30,6 +37,15 @@ private Image trans_img;
 private Image delete_img;
 private Image meta_img;
 
+public TransferRobot tbot;
+public DeleteRobot dbot;
+public MetaRobot mbot;
+
+//private int[] total_price;
+public ArrayList <Robot> selected_robots;
+
+
+
 //GameManager 변수 선언
 private GameManager gameManager;
 
@@ -38,6 +54,12 @@ private GameManager gameManager;
 		this.gameManager = gameManager;
         setLayout(null);
         
+        
+        tbot = new TransferRobot("변환 로봇", "대기중인 물건의 색상을 랜덤 변경.", 1500);
+        dbot = new DeleteRobot("삭제 로봇", "원하는 1칸 삭제 가능.", 2500);
+        mbot = new MetaRobot("메타몽 로봇", "모든 색상과 매칭되는 무지개 아이템으로 변환.", 4000);
+        selected_robots = new ArrayList<>();
+
         //연한 회색으로 배경색 지정
         setBackground(new Color(0xF2F2F2)); 
         
@@ -47,72 +69,58 @@ private GameManager gameManager;
         add(titleLabel);
         
         //manual
-        trans_manual = new JLabel("대기중인 물건의 색상을 랜덤 변경.");
-        delete_manual = new JLabel("원하는 1칸 삭제 가능.");
-        meta_manual = new JLabel("모든 색상과 매칭되는 무지개 아이템으로 변환.");
-        
-        trans_manual.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
-        delete_manual.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
-        meta_manual.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
-        
-        add(trans_manual);
-        add(delete_manual);
-        add(meta_manual);
-        
+        trans_manual = new JLabel(tbot.getManual());
+        delete_manual = new JLabel(tbot.getManual());
+        meta_manual = new JLabel(tbot.getManual());
         
         //체크박스
-        transferBot = new JCheckBox("변환 로봇");
-        transferBot.addItemListener(new ItemListener(){
-        	public void itemStateChanged(ItemEvent e) {
-        		
-        	}
-        });
-        deleteBot = new JCheckBox("삭제 로봇");
-        deleteBot.addItemListener(new ItemListener(){
-        	public void itemStateChanged(ItemEvent e) {
-        		
-        	}
-        });
-        metaBot = new JCheckBox("메타몽 로봇");
-        metaBot.addItemListener(new ItemListener(){
-        	public void itemStateChanged(ItemEvent e) {
-        		
-        	}
-        });
-        
-        transferBot.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-        deleteBot.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-        metaBot.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-        
-        add(transferBot);
-        add(deleteBot);
-        add(metaBot);
+        transferBot = new JCheckBox(tbot.getName());
+        deleteBot = new JCheckBox(dbot.getName());
+        metaBot = new JCheckBox(mbot.getName());
+
+        JCheckBox[] CRobots = {transferBot, deleteBot, metaBot};
+        Robot[] Robots = {tbot, dbot, mbot};
+
+
+        for (int i = 0; i <Robots.length; i++) {
+        	//익명 내부 클래스에서 사용
+        	int idx = i;
+            CRobots[i].addItemListener(new ItemListener(){
+                public void itemStateChanged(ItemEvent e) {
+                	//gameManager.setTotalCoin(CRobots[idx], Robots[idx], total_price);
+                	gameManager.addSelectedRobots(CRobots[idx], Robots[idx], selected_robots);
+                }
+            }); 
+
+            CRobots[i].setFont(new Font("맑은 고딕", Font.BOLD, 14));
+            add(CRobots[i]);
+        }
         
         //=======================================================
         //버튼 생성하고 GameManager와 기능 연결하는 코드 추가
         //coin 버튼
         
         //1. 변환로봇
-        trans_coin = new JButton("1500");
+        trans_coin = new JButton(Integer.toString(tbot.getPrice()));
         trans_coin.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		gameManager.buyRobot("변환로봇" , 1500);
+        		gameManager.PrintRobot(tbot.getName() , tbot.getPrice());	
         	}
         });
         
         //2.삭제 로봇
-        delete_coin = new JButton("2500");
+        delete_coin = new JButton(Integer.toString(dbot.getPrice()));
         delete_coin.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		gameManager.buyRobot("삭제로봇" , 2500);
+        		gameManager.PrintRobot(dbot.getName() , dbot.getPrice());	
         	}
         });
         
         //3.메타몽 로봇
-        meta_coin = new JButton("4000");
+        meta_coin = new JButton(Integer.toString(mbot.getPrice()));
         meta_coin.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		gameManager.buyRobot("메타몽로봇" , 4000);
+        		gameManager.PrintRobot(mbot.getName() , mbot.getPrice());	
         	}
         });
         //======================================================
@@ -122,8 +130,9 @@ private GameManager gameManager;
         
         //구매버튼
         buying = new JButton("구매하기");
-        buying.addItemListener(new ItemListener(){
-        	public void itemStateChanged(ItemEvent e) {
+        buying.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e) {
+        		gameManager.buyMain(selected_robots);
         		
         	}
         });

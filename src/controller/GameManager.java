@@ -10,12 +10,15 @@ package controller;
 
 //======================[패키지 임포트]===================================
 import javax.swing.JOptionPane; 
-import java.util.Random;        
+import javax.swing.JCheckBox;
+import java.util.Random; 
+import java.util.ArrayList;
 import Gui.Frame;               
 import Gui.GamePanel;
 import Gui.StageIntroPanel;
 import util.TimeThread;
 import util.FileManager;
+import model.Robot;
 
 	
 //======================[클래스 선언 및 멤버 변수]======================================
