@@ -37,7 +37,7 @@ public class MainPanel extends JPanel {
         //Start버튼 누르면 StageIntroPanel로 이동, 익명 클래스로 이벤트 리스너 작성(교재 p566)
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.changePanel(new StageIntroPanel(frame,1));
+                frame.showStageIntro();
             }
         });
         

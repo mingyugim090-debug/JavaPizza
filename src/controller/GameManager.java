@@ -1,5 +1,17 @@
 package controller;
 
+import javax.swing.JOptionPane;
+import java.util.Random;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import Gui.Frame;
+import Gui.GamePanel;
+import Gui.StageIntroPanel;
+import util.TimeThread;
+import util.FileManager;
+
 /**
  * [GameManager 클래스 역할]
  * 게임의 전반적인 규칙,데이터,흐름 총괄 
@@ -32,24 +44,28 @@ public class GameManager {
     private FileManager fileManager; //랭킹저장 , 파일 입출력담당
      
     
-    //게임 데이터 변수
-    private int myScore = 0;  // 현재 점수
-    private int myCoins = 0;  // 현재 보유 코인
-    private int currentStage = 1; // 현재 진행중인 스테이지
+    //게임 상태 변수
+    private int score = 0;  //처음 점수 0점에서 시작
+    private int coins = 0;  //처음 코인 0원으로 시작
+    private int stage = 1; // 현재 스테이지
+
     private int gridSize = 4;     // 맵 크기 (1단계:4x4, 2단계:3x3 , 3단계 : 5X5)
    
     // 맵 데이터 (0: 빈칸,1:파랑,2:분홍,3:노랑,4:초록,5:보라(메타몽))
     private int[][] mapData; 
     
     //다음에 놓을 블록 생상(1~4 랜덤으로 생성)
-    private int nextBlockColor;
+    private int colorNumber;
     private Random random = new Random();
     
     // 게임 진행상태 (false : 종료 , true : 진행)
     private boolean isGameRunning = false;
     
+//    처음 시작인가?
+    private boolean firstStart = true;
+    
     //로봇 모드. 기본로봇으로 시작(0:기본 , 1:변환로봇 , 2:삭제로봇 , 3:메타몽 로봇)
-    private int currentRobotMode = 0;
+    private int robotMode = 0;
 
     
 //======================[생성자 및 초기 설정]====================================    
@@ -59,18 +75,18 @@ public class GameManager {
         this.fileManager = new FileManager();
     }
     
-    
-    //GamePanel이 생성되면 이 메서드를 통해 호출되어 GameManager로 알려줌
+    //StageIntroPanel에서 쓰이는 메소드임
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
     
+    //==================[로봇 스킬 관련 메서드]==================================
     
-//==================[로봇 스킬 관련 메서드]==================================
-//로봇 사용 모드 설정(0:기본,1:변환,2:삭제,3:메타몽)
-    public void setRobotMode(int mode) {
-    	this.currentRobotMode = mode;
-    	if(mode != 0) {
+    //로봇 사용 모드 설정(0:기본,1:변환,2:삭제,3:메타몽)
+    public void setRobotMode(int robotmode) {
+    	this.robotMode = robotmode;
+    	if(robotmode != 0) {
+
     		JOptionPane.showMessageDialog(frame, "로봇스킬 활성화!");
     	}
     }
@@ -78,7 +94,7 @@ public class GameManager {
     //로봇 아이템 사용 완료 후 차감되고 , 기본로봇으로 복귀
     public void useRobotItem(String robotName) {
     	gamePanel.getMyRobotPanel().useRobotOnce(robotName);
-    	this.currentRobotMode = 0; 
+    	this.robotMode = 0; 
     }
     //변환 로봇 기능 : 다음 블록 색상을 즉시 랜덤 변경
     public void handleConvertRobot() {
@@ -96,14 +112,16 @@ public class GameManager {
     
     //게임 시작 및 스테이지 초기화 메서드
     public void initGame() {
-        if (currentStage ==1) {  
-            this.myScore = 0;
-            this.myCoins = 0;
+        if (firstStart) {  //1단계 시작 시 점수/코인 0으로 설정
+            score = 0;
+            coins = 0;
+            firstStart = false;
         }
         this.isGameRunning = true;
         
-        if (currentStage == 1) gridSize = 4;
-        else if (currentStage == 2) gridSize = 3;
+        //스테이지에 따른 맵 크기 설정 : 게임 난이도 조정해보고 바꿀 소요 있음.
+        if (stage == 1) gridSize = 4; //이게 진짜 작동하는 코드임
+        else if (stage == 2) gridSize = 3;
         else gridSize = 5;
         
         //각 스테이지의 격자 크기에 맞게 맵 데이터 생성
@@ -111,12 +129,12 @@ public class GameManager {
         
         //GamePanel 안의 MapPanel에게 맵크기 바뀌었으니 다시 세팅하라고 지시
         if (gamePanel != null && gamePanel.getMapPanel() !=null) {
-        	gamePanel.getMapPanel().setStage(currentStage);
+        	gamePanel.getMapPanel().setStage(stage);
         }
         //UI점수/코인 표시 초기화
         if (gamePanel != null) {
-        	gamePanel.updateScore(myScore);
-        	gamePanel.updateCoins(myCoins);
+        	gamePanel.updateScore(score);
+        	gamePanel.updateCoins(coins);
         }
         
         //첫번 째 랜덤 박스 생성
@@ -125,14 +143,14 @@ public class GameManager {
         //타이머 스레드 : Stage3에서만 60초 타이머 시작
         if (timer != null) timer.stopTimer(); 
         
-        if(currentStage == 3) {
+        if(stage == 3) {
         	timer = new TimeThread(this, 60);    
         	timer.start();
         } 
         
         //최종 화면 갱신
         if (gamePanel != null) {
-        	gamePanel.updateNextBlock(nextBlockColor);
+        	gamePanel.updateNextBlock(colorNumber);
             frame.repaint();
         }
     }
@@ -145,12 +163,12 @@ public class GameManager {
        
      //사용자에게 이름 입력받아 랭킹 저장
         String name = JOptionPane.showInputDialog(frame, 
-            "Game Ovefr \nfinal_score : " + myScore + "\n이름 :");
+            "Game Over \nfinal_score : " + score + "\n이름 :");
 
         if (name != null && !name.trim().isEmpty()) {
 
             // FileManager의 rank 메서드 호출
-            fileManager.rank(myScore, name); 
+            fileManager.rank(score, name); 
         }
         //메인 화면으로 복귀
         frame.showMainPanel();
@@ -159,11 +177,11 @@ public class GameManager {
 //=====================[데이터 관리(박스 생성,점수,코인)]========================
 
     private void generateNextBlock() {
-    	nextBlockColor = random.nextInt(4) + 1;
-    	if(gamePanel != null) gamePanel.updateNextBlock(nextBlockColor);
+    	colorNumber = random.nextInt(4) + 1;
+    	if(gamePanel != null) gamePanel.updateNextBlock(colorNumber);
     }
     public int getNextBlockColor() {
-    	return nextBlockColor;
+    	return color;
     }
 
     //TimeThread가 1초마다 이 메서드 호출하여 남은시간을 받아 GamePanel의 숫자를 바꿈
@@ -174,18 +192,20 @@ public class GameManager {
     }
 
     //점수 및 코인 획득 메서드
-    public void addScore(int point , int coin) {
-    	if (currentStage ==3) {
-    		coin = 0;   //Stage3는 코인 획득 불가
+    public void addScore(int score , int coins) {
+    	if (stage ==3) {
+    		coins = 0;   //Stage3는 코인 획득 불가
     	}
-        this.myScore += point;
-        this.myCoins += coin;
+        this.score += score;
+        this.coins += coins;
         
-        //  화면 갱신
+        //  화면갱신
         if(gamePanel != null) {
-        	gamePanel.updateScore(myScore);
-        	gamePanel.updateCoins(myCoins);
-        	gamePanel.updateStage(currentStage);
+
+        	gamePanel.updateScore(this.score);
+        	gamePanel.updateCoins(this.coins);
+        	gamePanel.updateStage(stage);
+
         } 
     }
     
@@ -199,7 +219,7 @@ public class GameManager {
         
         // --- 로봇 스킬 모드일 경우 따른 분류 ---
         //삭제 로봇 : 클릭한 로봇 제거
-        if (currentRobotMode == 2) {
+        if (robotMode == 2) {
             if (mapData[row][col] != 0) {
                 mapData[row][col] = 0; // 블록 삭제
                 useRobotItem("삭제로봇"); // 사용횟수 차감
@@ -209,7 +229,7 @@ public class GameManager {
         }
         
         // 메타몽 로봇 : 빈칸에 만능 블록(보라색) 배치
-        if (currentRobotMode == 3) { 
+        if (robotMode == 3) { 
             if (mapData[row][col] == 0) {
                 mapData[row][col] = 5; //5번 : 보라색
                 useRobotItem("메타몽로봇");
@@ -226,14 +246,14 @@ public class GameManager {
         }
 
         // 맵이 현재 대기 중인 블록 배치
-        mapData[row][col] = nextBlockColor;
+        mapData[row][col] = colorNumber;
         addScore(0,100);          // 기본 적재 보상(+100 coins)
         checkLineMatch(row,col);  //라인 매칭(가로/세로)확인
         generateNextBlock();      //화면 갱신
         frame.repaint();          //화면 갱신
         
         //스테이지 클리어 확인(Stage1 , Stage2만 해당)
-        if (currentStage < 3) {
+        if (stage < 3) {
         	checkStageClear();
         } else {
         	checkGameOverStage3(); // Stage3는 꽉 차면 게임 오버
@@ -310,7 +330,7 @@ public class GameManager {
     	addScore(100,300); //보상: +300코인 , + 100 점수
     	
     	//Stage3인 경우 줄 삭제하는 로직(애니팡과 비슷한 느낌)
-    	if (currentStage == 3) {
+    	if (stage == 3) {
     		if (isRow) {
     			for(int c = 0; c < gridSize; c++) mapData[index][c] = 0;
     		} else {
@@ -331,11 +351,11 @@ public class GameManager {
         	if (timer != null) {
                 timer.stopTimer();	
         	}
-            JOptionPane.showMessageDialog(frame, "stage" + currentStage + "Clear! \n 다음단계로 이동합니다.");
+            JOptionPane.showMessageDialog(frame, "stage" + stage + "Clear! \n 다음단계로 이동합니다.");
             
-            if (currentStage < 3) {
-                currentStage++;
-                frame.changePanel(new StageIntroPanel(frame,currentStage));
+            if (stage < 3) {
+                stage++;
+                frame.showStageIntro();
                 initGame(); // 다음 스테이지로 초기화 및 시작
             }
         }
@@ -360,6 +380,19 @@ public class GameManager {
     }
     public int getGridSize() {
     	return gridSize;
+    }
+    
+    //stage값 return(GamePanel에서 쓸거임,GamePanel의 15째줄 참고)
+    public int getStage() {
+    	return stage;
+    }
+    
+    public int getCoins() {
+    	return coins;
+    }
+    
+    public int getScore() {
+    	return score;
     }
 
     //체크박스 선택되면 total coin 변경, 해제되면 감소
@@ -423,12 +456,13 @@ public class GameManager {
 	    	}
 
     public void buyRobot(String robotName, int price) {
-    	if (myCoins >= price) {
+    	if (coins >= price) {
     		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
     		
     		if(success) {
-    			myCoins -= price;
-    			addScore(0,0); 
+    			coins -= price;
+    			addScore(0,0);
+
     			gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
         	
     	} else {
