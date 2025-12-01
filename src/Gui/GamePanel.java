@@ -7,7 +7,7 @@ import java.awt.event.*;
 public class GamePanel extends JPanel {
 	
 	private javax.swing.Timer timer;
-	private int timeLeft = 60;
+	private int timeLeft = 60;  //확인필요
 	
 	private boolean gameOver = false;
 	
@@ -26,6 +26,9 @@ public class GamePanel extends JPanel {
 	private RobotPanel robotPanel;
 	private MyRobotPanel myRobotPanel;
 	
+	//Game Over가 되었을 때 뜨는 것들 그러나 문제가 있음!!
+	//Game Over가 되는 경우는 두 가지. (맵을 다 채운 경우 / 타이머가 다 된 경우)
+	//아래에 정의된 것들은 타이머가 다 되었을 경우에만 뜸
 	private JLabel gameOverLabel;
 	private JPanel darkPanel;
 	private JButton gameOverButton;
@@ -36,35 +39,35 @@ public class GamePanel extends JPanel {
 		this.coins = coins;
 		this.score = score;
 		
-		setLayout(null); //배치관리자 없음
+		setLayout(null); //배치관리자 없음(자유 배치)
 		setBackground(new Color(0xEDEDED));
 		
-		//이미지 불러오기
+		//로고 이미지 불러오기
 		logoImage = new ImageIcon(getClass().getResource("robohub_logo.png")).getImage();
 	    
-	    //DeliveryListPanel(배송목록)
+	    //DeliveryListPanel(배송 목록)
 	    deliveryListPanel = new DeliveryListPanel();
 	   
-	    //RobotPanel(로봇목록)
+	    //RobotPanel(로봇 목록)
 	    robotPanel = new RobotPanel(frame.getGameManager());
 	    
-	    //MyRobotPanel(내 로봇)
+	    //MyRobotPanel(내가 구매한 로봇이 뜨는 패널)
 	    myRobotPanel = new MyRobotPanel();
 	    
-		//MapPanel
+		//MapPanel(중앙 맵)
 		mapPanel = new MapPanel(stage);
 		
-		//InformaionPanel
+		//InformaionPanel(stage, coins, score을 표시하는 패널 / 하단 중앙 )
 		informationPanel = new InformationPanel(stage, coins, score); 
 		
 		//미션 라벨
-		missionLabel = new JLabel("", SwingConstants.CENTER);
+		missionLabel = new JLabel("", SwingConstants.CENTER); //라벨 안에서 글자를 가로 방향으로 가운데 정렬
 	    missionLabel.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		
-	    //타이머 라벨
+	    //타이머 라벨(stage 3에서만 / 하단 중앙)
 	    timerLabel = new JLabel("", SwingConstants.CENTER);
 	    timerLabel.setFont(new Font("맑은 고딕", Font.BOLD, 22));
-	    timerLabel.setForeground(Color.DARK_GRAY);
+	    timerLabel.setForeground(Color.RED);
 	    
 	    //GameOver라벨
 	    gameOverLabel = new JLabel("GAME OVER", SwingConstants.CENTER);
@@ -85,7 +88,7 @@ public class GamePanel extends JPanel {
 	    darkPanel.setOpaque(false);   
 	    darkPanel.setVisible(false);
 	    
-	    //gameover 시 메인으로 돌아가는 버튼
+	    //gameover 시 메인으로 돌아가는 버튼 (이거 뭔가 수정해야할 것 같음 왜냐하면 쓰이지가 않음)
 	    gameOverButton = new JButton("메인 화면으로"); //버튼 문구
 	    gameOverButton.setBackground(Color.WHITE); //배경색
 	    gameOverButton.setForeground(Color.BLACK); //글씨색
@@ -117,22 +120,25 @@ public class GamePanel extends JPanel {
 		add(gameOverButton);
 		
 		setComponentZOrder(gameOverButton, 0);
-		setComponentZOrder(gameOverLabel, 1); //컨테이너 안에서 가장 맨 위로 오도록 설정
+		setComponentZOrder(gameOverLabel, 1); //컨테이너 안에서 가장 맨 위로 오도록 배치 설정
 		setComponentZOrder(darkPanel, 2); //그 아래에는 darkPanel이 오도록
 	
+		
+	    //코드가 중복됩니다
 		//stage별 missionLabel 설정
-		if (stage == 1) {
-		    missionLabel.setText("최대한 많은 코인을 얻자!");
-		} else if (stage == 2) {
-		    missionLabel.setText("최대한 많은 코인을 얻자!");
-		} else if (stage == 3) {
-		    missionLabel.setText("최고 점수를 향하여!");
-		}
+//		if (stage == 1) {
+//		    missionLabel.setText("최대한 많은 코인을 얻자!");
+//		} else if (stage == 2) {
+//		    missionLabel.setText("최대한 많은 코인을 얻자!");
+//		} else if (stage == 3) {
+//		    missionLabel.setText("최고 점수를 향하여!");
+//		}
 		
 		//stage 3에서만 타이머가 보임
-		timerLabel.setVisible(stage == 3);
+//		timerLabel.setVisible(stage == 3);
 	}
 	
+	//타이머가 줄어들 때마다 실시간 호출되는 메소드
 	public void updateTimer(int time) {  
 		if (!timerLabel.isVisible()) {
 			timerLabel.setVisible(true);
@@ -142,33 +148,39 @@ public class GamePanel extends JPanel {
 	    //time이 0이 되면 Game Over
 	    if (time <= 0) {
 	        gameOver = true;
-	        gameOverLabel.setVisible(true);
 	        
+	        gameOverLabel.setVisible(true);
 	        darkPanel.setVisible(true);
-	        mapPanel.setGameOver(true); //mapPanel에 gameover 알림
 	        gameOverButton.setVisible(true);
+	        
+	        mapPanel.setGameOver(true); //mapPanel에 gameover 알림
 	        repaint(); 
 	    }
 	}
+	
+	//위의 코드랑 중복되지만 이 메소드를 빼면 게임 진행이 되지 않음
     public void updateStage(int stage) {
       
         if (informationPanel != null) {
             informationPanel.setStage(stage);
         }
         if (stage == 1 || stage == 2) {
-            missionLabel.setText("최대한 많은 코인을 얻자!");
+//            missionLabel.setText("최대한 많은 코인을 얻자!");
         } else if (stage == 3) {
-            missionLabel.setText("최고 점수를 향하여!");
+//            missionLabel.setText("최고 점수를 향하여!");
         }
         if (timerLabel != null) {
             timerLabel.setVisible(stage == 3);
         }
     }
-  //GameManager가 RobotPanel에 접근하기 위한 연결고리 역할
+    
+   //GameManager가 RobotPanel에 접근하기 위한 연결고리 역할
     public RobotPanel getRobotPanel() {
         return robotPanel;
     }
+    
 //=======================GameManager와 연결되는 부분========================	
+    
 	//GameManager와 GamePanel이 연결되는 부분
 	//GameManager가 맵을 제어할 수 있도록 MapPanel을 건네주는 통로역할
 	 public MapPanel getMapPanel() {
@@ -195,9 +207,7 @@ public class GamePanel extends JPanel {
 	 }
 	  
 //=================================================================== 
-	 
-	 
-	 
+	
 	//GamePanel 위에 있는 요소들의 위치/크기 지정
     public void doLayout() {
 
@@ -219,7 +229,7 @@ public class GamePanel extends JPanel {
         mapPanel.setLocation(mapX,mapY);
         mapPanel.setSize(mapSize,mapSize);
         
-        //DeliveryListPanel 크기/위치
+        //DeliveryListPanel "배송 목록" 크기/위치
         int deliveryWidth  = width * 33 / 100;   
         int deliveryHeight = height * 37 / 100;  
         int deliveryX      = width * 3 / 100;   
@@ -227,7 +237,7 @@ public class GamePanel extends JPanel {
         deliveryListPanel.setLocation(deliveryX, deliveryY);
         deliveryListPanel.setSize(deliveryWidth, deliveryHeight);
         
-        //RobotPanel 크기/위치
+        //RobotPanel "로봇 목록" 크기/위치
         int robotWidth  = width * 33 / 100;   
         int robotHeight = height * 75 / 100;  
         int robotX      = width * 97 / 100 - robotWidth;   
@@ -235,7 +245,7 @@ public class GamePanel extends JPanel {
         robotPanel.setLocation(robotX, robotY);
         robotPanel.setSize(robotWidth, robotHeight);
         
-        //MyRobotPanel 크기/위치
+        //MyRobotPanel "내 로봇 사용하기 " 패널 크기/위치
         int MyRobotWidth  = width * 33 / 100;   
         int MyRobotHeight = height * 35 / 100;  
         int MyRobotX      = width * 3 / 100;   
@@ -271,7 +281,7 @@ public class GamePanel extends JPanel {
         gameOverLabel.setLocation(gameoverX,gameoverY);
         gameOverLabel.setSize(gameoverWidth, gameoverHeight);
         
-        //gameover버튼 크기/위치
+        //gameover버튼(메인으로) 크기/위치
         int buttonWidth = 220;
         int buttonHeight = 50;
         int buttonX = (width - buttonWidth) / 2;
@@ -288,11 +298,11 @@ public class GamePanel extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        //로고 크기 비율
+        //로고 크기
         int logoWidth = width * 25 / 100;   
         int logoHeight = height * 9 / 100;   
 
-        //중앙 상단 배치
+        //로고 이미지 위치
         int logoX = (width - logoWidth) / 2;
         int logoY = height * 7 / 100;
 

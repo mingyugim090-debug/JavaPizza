@@ -77,6 +77,7 @@ public class MainPanel extends JPanel {
         //미션 라벨
         requestLabel = new JLabel("*전체 화면으로 이용해 주세요*", SwingConstants.CENTER);
         requestLabel.setFont(new Font("맑은 고딕", Font.BOLD, 23));
+        requestLabel.setForeground(Color.RED);
         add(requestLabel);
     }
     

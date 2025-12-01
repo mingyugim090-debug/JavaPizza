@@ -75,7 +75,6 @@ public class GameManager {
     	gamePanel.getMyRobotPanel().useRobotOnce(robotName);
     	this.currentRobotMode = 0; 
     }
-    
     //변환 로봇 기능 : 다음 블록 색상을 즉시 랜덤 변경
     public void handleConvertRobot() {
         generateNextBlock(); 
@@ -155,6 +154,7 @@ public class GameManager {
 
     //===============[데이터 관리(박스 생성,점수,코인)]=================
     //다음 블록 색상 랜덤 생성(1~4)
+
     private void generateNextBlock() {
     	nextBlockColor = random.nextInt(4) + 1;
     	if(gamePanel != null) gamePanel.updateNextBlock(nextBlockColor);
@@ -361,8 +361,9 @@ public class GameManager {
     public int getGridSize() {
     	return gridSize;
     }
-    
-    // 로봇 상점 구매 메서드
+
+    // 로봇 구매 메서드
+
     public void buyRobot(String robotName, int price) {
     	if (myCoins >= price) {
     		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
@@ -370,9 +371,8 @@ public class GameManager {
     		if(success) {
     			myCoins -= price;
     			addScore(0,0);
-    			gamePanel.getRobotPanel().setPurchased(robotName); 
-        		System.out.println(robotName + "구매완료. 남은 코인 : " + myCoins);
-    		
+    			gamePanel.getRobotPanel().setPurchased(robotName); //로봇 구매 완료시 버튼 텍스트 변경 요청
+        	
     	} else {
     		JOptionPane.showMessageDialog(frame, "이미 보유 중인 로봇입니다.");
     			
