@@ -1,6 +1,7 @@
 package Gui;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import model.MetaRobot;
 
 public class RobotPanel extends JPanel {
 	
-	
+private Frame frame;
 private JLabel titleLabel;
 
 private JCheckBox transferBot;
@@ -41,6 +42,8 @@ public TransferRobot tbot;
 public DeleteRobot dbot;
 public MetaRobot mbot;
 
+private JButton question;
+
 //private int[] total_price;
 public ArrayList <Robot> selected_robots;
 int total_price;
@@ -51,7 +54,8 @@ int total_price;
 private GameManager gameManager;
 
 	//파라미터에 GameManager 추가함
-	public RobotPanel(GameManager gameManager) {
+	public RobotPanel(GameManager gameManager, Frame frame) {
+		this.frame = frame;
 		this.gameManager = gameManager;
         setLayout(null);
         
@@ -142,6 +146,19 @@ private GameManager gameManager;
         	}
         });
         add(buying);
+        
+        //? 버튼
+        question = new JButton("?");
+        question.setForeground(Color.WHITE);
+        LineBorder border = new LineBorder(Color.BLACK, 1, true);
+        question.setBorder(border);
+        question.setBorder(new LineBorder(Color.BLACK, 1, true));
+        question.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.changePanel(new QuestionPanel(frame));	//QuestionPanel로 이동
+            }
+        });  
+        add(question);
         
         //이미지
         trans_icon = new ImageIcon(getClass().getResource("changebot.png"));
@@ -272,6 +289,11 @@ private GameManager gameManager;
         meta_coin.setBounds(lastx - coinWidth, metacoin, coinWidth, coinHeight);
         meta_coin.setBackground(new Color(255, 250, 200));
         
+        //설명
+        int meta_manualY = boxY + 2 * boxHeight + 2 * gap + (boxHeight- manualHeight) / 2;
+        meta_manual.setLocation(manualX, meta_manualY);
+        meta_manual.setSize(manualWidth, manualHeight);
+        
         //metabot.png 이미지 그리기(크기 조정)
         if (meta_img != null) {
             g.drawImage(meta_img, boxX+d, boxY + (2 * boxHeight) + (4 * gap) + (2*d), image_width, image_height, this);
@@ -285,25 +307,30 @@ private GameManager gameManager;
         buying.setBounds(lastx - buying_width, buying_y,  buying_width, buying_height);
         buying.setBackground(new Color(255, 228, 195));
         
-        //설명
-        int meta_manualY = boxY + 2 * boxHeight + 2 * gap + (boxHeight- manualHeight) / 2;
-        meta_manual.setLocation(manualX, meta_manualY);
-        meta_manual.setSize(manualWidth, manualHeight);
+        //? 버튼
+        int qsize = gap;
+        int q_x = boxX + boxWidth -qsize;
+        int q_y = boxY - 2 * gap;
+//        question.setBounds(q_x, q_y, qsize, qsize);
+//        question.setBackground(Color.DARK_GRAY);
+        
+        
+       
 	}
 	
 	//GameManager가 이 메서드 호출해서 로봇 구매완료 시 버튼 상태 변경함.
     public void setPurchased(String robotName) {
     	switch(robotName) {
     	case "변환 로봇":
-    		trans_coin.setText("구매완료");
+    		trans_coin.setText("완료");
     		trans_coin.setEnabled(false); //구매하면 버튼 비활성화
     		break;
     	case "삭제 로봇":
-    		delete_coin.setText("구매완료");
+    		delete_coin.setText("완료");
     		delete_coin.setEnabled(false);
     		break;
     	case "메타몽 로봇":
-    		meta_coin.setText("구매완료");
+    		meta_coin.setText("완료");
     		meta_coin.setEnabled(false);
     		break;
     	}

@@ -40,7 +40,7 @@ public class GamePanel extends JPanel {
 	    deliveryListPanel = new DeliveryListPanel();
 	   
 	    //RobotPanel(로봇 목록)
-	    robotPanel = new RobotPanel(frame.getGameManager());
+	    robotPanel = new RobotPanel(frame.getGameManager(), frame);
 	    
 	    //MyRobotPanel(내가 구매한 로봇이 뜨는 패널)
 	    myRobotPanel = new MyRobotPanel();

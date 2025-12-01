@@ -416,18 +416,21 @@ public class GameManager {
 	    		return;
 	    	}
 	    	else {
+	    		//구매하시겠습니까? 창 띄움
 	    		int result = JOptionPane.showConfirmDialog(frame, "구매하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+	    		//닫힘 버튼 누르면 
 	    		if(result == JOptionPane.CLOSED_OPTION) {
 	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
 	    			System.out.println("구매에 실패했습니다.");
 	    			selected_robots.clear();
 	    			return;
 	    		}
+	    		//yes 선택시
 	    		else if (result == JOptionPane.YES_OPTION) {
 	    			
 	    			if(coins < total_price) {
-	    				JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
-		    			System.out.println("구매에 실패했습니다.");
+	    				JOptionPane.showMessageDialog(frame, "코인 부족");
+		    			System.out.println("코인 부족");
 		    			selected_robots.clear();
 		    			return;
 	    			}
@@ -448,9 +451,17 @@ public class GameManager {
 	    	    	}
 	    			selected_robots.clear();
 	    			
-	    		}
 	    	}
+	    	//No 선택시 
+	    	else {
+	    		JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
+    			System.out.println("구매에 실패했습니다.");
+    			selected_robots.clear();
+    			return;
+	    	}
+	    	
 	    }
+	}
   
 	//*금액버튼을 누를때 메세지 띄우기
 	public void PrintRobot(String robotName, int price) {
