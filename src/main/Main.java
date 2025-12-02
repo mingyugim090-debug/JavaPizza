@@ -26,6 +26,3 @@ public class Main {
 //view 패캐지의 Frame클래스 와 controller패키지의 GameManager클래스 연결
 //Main --> Frame , GameManager 생성
 //GameManager와 Frame이 서로 상호작용
-
-//추가 예정 코드
-//BGM 추가한다면 Main클래스에서 음악 스레드 실행
