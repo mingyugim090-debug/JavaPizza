@@ -11,6 +11,8 @@ public class RankingPanel extends JPanel {
     private JPanel rankBox;
     private JTextArea rankText;
     private JButton backButton;
+    private JScrollPane scrollpane;
+    
 
     private FileManager fileManager;
 
@@ -46,6 +48,12 @@ public class RankingPanel extends JPanel {
         backButton.setFont(new Font("맑은 고딕", Font.BOLD, 30));
         add(backButton);
 
+        
+        // 랭킹 스크롤 가능하게
+        scrollpane = new JScrollPane(rankText);
+        scrollpane.setBorder(null);
+        rankBox.add(scrollpane);
+        
         //뒤로가기 버튼 리스너
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -92,6 +100,8 @@ public class RankingPanel extends JPanel {
         rankBox.setLocation(boxX, boxY);
         rankBox.setSize(boxWidth, boxHeight);
 
+        
+        
         //텍스트 크기
         int msgWidth = boxWidth * 9 / 10;
         int msgHeight = boxHeight * 92 / 100;
@@ -99,6 +109,8 @@ public class RankingPanel extends JPanel {
         int msgY = (boxHeight - msgHeight) / 2 - 10;
         rankText.setLocation(msgX, msgY);
         rankText.setSize(msgWidth, msgHeight);
+        scrollpane.setLocation(msgX, msgY);
+        scrollpane.setSize(msgWidth, msgHeight);
 
         //뒤로가기 버튼 크기
         int buttonWidth = width / 5;

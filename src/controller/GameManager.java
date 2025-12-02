@@ -80,13 +80,10 @@ public class GameManager {
         this.isGameRunning = true;
         
         //스테이지 별 맵 크기 설정
-        if (stage == 1) 
-        	gridSize = 4; 
-        else if (stage == 2) 
-        	gridSize = 3;
-        else 
-        	gridSize = 5;
-     
+        if (stage == 1) gridSize = 4; 
+        else if (stage == 2) gridSize = 3;
+        else gridSize = 3;
+        
         //데이터 초기화
         mapData = new int[gridSize][gridSize];
         generateNextBlock(); //첫번 째 랜덤 박스 생성
@@ -199,6 +196,9 @@ public class GameManager {
                 checkLineMatch(row, col);
                 generateNextBlock();
                 frame.repaint();
+                
+                if(stage < 3) checkStageClear();
+                else checkGameOverStage3();
             }
             return;
         }
