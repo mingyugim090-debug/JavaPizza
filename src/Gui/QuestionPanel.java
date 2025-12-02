@@ -77,7 +77,6 @@ public class QuestionPanel extends JPanel {
         int boxWidth = width / 2;
         int boxHeight = height * 6 / 10;
         int boxX = (width - boxWidth) / 2;
-//        int boxY = height * 15 / 100;
         int boxY = height / 7;
         helpBox.setLocation(boxX,boxY);
         helpBox.setSize(boxWidth,boxHeight);
@@ -86,7 +85,6 @@ public class QuestionPanel extends JPanel {
         int msgWidth = boxWidth * 9 / 10; //message박스는 box보다 아주 조금 작게 만듦
         int msgHeight = boxHeight * 92 / 100;
         int msgX = (boxWidth - msgWidth) / 2;
-//        int msgY = (boxHeight - msgHeight) / 2 - 10;
         int msgY = height / 35;
         message.setLocation(msgX,msgY);
         message.setSize(msgWidth,msgHeight);
@@ -99,5 +97,4 @@ public class QuestionPanel extends JPanel {
         closeButton.setLocation(buttonX,buttonY);
         closeButton.setSize(buttonWidth,buttonHeight);
     }
-
 }

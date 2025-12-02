@@ -6,7 +6,6 @@ import java.awt.*;
 public class RobotCardPanel extends JPanel {
 	
 	private JLabel nameLabel;
-    private JLabel imageLabel;
     private JLabel countLabel;
     private JButton useButton;
     private Image image;
@@ -26,7 +25,6 @@ public class RobotCardPanel extends JPanel {
         nameLabel = new JLabel(name, SwingConstants.CENTER);
         nameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 16));
         add(nameLabel);
-
 
         //남은 횟수 표시
         countLabel = new JLabel("", SwingConstants.CENTER);
@@ -86,7 +84,6 @@ public class RobotCardPanel extends JPanel {
         useButton.setSize(buttonWidth,buttonHeight);
     }
     
-    
     //남은 횟수는 외부 패키지에서 설정 
     public void setCount(int newCount) {
         this.count = newCount;
@@ -123,5 +120,4 @@ public class RobotCardPanel extends JPanel {
     public int getCount() {
     	return count;
     }
-    
 }

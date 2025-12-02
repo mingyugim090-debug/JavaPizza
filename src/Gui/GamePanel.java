@@ -50,19 +50,17 @@ public class GamePanel extends JPanel {
 		missionLabel = new JLabel("", SwingConstants.CENTER); //라벨 안에서 글자를 가로 방향으로 가운데 정렬
 	    missionLabel.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		
-	    //타이머 라벨(stage 3에서만 / 하단 중앙)
+	    //타이머 라벨
 	    timerLabel = new JLabel("", SwingConstants.CENTER);
 	    timerLabel.setFont(new Font("맑은 고딕", Font.BOLD, 22));
 	    timerLabel.setForeground(Color.RED);
 	    
-	    //어두운 화면
+	    //어두운 화면(stage3에서 game over가 되었을 경우)
 	    darkPanel = new JPanel() {
 	        protected void paintComponent(Graphics g) {
 	            super.paintComponent(g);
-	            Graphics2D g2 = (Graphics2D) g.create();
-	            g2.setColor(new Color(0, 0, 0, 120)); 
-	            g2.fillRect(0, 0, getWidth(), getHeight());
-	            g2.dispose();
+	            g.setColor(new Color(0, 0, 0, 120)); 
+	            g.fillRect(0, 0, getWidth(), getHeight());
 	        }
 	    };
 	    darkPanel.setOpaque(false);   
@@ -101,7 +99,7 @@ public class GamePanel extends JPanel {
 	}
 	
     
-   //GameManager가 RobotPanel에 접근하기 위한 연결고리 역할
+    //GameManager가 RobotPanel에 접근하기 위한 연결고리 역할
     public RobotPanel getRobotPanel() {
         return robotPanel;
     }
@@ -127,12 +125,10 @@ public class GamePanel extends JPanel {
 		 }
 	 }
 	 
-	 //위의 코드랑 중복되지만 이 메소드를 빼면 게임 진행이 되지 않음 (Gamemanager에서 호출하니까)
 	 public void updateStage(int stage) {
-	      
-	     if (informationPanel != null) {
-	         informationPanel.setStage(stage);
-	     }
+	    
+	     informationPanel.setStage(stage);
+	     
 	     if (stage == 1 || stage == 2) {
          missionLabel.setText("최대한 많은 코인을 얻자!");
 	     } else if (stage == 3) {
@@ -159,12 +155,12 @@ public class GamePanel extends JPanel {
         int missionWidth = width * 4 / 10;
         int missionHeight = height * 5 / 100;
         int missionX = (width - missionWidth) / 2;
-        int missionY = height * 1/5;
+        int missionY = height * 2 / 9;
         missionLabel.setLocation(missionX,missionY);
         missionLabel.setSize(missionWidth,missionHeight);
 
         //맵 크기/위치
-        int mapSize = Math.min(width * 2 / 10 , height * 4 / 10); //map은 정사각형이므로, 가로와 세로 길이 통합
+        int mapSize = width / 5; 
         int mapX = (width - mapSize) / 2;
         int mapY = (height - mapSize) / 2;
         mapPanel.setLocation(mapX,mapY);
@@ -218,8 +214,6 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D) g;
-
         int width = getWidth();
         int height = getHeight();
 
@@ -229,10 +223,10 @@ public class GamePanel extends JPanel {
 
         //로고 이미지 위치
         int logoX = (width - logoWidth) / 2;
-        int logoY = height * 7 / 100;
+        int logoY = height / 10;
 
         //이미지 크기 조절하여 그리기
-        g2.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight, this);
+        g.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight, this);
     }
 }
 
