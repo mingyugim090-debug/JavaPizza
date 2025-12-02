@@ -4,6 +4,8 @@
 1700,skh
 1700,skh
 1700,skh
+600,600
+300,fdcb
 100,awecwef
 100,awecwef
 100,awecwef
