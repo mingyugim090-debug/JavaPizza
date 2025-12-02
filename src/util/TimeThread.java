@@ -22,27 +22,30 @@ public class TimeThread extends Thread{
 			//1초 간격으로 카운트
 			try {
 				Thread.sleep(1000);
+				if(!isRunning) break;
 				
 				//시간 1초씩 감소
 				timeLeft--;
 				
 				// 시간 줄어들 때마다 GameManager에게 보고해서 화면 갱신
+				if(gameManager != null) {
 				gameManager.updateTime(timeLeft);
+				}
+				if (timeLeft <= 0) {
+					isRunning = false;
+				}
 				
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				return;
 			}
 		}
-
-		// clear가 아니라 시간이 0이되어서 끝나면 GameManager에게 gameover 신호 보냄
-		if (timeLeft <= 0) {
-			gameManager.gameOver();
-		}
 	}
+	
 	
 	//사용자가 게임 clear해서 게임이 중간에 끝났을 때 타이머를 멈추는 기능
 	public void stopTimer() {
 		this.isRunning = false;
+		this.interrupt();
 	}
 }
 

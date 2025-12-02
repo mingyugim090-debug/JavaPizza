@@ -120,4 +120,8 @@ public class RobotCardPanel extends JPanel {
     public JButton getUseButton() {
         return useButton;
     }
+    public int getCount() {
+    	return count;
+    }
+    
 }

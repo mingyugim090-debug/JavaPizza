@@ -7,12 +7,7 @@ import java.awt.event.*;
 import controller.GameManager;
 
 public class GamePanel extends JPanel {
-	
-	private javax.swing.Timer timer;
-	
 	private GameManager gameManager;
-	
-	private boolean gameOver = false;
 	
 	private Frame frame;
 	
@@ -99,7 +94,6 @@ public class GamePanel extends JPanel {
 	    
 	    //time이 0이 되면 Game Over
 	    if (time <= 0) {
-	        gameOver = true;
 	        darkPanel.setVisible(true);
 	        mapPanel.setGameOver(true); //mapPanel에 gameover 알림
 	        repaint(); 
