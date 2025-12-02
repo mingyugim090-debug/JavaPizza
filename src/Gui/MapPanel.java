@@ -1,8 +1,6 @@
 package Gui;
 import javax.swing.*;
- 
 import Gui.Frame;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -33,7 +31,7 @@ public class MapPanel extends JPanel{
 		
 		setLayout(null); 
 	    setStage(stage);  //stage 번호를 전달받아 gridSize 설정 
-	    setPreferredSize(new Dimension(600, 400));
+	    setSize(400,400);
 	    setBackground(new Color(0xEDEDED));
 
 	    addMouseListener(mouseListener);
@@ -52,13 +50,16 @@ public class MapPanel extends JPanel{
 	
 	//스테이지에 따른 gridSize
 	public void setStage(int stage) {
-		if(stage == 1) gridSize = 4; //4X4
-		else if(stage == 2) gridSize = 3; //3X3
-		else if(stage == 3) gridSize = 5; //5X5
+		if(stage == 1) 
+			gridSize = 4; //4X4
+		else if(stage == 2) 
+			gridSize = 3; //3X3
+		else if(stage == 3) 
+			gridSize = 5; //5X5
 		
 		map = new int[gridSize][gridSize]; //스테이지에 따른 맵 초기화
 		repaint();
-}
+    }
 	
     public void updateMap(int[][] newMap) {
         this.map = newMap;
@@ -88,7 +89,7 @@ public class MapPanel extends JPanel{
     	
     	int width = getWidth();
     	int height = getHeight();
-    	int boardSize = Math.min(width, height);
+    	int boardSize = width;
     	
     	cellSize = boardSize / gridSize;
 

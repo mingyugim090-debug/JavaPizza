@@ -40,10 +40,7 @@ public class StageIntroPanel extends JPanel{
 	        Timer timer = new Timer(2000, new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
 	            	GamePanel gamePanel = new GamePanel(frame);
-//	            	gameManager.setGamePanel(gamePanel);
 	            	frame.showGamePanel();
-	            	
-//	            	frame.changePanel(gamePanel);
 	            	gameManager.initGame();
 	            }
 	        });

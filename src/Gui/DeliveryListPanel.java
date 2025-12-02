@@ -5,12 +5,8 @@ import java.awt.*;
 
 public class DeliveryListPanel extends JPanel {
 	
-	private JLabel titleLabel;
+	private JLabel titleLabel; //"배송 목록"
 	private int colorNumber = 0; //다음 블록색상
-	private Box box;
-	
-	int[] x_set = {0, 50};
-	int[] y_set = {0, 50};
 	
 	public DeliveryListPanel() {
         setLayout(null);             
@@ -20,11 +16,14 @@ public class DeliveryListPanel extends JPanel {
         titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
         add(titleLabel);
     }
-//==========GameManager --> GamePanel 거쳐서 호출되는 메서드==============
+	
+//==========GameManager --> GamePanel 거쳐서 호출되는 메서드================
+	
 	public void setNextBlockColor(int colorNumber) {
 		this.colorNumber = colorNumber;
 		repaint();
 	}
+	
 //====================================================================
 	
 	protected void paintComponent(Graphics g) {
@@ -34,26 +33,27 @@ public class DeliveryListPanel extends JPanel {
         int height = getHeight();
 
         //"배송 목록" 글자 크기/위치
-        int labelWidth  = width  * 4 / 10;  
-        int labelHeight = height * 7 / 100;  
-        int labelX      = width  * 5 / 100;
-        int labelY      = height * 1 / 100; 
-        titleLabel.setLocation(labelX, labelY);
-        titleLabel.setSize(labelWidth, labelHeight);
+        int titlelabelWidth  = width  * 4 / 10;  
+        int titlelabelHeight = height * 7 / 100;  
+        int titlelabelX      = width  * 5 / 100;
+        int titlelabelY      = height * 1 / 100; 
+        titleLabel.setLocation(titlelabelX, titlelabelY);
+        titleLabel.setSize(titlelabelWidth, titlelabelHeight);
 
         //안쪽 흰색 영역 그리기
-        int boxX   = width * 3 / 100;
-        int boxY   = labelY + labelHeight + height * 1 / 100; 
-        int boxWidth   = width  - boxX * 2;
-        int boxHeight   = height - boxY - boxX;
+        int whiteBoxX   = width * 3 / 100;
+        int whiteBoxY   = titlelabelY + titlelabelHeight; 
+        int whiteBoxWidth   = width  - whiteBoxX * 2;
+        int whiteBoxHeight   = height - whiteBoxY - whiteBoxX;
 
         g.setColor(Color.WHITE);
-        g.fillRect(boxX, boxY, boxWidth, boxHeight);
+        g.fillRect(whiteBoxX, whiteBoxY, whiteBoxWidth, whiteBoxHeight);
 
         g.setColor(Color.LIGHT_GRAY);
-        g.drawRect(boxX, boxY, boxWidth, boxHeight);
+        g.drawRect(whiteBoxX, whiteBoxY, whiteBoxWidth, whiteBoxHeight);
         
-//======================다음 블록 그리기 ==================================  
+//======================다음 블록 그리기==================================  
+        
         if (colorNumber != 0) {
             Color c = Color.GRAY;
             switch (colorNumber) {
@@ -64,19 +64,14 @@ public class DeliveryListPanel extends JPanel {
             }
             
             // 박스 중앙에 그리기
-            int blockSize = Math.min(boxWidth, boxHeight) / 2;
-            int blockX = boxX + (boxWidth - blockSize) / 2;
-            int blockY = boxY + (boxHeight - blockSize) / 2;
-            
-            x_set[0] = 0;
-            x_set[1] = blockSize;
-            y_set[0] = 0;
-            y_set[1] = blockSize;
-            
+            int boxSize = whiteBoxHeight / 2;
+            int boxX = whiteBoxX + (whiteBoxWidth - boxSize) / 2;
+            int boxY = whiteBoxY + (whiteBoxHeight - boxSize) / 2;
+     
             g.setColor(c);
-            g.fillRect(blockX, blockY, blockSize, blockSize);
+            g.fillRect(boxX, boxY, boxSize, boxSize);
             g.setColor(Color.BLACK);
-            g.drawRect(blockX, blockY, blockSize, blockSize);
+            g.drawRect(boxX, boxY, boxSize, boxSize);
         }
 	}
 }

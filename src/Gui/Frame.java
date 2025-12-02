@@ -13,10 +13,9 @@ public class Frame extends JFrame {
 	
 	public Frame() {
 	    setTitle("ROBO HUB");
-	    getContentPane().setBackground(new Color(0xEDEDED)); //컬러
+	    getContentPane().setBackground(new Color(0xEDEDED)); 
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    setSize(960, 540); //창 크기
-	    setLocationRelativeTo(null);
+	    setSize(960, 540); //창 크기(하지만 전체 화면으로 사용하라고 할 예정)
 	    
 	    GameManager gameManager= new GameManager(this);
 	    setGameManager(gameManager);
@@ -28,11 +27,11 @@ public class Frame extends JFrame {
 	public void setGameManager(GameManager gameManager) {
 	        this.gameManager = gameManager;
 	    }
+	
 	public GameManager getGameManager() {
         return gameManager;
 	}
-	 
-	    
+	   
 	public void changePanel(JPanel newPanel) {
 	    setContentPane(newPanel);
 	    revalidate();

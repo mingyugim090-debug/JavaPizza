@@ -53,7 +53,7 @@ public class RankingPanel extends JPanel {
             }
         });
         
-      //backButton "돌아가기 누르면 StartPanel로 돌아감
+        //backButton "돌아가기 누르면 StartPanel로 돌아감
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.changePanel(new MainPanel(frame));
