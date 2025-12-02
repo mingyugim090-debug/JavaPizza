@@ -55,6 +55,8 @@ public class MyRobotPanel extends JPanel{
         int areaY = boxY;
         int areaWidth  = boxWidth;
         int areaHeight = boxHeight;
+        
+        placeCards();
         }
 
 	 //로봇 구매 시 카드 추가
@@ -64,7 +66,12 @@ public class MyRobotPanel extends JPanel{
 
 	        switch (name) {
 	            case "변환 로봇":
-	                if (transCard != null) return false;
+	                if (transCard != null) {
+	                	transCard.setCount(transCard.getCount() + count);
+	                	repaint();
+	                	return true;
+	                }
+	                	
 	                transCard = createCard(name, "changebot.png", count, 0);
 	                add(transCard);
 	                targetCard = transCard;
@@ -72,7 +79,11 @@ public class MyRobotPanel extends JPanel{
 	                break;
 
 	            case "삭제 로봇":
-	                if (deleteCard != null) return false;
+	                if (deleteCard != null) {
+	                	deleteCard.setCount(deleteCard.getCount()+count);
+	                    repaint();
+	                    return true;
+	                }
 	                deleteCard = createCard(name, "deletebot.png", count, 1);
 	                add(deleteCard);
 	                targetCard = deleteCard;
@@ -80,7 +91,11 @@ public class MyRobotPanel extends JPanel{
 	                break;
 
 	            case "메타몽 로봇":
-	                if (metaCard != null) return false;
+	                if (metaCard != null) {
+	                	metaCard.setCount(metaCard.getCount() + count);
+	                	repaint();
+	                	return true;
+	                }
 	                metaCard = createCard(name, "metamongbot.png", count, 2);
 	                add(metaCard);
 	                targetCard = metaCard;
@@ -112,6 +127,23 @@ public class MyRobotPanel extends JPanel{
 	        revalidate();
 	        return true;
 	    }
+	 //GameManager에서 저장된 로봇 정보를 받아와 화면에 다시 띄우는 메서드
+	 public void restoreRobots(int[] counts) {
+		 if(counts[0] != -1) {
+			 if(transCard == null) addRobot("변환 로봇" , counts[0]);
+			 else transCard.setCount(counts[0]);
+		 }
+		 if(counts[1] != -1) {
+			 if (deleteCard == null) addRobot("삭제 로봇" , counts[1]);
+			 else deleteCard.setCount(counts[1]);
+		 }
+		 if(counts[2] != -1) {
+			 if (metaCard == null) addRobot("메타몽 로봇" , counts[2]);
+			 else metaCard.setCount(counts[2]);
+		 }
+		 repaint();
+	 }
+	 
 	 //아이템 사용시 화면 바뀌도록하는 메서드
 	 public void useRobotOnce(String robotName) {
 		 switch (robotName) {
@@ -128,23 +160,8 @@ public class MyRobotPanel extends JPanel{
 
 	        return card;
 	    }
-	 
-	 //남은 횟수 업데이트 (게임 로직에서 호출하는 용도. 다른 클래스에서 작성해도 될듯)
-	 public void updateRobotCount(String robotName, int newCount) {
-	        switch (robotName) {
-	            case "변환 로봇":
-	                if (transCard != null) transCard.setCount(newCount);
-	                break;
-	            case "삭제 로봇":
-	                if (deleteCard != null) deleteCard.setCount(newCount);
-	                break;
-	            case "메타몽 로봇":
-	                if (metaCard != null) metaCard.setCount(newCount);
-	                break;
-	        }
-	    }
-	
-     //내 보유 로봇 카드 고정 위치
+
+	 //내 보유 로봇 카드 고정 위치
 	 private void placeCards() {
 
 		    int width = getWidth();
