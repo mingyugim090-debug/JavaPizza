@@ -311,8 +311,8 @@ private GameManager gameManager;
         int qsize = gap;
         int q_x = boxX + boxWidth -qsize;
         int q_y = boxY - 2 * gap;
-//        question.setBounds(q_x, q_y, qsize, qsize);
-//        question.setBackground(Color.DARK_GRAY);
+        question.setBounds(q_x, q_y, qsize, qsize);
+        question.setBackground(Color.DARK_GRAY);
         
         
        

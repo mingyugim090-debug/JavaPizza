@@ -12,6 +12,7 @@ public class MainPanel extends JPanel {
     private JLabel logoLabel;
     private JLabel requestLabel;
     private JButton rankingButton;
+    private JButton audio;
     
     public MainPanel(Frame frame) {
         this.frame = frame;
@@ -78,6 +79,35 @@ public class MainPanel extends JPanel {
         requestLabel.setFont(new Font("맑은 고딕", Font.BOLD, 23));
         requestLabel.setForeground(Color.RED);
         add(requestLabel);
+        
+        //audio 버튼
+        ImageIcon audio_icon = new ImageIcon(getClass().getResource("audio.png"));
+        audio = new JButton(audio_icon);
+        //audio.setBorderPainted(false);          // 버튼 테두리 제거
+        audio.setContentAreaFilled(false);      // 버튼 내부 배경 제거
+        //audio.setFocusPainted(false);
+        add(audio);
+        
+        audio.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		JDialog dialog = new JDialog();
+        	    dialog.setSize(200, 100);
+        	    dialog.setLayout(new BorderLayout());
+
+        	    JSlider volumeSlider = new JSlider(0, 100, 50);
+        	    dialog.add(volumeSlider, BorderLayout.CENTER);
+
+        	    dialog.setLocationRelativeTo(null);
+        	    dialog.setVisible(true);
+        	    dialog.setTitle("배경음악 볼륨 조절");
+
+        	    volumeSlider.addChangeListener(ev -> {
+        	        int v = volumeSlider.getValue();
+        	        System.out.println("volume = " + v);
+        	    });
+        	}
+        });
+        
     }
     
     //화면이 리사이즈될 때마다 자동 호출
@@ -121,5 +151,16 @@ public class MainPanel extends JPanel {
         int requestY = helpY + buttonHeight * 3 / 2 ;
         requestLabel.setLocation(requestX,requestY);
         requestLabel.setSize(requestWidth,requestHeight);
+        
+        //audio 버튼 위치/크기
+        int gap = height / 22;
+        int audioSize = 2 * gap;
+        
+        int audioX = width - audioSize - gap;
+        int audioY = height - audioSize -  gap;
+        
+        
+        audio.setBounds(audioX, audioY, audioSize, audioSize);
+        
     }
 }
