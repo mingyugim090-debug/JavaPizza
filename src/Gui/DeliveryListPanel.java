@@ -6,7 +6,11 @@ import java.awt.*;
 public class DeliveryListPanel extends JPanel {
 	
 	private JLabel titleLabel;
-	private int nextColor = 0; //다음 블록색상
+	private int colorNumber = 0; //다음 블록색상
+	private Box box;
+	
+	int[] x_set = {0, 50};
+	int[] y_set = {0, 50};
 	
 	public DeliveryListPanel() {
         setLayout(null);             
@@ -17,14 +21,14 @@ public class DeliveryListPanel extends JPanel {
         add(titleLabel);
     }
 //==========GameManager --> GamePanel 거쳐서 호출되는 메서드==============
-	public void setNextBlockColor(int color) {
-		this.nextColor = color;
+	public void setNextBlockColor(int colorNumber) {
+		this.colorNumber = colorNumber;
 		repaint();
 	}
 //====================================================================
 	
 	protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+		super.paintComponent(g);
 
         int width  = getWidth();
         int height = getHeight();
@@ -38,23 +42,21 @@ public class DeliveryListPanel extends JPanel {
         titleLabel.setSize(labelWidth, labelHeight);
 
         //안쪽 흰색 영역 그리기
-        Graphics2D g2 = (Graphics2D) g;
- 
         int boxX   = width * 3 / 100;
         int boxY   = labelY + labelHeight + height * 1 / 100; 
         int boxWidth   = width  - boxX * 2;
         int boxHeight   = height - boxY - boxX;
 
-        g2.setColor(Color.WHITE);
-        g2.fillRect(boxX, boxY, boxWidth, boxHeight);
+        g.setColor(Color.WHITE);
+        g.fillRect(boxX, boxY, boxWidth, boxHeight);
 
-        g2.setColor(Color.LIGHT_GRAY);
-        g2.drawRect(boxX, boxY, boxWidth, boxHeight);
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawRect(boxX, boxY, boxWidth, boxHeight);
         
 //======================다음 블록 그리기 ==================================  
-        if (nextColor != 0) {
+        if (colorNumber != 0) {
             Color c = Color.GRAY;
-            switch (nextColor) {
+            switch (colorNumber) {
                 case 1: c = new Color(100, 149, 237); break; // 파랑
                 case 2: c = new Color(255, 182, 193); break; // 분홍
                 case 3: c = new Color(255, 255, 100); break; // 노랑
@@ -66,10 +68,15 @@ public class DeliveryListPanel extends JPanel {
             int blockX = boxX + (boxWidth - blockSize) / 2;
             int blockY = boxY + (boxHeight - blockSize) / 2;
             
-            g2.setColor(c);
-            g2.fillRect(blockX, blockY, blockSize, blockSize);
-            g2.setColor(Color.BLACK);
-            g2.drawRect(blockX, blockY, blockSize, blockSize);
+            x_set[0] = 0;
+            x_set[1] = blockSize;
+            y_set[0] = 0;
+            y_set[1] = blockSize;
+            
+            g.setColor(c);
+            g.fillRect(blockX, blockY, blockSize, blockSize);
+            g.setColor(Color.BLACK);
+            g.drawRect(blockX, blockY, blockSize, blockSize);
         }
 	}
 }

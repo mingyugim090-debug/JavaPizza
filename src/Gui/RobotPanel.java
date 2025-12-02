@@ -1,6 +1,7 @@
 package Gui;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import model.MetaRobot;
 
 public class RobotPanel extends JPanel {
 	
-	
+private Frame frame;
 private JLabel titleLabel;
 
 private JCheckBox transferBot;
@@ -41,8 +42,11 @@ public TransferRobot tbot;
 public DeleteRobot dbot;
 public MetaRobot mbot;
 
+private JButton question;
+
 //private int[] total_price;
 public ArrayList <Robot> selected_robots;
+int total_price;
 
 
 
@@ -50,10 +54,10 @@ public ArrayList <Robot> selected_robots;
 private GameManager gameManager;
 
 	//파라미터에 GameManager 추가함
-	public RobotPanel(GameManager gameManager) {
+	public RobotPanel(GameManager gameManager, Frame frame) {
+		this.frame = frame;
 		this.gameManager = gameManager;
         setLayout(null);
-        
         
         tbot = new TransferRobot("변환 로봇", "대기중인 물건의 색상을 랜덤 변경.", 1500);
         dbot = new DeleteRobot("삭제 로봇", "원하는 1칸 삭제 가능.", 2500);
@@ -64,14 +68,18 @@ private GameManager gameManager;
         setBackground(new Color(0xF2F2F2)); 
         
         //title - 로봇목록
-        titleLabel = new JLabel("로봇 목록");
+        titleLabel = new JLabel("로봇 상점");
         titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
         add(titleLabel);
         
         //manual
         trans_manual = new JLabel(tbot.getManual());
-        delete_manual = new JLabel(tbot.getManual());
-        meta_manual = new JLabel(tbot.getManual());
+        delete_manual = new JLabel(dbot.getManual());
+        meta_manual = new JLabel(mbot.getManual());
+        
+        add(trans_manual);
+        add(delete_manual);
+        add(meta_manual);
         
         //체크박스
         transferBot = new JCheckBox(tbot.getName());
@@ -89,6 +97,7 @@ private GameManager gameManager;
                 public void itemStateChanged(ItemEvent e) {
                 	//gameManager.setTotalCoin(CRobots[idx], Robots[idx], total_price);
                 	gameManager.addSelectedRobots(CRobots[idx], Robots[idx], selected_robots);
+                	setTotalCoin(selected_robots);
                 }
             }); 
 
@@ -132,11 +141,24 @@ private GameManager gameManager;
         buying = new JButton("구매하기");
         buying.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e) {
-        		gameManager.buyMain(selected_robots);
+        		gameManager.buyMain(selected_robots, total_price);
         		
         	}
         });
         add(buying);
+        
+        //? 버튼
+        question = new JButton("?");
+        question.setForeground(Color.WHITE);
+        LineBorder border = new LineBorder(Color.BLACK, 1, true);
+        question.setBorder(border);
+        question.setBorder(new LineBorder(Color.BLACK, 1, true));
+        question.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.changePanel(new QuestionPanel(frame));	//QuestionPanel로 이동
+            }
+        });  
+        add(question);
         
         //이미지
         trans_icon = new ImageIcon(getClass().getResource("changebot.png"));
@@ -202,7 +224,7 @@ private GameManager gameManager;
         transferBot.setOpaque(false); //배경색 지우기
         
         //coin 버튼
-        int coinWidth = boxWidth / 7;
+        int coinWidth = boxWidth / 6;
         int coinHeight = coinWidth / 2;
         int lastx = boxX + boxWidth - d;
         int lasty = boxY + boxHeight - d;
@@ -259,7 +281,7 @@ private GameManager gameManager;
         g.fillRect(boxX, boxY + (2 * boxHeight) + (2 * gap), boxWidth, boxHeight);
         
         //체크박스
-        metaBot.setBounds(boxX+d, boxY + (2 * boxHeight) + (2 * gap) +d, checkWidth, checkHeight);
+        metaBot.setBounds(boxX+d, boxY + (2 * boxHeight) + (2 * gap) +d, checkWidth*2, checkHeight);
         metaBot.setOpaque(false); //배경색 지우기
         
         //coin 버튼
@@ -267,43 +289,62 @@ private GameManager gameManager;
         meta_coin.setBounds(lastx - coinWidth, metacoin, coinWidth, coinHeight);
         meta_coin.setBackground(new Color(255, 250, 200));
         
+        //설명
+        int meta_manualY = boxY + 2 * boxHeight + 2 * gap + (boxHeight- manualHeight) / 2;
+        meta_manual.setLocation(manualX, meta_manualY);
+        meta_manual.setSize(manualWidth, manualHeight);
+        
         //metabot.png 이미지 그리기(크기 조정)
         if (meta_img != null) {
             g.drawImage(meta_img, boxX+d, boxY + (2 * boxHeight) + (4 * gap) + (2*d), image_width, image_height, this);
         }
         
         //구매버튼
-        int dis = d * 4;
+        int dis = d * 3;
         int buying_y = metacoin +coinHeight + dis;
-        int buying_width = coinWidth * 3 /2;
+        int buying_width = coinWidth * 2;
         int buying_height = coinHeight * 3 /2;
         buying.setBounds(lastx - buying_width, buying_y,  buying_width, buying_height);
         buying.setBackground(new Color(255, 228, 195));
         
-        //설명
-        int meta_manualY = boxY + 2 * boxHeight + 2 * gap + (boxHeight- manualHeight) / 2;
-        meta_manual.setLocation(manualX, meta_manualY);
-        meta_manual.setSize(manualWidth, manualHeight);
+        //? 버튼
+        int qsize = gap;
+        int q_x = boxX + boxWidth -qsize;
+        int q_y = boxY - 2 * gap;
+//        question.setBounds(q_x, q_y, qsize, qsize);
+//        question.setBackground(Color.DARK_GRAY);
+        
+        
+       
 	}
 	
 	//GameManager가 이 메서드 호출해서 로봇 구매완료 시 버튼 상태 변경함.
     public void setPurchased(String robotName) {
     	switch(robotName) {
-    	case "변환로봇":
-    		trans_coin.setText("구매완료");
+    	case "변환 로봇":
+    		trans_coin.setText("완료");
     		trans_coin.setEnabled(false); //구매하면 버튼 비활성화
     		break;
-    	case "삭제로봇":
-    		delete_coin.setText("구매완료");
+    	case "삭제 로봇":
+    		delete_coin.setText("완료");
     		delete_coin.setEnabled(false);
     		break;
-    	case "메타몽로봇":
-    		meta_coin.setText("구매완료");
+    	case "메타몽 로봇":
+    		meta_coin.setText("완료");
     		meta_coin.setEnabled(false);
     		break;
     	}
         
 	}
+    
+  //체크박스 선택되면 total coin 변경, 해제되면 감소
+    public void setTotalCoin(ArrayList<Robot> selected_robots) {
+    	total_price = 0;
+    	for(Robot robot : selected_robots) {
+    		total_price += robot.getPrice();													
+    	}
+    }
+    
 }
 
 
