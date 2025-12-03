@@ -1,0 +1,54 @@
+package model;
+import controller.GameManager;
+public abstract class Robot{
+	
+	protected String name;
+	protected String manual;
+	protected int price;
+	protected int limit;
+	protected boolean canMove;
+	protected int velocity;
+	
+	public Robot(String name) {
+		this.name = name;
+	}
+	
+	public Robot(String name, String manual, int price) {
+		this.name = name;
+		this.manual = manual;
+		this.price = price;
+	}
+	
+	//Overloading
+	public Robot(String name, String manual, int price, int limit) {
+		this.name = name;
+		this.manual = manual;
+		this.price = price;
+		this.limit = limit;
+	}
+	
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getManual() {
+		return manual;
+	}
+	
+	public int getPrice() {
+		return price;
+	}
+	
+	public int getLimit() {
+		return limit;
+	}
+	
+	public String Info() {
+		return name + "\n\n" + manual + "\n\n" + price + "\n\n" + limit;
+	}
+	
+	public void skills(GameManager gm,int row, int col) {
+		
+	}
+}
