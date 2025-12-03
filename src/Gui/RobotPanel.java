@@ -42,8 +42,6 @@ public TransferRobot tbot;
 public DeleteRobot dbot;
 public MetaRobot mbot;
 
-private JButton question;
-
 //private int[] total_price;
 public ArrayList <Robot> selected_robots;
 int total_price;
@@ -144,19 +142,6 @@ private GameManager gameManager;
         	}
         });
         add(buying);
-        
-        //? 버튼
-        question = new JButton("?");
-        question.setForeground(Color.WHITE);
-        LineBorder border = new LineBorder(Color.BLACK, 1, true);
-        question.setBorder(border);
-        question.setBorder(new LineBorder(Color.BLACK, 1, true));
-        question.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.changePanel(new QuestionPanel(frame));	//QuestionPanel로 이동
-            }
-        });  
-        add(question);
         
         //이미지
         trans_icon = new ImageIcon(getClass().getResource("changebot.png"));
@@ -303,32 +288,6 @@ private GameManager gameManager;
         buying.setLocation(lastx - buying_width,buying_y );
         buying.setSize(buying_width, buying_height);
         buying.setBackground(new Color(255, 228, 195));
-        
-        //? 버튼
-        int qsize = gap;
-        int q_x = boxX + boxWidth -qsize;
-        int q_y = boxY - 2 * gap;
-        //question.setLocation(q_x, q_y);
-        //question.setSize(qsize, qsize);
-        question.setBackground(Color.DARK_GRAY);
-	}
-	
-	//GameManager가 이 메서드 호출해서 로봇 구매완료 시 버튼 상태 변경함.
-    public void setPurchased(String robotName) {
-    	switch(robotName) {
-    	case "변환 로봇":
-    		trans_coin.setText("완료");
-    		trans_coin.setEnabled(false); //구매하면 버튼 비활성화
-    		break;
-    	case "삭제 로봇":
-    		delete_coin.setText("완료");
-    		delete_coin.setEnabled(false);
-    		break;
-    	case "메타몽 로봇":
-    		meta_coin.setText("완료");
-    		meta_coin.setEnabled(false);
-    		break;
-    	}
 	}
     
   //체크박스 선택되면 total coin 변경, 해제되면 감소

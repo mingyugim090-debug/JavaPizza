@@ -114,7 +114,7 @@ public class MyRobotPanel extends JPanel{
 	        			if(parent != null) {
 	        				if(selectMode == 1) {
 	        					//변환 로봇은 맵 클릭이 아니라 즉시발동하도록 처리
-	        					parent.getGameManager().handleConvertRobot();
+	        					parent.getGameManager().useTransferRobot();
 	        				}else {
 	        					//메타몽은 맵 클릭해야하므로 모드 변경
 	        					parent.getGameManager().setRobotMode(selectMode);
