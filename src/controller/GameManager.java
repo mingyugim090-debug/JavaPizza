@@ -123,8 +123,11 @@ public class GameManager {
        
         String name = JOptionPane.showInputDialog(frame, 
             "Game Over! \n점수: " + score + "\n이름을 입력하세요");
-        if (name != null && !name.trim().isEmpty()) {
-            fileManager.rank(score, name); 
+        
+        if (name.isEmpty()) {
+            fileManager.rank(score);  
+        } else {
+            fileManager.rank(score, name);
         }
         
         //게임 초기화(재시작할 때)

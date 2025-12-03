@@ -26,6 +26,13 @@ public class FileManager {
 		saveFile();
 	}
 	
+	public void rank(int score) {
+		names.add("GUEST");
+		scores.add(score);
+		
+		arraydown();
+		saveFile();
+	}
 	// 점수 내림차순 정렬
 	private void arraydown() {
         for (int i = 0; i < scores.size() - 1; i++) {
