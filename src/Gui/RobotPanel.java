@@ -308,8 +308,8 @@ private GameManager gameManager;
         int qsize = gap;
         int q_x = boxX + boxWidth -qsize;
         int q_y = boxY - 2 * gap;
-        question.setLocation(q_x, q_y);
-        question.setSize(qsize, qsize);
+        //question.setLocation(q_x, q_y);
+        //question.setSize(qsize, qsize);
         question.setBackground(Color.DARK_GRAY);
 	}
 	
@@ -335,7 +335,7 @@ private GameManager gameManager;
     public void setTotalCoin(ArrayList<Robot> selected_robots) {
     	total_price = 0;
     	for(Robot robot : selected_robots) {
-    		total_price += robot.getPrice();													
+    		total_price += robot.getPrice();												
     	}
     }
 }

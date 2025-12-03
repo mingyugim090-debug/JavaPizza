@@ -375,7 +375,14 @@ public class GameManager {
 	                    }
 	    				JOptionPane.showMessageDialog(frame, "구매 완료");
 	                }
-	            }  
+	            }
+	    		else if(result == JOptionPane.NO_OPTION){
+	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
+	    			
+	    		}
+	    		else {
+	    			JOptionPane.showMessageDialog(frame, "구매에 실패했습니다.");
+	    		}
 	            selected_robots.clear();
 	    }
 	  public void PrintRobot(String robotName, int price) {
