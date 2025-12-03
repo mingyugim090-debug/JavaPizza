@@ -48,27 +48,6 @@ public abstract class Robot{
 		return name + "\n\n" + manual + "\n\n" + price + "\n\n" + limit;
 	}
 	
-//	public boolean CanCarry(int heft) {
-//		if (heft > limit) {
-//			canMove = false;
-//		}
-//		else {
-//			canMove = true;
-//		}
-//		
-//		return canMove;
-//	}
-//	
-//	protected int setVelocity() {
-//		velocity = 0;
-//		
-//		return velocity;
-//	};
-//	
-//	protected int calTime(int weight) {
-//		int v = setVelocity();
-//		return (1/v) * weight;
-//	}
 	public void skills(GameManager gm,int row, int col) {
 		
 	}
