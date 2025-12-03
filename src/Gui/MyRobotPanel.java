@@ -9,7 +9,7 @@ public class MyRobotPanel extends JPanel{
     private JLabel titleLabel;
     
     private RobotCardPanel transCard;   //변환로봇
-    private RobotCardPanel deleteCard;    //삭제로봇
+    private RobotCardPanel deleteCard;  //삭제로봇
     private RobotCardPanel metaCard;  //메타몽로봇
 	
 	public MyRobotPanel() {
@@ -37,18 +37,16 @@ public class MyRobotPanel extends JPanel{
         titleLabel.setSize(labelWidth, labelHeight);
 
         //안쪽 흰색 영역 그리기
-        Graphics2D g2 = (Graphics2D) g;
- 
         int boxX   = width * 3 / 100;
         int boxY   = labelY + labelHeight + height / 100; 
         int boxWidth   = width  - boxX * 2;
         int boxHeight   = height - boxY - boxX;
 
-        g2.setColor(Color.WHITE);
-        g2.fillRect(boxX, boxY, boxWidth, boxHeight);
+        g.setColor(Color.WHITE);
+        g.fillRect(boxX, boxY, boxWidth, boxHeight);
 
-        g2.setColor(Color.LIGHT_GRAY);
-        g2.drawRect(boxX, boxY, boxWidth, boxHeight);
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawRect(boxX, boxY, boxWidth, boxHeight);
 
         //로봇 하나를 담는 작은 박스
         int areaX = boxX;
@@ -66,6 +64,7 @@ public class MyRobotPanel extends JPanel{
 
 	        switch (name) {
 	            case "변환 로봇":
+	            	//변환 로봇을 처음 구매할 때
 	                if (transCard != null) {
 	                	transCard.setCount(transCard.getCount() + count);
 	                	repaint();
@@ -79,6 +78,7 @@ public class MyRobotPanel extends JPanel{
 	                break;
 
 	            case "삭제 로봇":
+	            	//삭제 로봇을 처음 구매할 때 
 	                if (deleteCard != null) {
 	                	deleteCard.setCount(deleteCard.getCount()+count);
 	                    repaint();
@@ -91,6 +91,7 @@ public class MyRobotPanel extends JPanel{
 	                break;
 
 	            case "메타몽 로봇":
+	            	//메타몽 로봇을 처음 구매할 때
 	                if (metaCard != null) {
 	                	metaCard.setCount(metaCard.getCount() + count);
 	                	repaint();
@@ -147,9 +148,12 @@ public class MyRobotPanel extends JPanel{
 	 //아이템 사용시 화면 바뀌도록하는 메서드
 	 public void useRobotOnce(String robotName) {
 		 switch (robotName) {
-		 case "변환 로봇" : if(transCard != null) transCard.useOnce(); break;
-		 case "삭제 로봇": if(deleteCard != null) deleteCard.useOnce(); break;
-         case "메타몽 로봇": if(metaCard != null) metaCard.useOnce(); break;
+		 case "변환 로봇" : 
+			 if(transCard != null) transCard.useOnce(); break;
+		 case "삭제 로봇": 
+			 if(deleteCard != null) deleteCard.useOnce(); break;
+         case "메타몽 로봇": 
+        	 if(metaCard != null) metaCard.useOnce(); break;
      }
  }
 	 //카드 생성 메소드

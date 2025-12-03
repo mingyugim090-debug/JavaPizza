@@ -1,6 +1,11 @@
 10800,뮌헨 김민재
 8400,킹민재
 7800,MC민무늬도끼
+4800,이자연
+1700,skh
+100,awecwef
+0,aWSZfcwasef
+0,ㅠㅠ
 6600,kmj
 5100,민재
 2400,kmj
@@ -9,6 +14,8 @@
 1700,skh
 1700,skh
 1700,skh
+600,600
+300,fdcb
 100,awecwef
 100,awecwef
 100,awecwef

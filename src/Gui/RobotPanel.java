@@ -49,7 +49,6 @@ public ArrayList <Robot> selected_robots;
 int total_price;
 
 
-
 //GameManager 변수 선언
 private GameManager gameManager;
 
@@ -141,8 +140,7 @@ private GameManager gameManager;
         buying = new JButton("구매하기");
         buying.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e) {
-        		gameManager.buyMain(selected_robots, total_price);
-        		
+        		gameManager.buyMain(selected_robots, total_price);	
         	}
         });
         add(buying);
@@ -168,8 +166,6 @@ private GameManager gameManager;
         trans_img = trans_icon.getImage();
         delete_img = delete_icon.getImage();
         meta_img = meta_icon.getImage();
-        
-        
     }
 	
 	protected void paintComponent(Graphics g) {
@@ -181,14 +177,10 @@ private GameManager gameManager;
         //"로봇 목록" 글자 크기/위치
         int labelWidth  = width  * 4 / 10;  
         int labelHeight = height * 7 / 100;  
-        
         int labelX      = (width  * 95 / 100) - (labelWidth*225 / 100);
         int labelY      = height * 1 / 100; 
-
         titleLabel.setLocation(labelX, labelY);
         titleLabel.setSize(labelWidth, labelHeight);
-
-        //Graphics2D g2 = (Graphics2D) g; <- 투명도 설정 등 고급기능 사용할때 주석해제
         
         int margin = width * 3 / 100;
         int boxWidth   = width  - margin * 2;
@@ -202,7 +194,6 @@ private GameManager gameManager;
         
         int image_width = boxWidth / 4;
         int image_height = boxHeight * 6/10;
-        
         
         //1) 변환로봇
         
@@ -220,7 +211,8 @@ private GameManager gameManager;
         int checkX = boxX+d;
         int checkY = boxY+d;
         //체크박스
-        transferBot.setBounds(checkX, checkY, checkWidth, checkHeight);
+        transferBot.setLocation(checkX,checkY);
+        transferBot.setSize(checkWidth,checkHeight);
         transferBot.setOpaque(false); //배경색 지우기
         
         //coin 버튼
@@ -228,7 +220,8 @@ private GameManager gameManager;
         int coinHeight = coinWidth / 2;
         int lastx = boxX + boxWidth - d;
         int lasty = boxY + boxHeight - d;
-        trans_coin.setBounds(lastx - coinWidth, lasty - coinHeight, coinWidth, coinHeight);
+        trans_coin.setLocation(lastx - coinWidth,lasty - coinHeight);
+        trans_coin.setSize(coinWidth,coinHeight);
         trans_coin.setBackground(new Color(255, 250, 200));
         
         //changebot.png 이미지 그리기(크기 조정)
@@ -245,7 +238,6 @@ private GameManager gameManager;
         trans_manual.setLocation(manualX, manualY);
         trans_manual.setSize(manualWidth, manualHeight);
         
-        
         //2) 삭제로봇
         //외곽선 그리기(LIGHT GRAY)
         g.setColor(Color.LIGHT_GRAY);
@@ -254,12 +246,14 @@ private GameManager gameManager;
         g.setColor(Color.WHITE);
         g.fillRect(boxX, boxY + boxHeight + gap, boxWidth, boxHeight);
         //체크박스
-        deleteBot.setBounds(boxX+d, boxY + boxHeight + gap+d, checkWidth, checkHeight);
+        deleteBot.setLocation(boxX+d, boxY + boxHeight + gap+d);
+        deleteBot.setSize(checkWidth, checkHeight);
         deleteBot.setOpaque(false); //배경색 지우기
         
         //coin 버튼
         int diff =  boxY + 2 * boxHeight + gap - d - coinHeight;
-        delete_coin.setBounds(lastx - coinWidth, diff, coinWidth, coinHeight);
+        delete_coin.setLocation(lastx - coinWidth, diff);
+        delete_coin.setSize(coinWidth, coinHeight);
         delete_coin.setBackground(new Color(255, 250, 200));
         
         //deletebot.png 이미지 그리기(크기 조정)
@@ -281,12 +275,14 @@ private GameManager gameManager;
         g.fillRect(boxX, boxY + (2 * boxHeight) + (2 * gap), boxWidth, boxHeight);
         
         //체크박스
-        metaBot.setBounds(boxX+d, boxY + (2 * boxHeight) + (2 * gap) +d, checkWidth*2, checkHeight);
+        metaBot.setLocation(boxX+d, boxY + (2 * boxHeight) + (2 * gap) +d);
+        metaBot.setSize(checkWidth*2, checkHeight);
         metaBot.setOpaque(false); //배경색 지우기
         
         //coin 버튼
         int metacoin = boxY + (2 * boxHeight) + (2 * gap) + boxHeight - d - coinHeight;
-        meta_coin.setBounds(lastx - coinWidth, metacoin, coinWidth, coinHeight);
+        meta_coin.setLocation(lastx - coinWidth, metacoin);
+        meta_coin.setSize(coinWidth, coinHeight);
         meta_coin.setBackground(new Color(255, 250, 200));
         
         //설명
@@ -304,18 +300,17 @@ private GameManager gameManager;
         int buying_y = metacoin +coinHeight + dis;
         int buying_width = coinWidth * 2;
         int buying_height = coinHeight * 3 /2;
-        buying.setBounds(lastx - buying_width, buying_y,  buying_width, buying_height);
+        buying.setLocation(lastx - buying_width,buying_y );
+        buying.setSize(buying_width, buying_height);
         buying.setBackground(new Color(255, 228, 195));
         
         //? 버튼
         int qsize = gap;
         int q_x = boxX + boxWidth -qsize;
         int q_y = boxY - 2 * gap;
-        question.setBounds(q_x, q_y, qsize, qsize);
+        question.setLocation(q_x, q_y);
+        question.setSize(qsize, qsize);
         question.setBackground(Color.DARK_GRAY);
-        
-        
-       
 	}
 	
 	//GameManager가 이 메서드 호출해서 로봇 구매완료 시 버튼 상태 변경함.
@@ -334,7 +329,6 @@ private GameManager gameManager;
     		meta_coin.setEnabled(false);
     		break;
     	}
-        
 	}
     
   //체크박스 선택되면 total coin 변경, 해제되면 감소
@@ -344,7 +338,6 @@ private GameManager gameManager;
     		total_price += robot.getPrice();													
     	}
     }
-    
 }
 
 

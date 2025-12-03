@@ -54,11 +54,11 @@ public class HelpPanel extends JPanel {
         closeButton.setForeground(Color.WHITE); //글씨색
         closeButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5)); //테두리
         closeButton.setOpaque(true); //배경색 적용
-        closeButton.setFocusPainted(false);
+        closeButton.setFocusPainted(false); //파란 테두리 없애기
         closeButton.setFont(new Font("맑은 고딕",Font.BOLD,30));
         add(closeButton); //부착
         
-        //closeButton("알겠습니다")누르면 StartPanel로 돌아감, 익명 클래스로 이벤트 리스너 작성(교재 p566)
+        //closeButton("알겠습니다")누르면 StartPanel로 돌아감, 익명 클래스로 이벤트 리스너 작성
         closeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.changePanel(new MainPanel(frame));
@@ -77,16 +77,14 @@ public class HelpPanel extends JPanel {
         int boxWidth = width / 2;
         int boxHeight = height * 6 / 10;
         int boxX = (width - boxWidth) / 2;
-//        int boxY = height * 15 / 100;
         int boxY = height / 7;
         helpBox.setLocation(boxX,boxY);
         helpBox.setSize(boxWidth,boxHeight);
 
         //도움말 내 텍스트상자 위치/크기
-        int msgWidth = boxWidth * 9 / 10; //message박스는 box보다 아주 조금 작게 만듦
+        int msgWidth = boxWidth * 9 / 10; 
         int msgHeight = boxHeight * 92 / 100;
         int msgX = (boxWidth - msgWidth) / 2;
-//        int msgY = (boxHeight - msgHeight) / 2 - 10;
         int msgY = height / 35;
         message.setLocation(msgX,msgY);
         message.setSize(msgWidth,msgHeight);
@@ -99,5 +97,4 @@ public class HelpPanel extends JPanel {
         closeButton.setLocation(buttonX,buttonY);
         closeButton.setSize(buttonWidth,buttonHeight);
     }
-
 }

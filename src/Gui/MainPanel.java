@@ -9,7 +9,7 @@ public class MainPanel extends JPanel {
 	private Frame frame;
 	private JButton startButton;
     private JButton helpButton;
-    private JLabel logoLabel;
+    private Image logoImage;
     private JLabel requestLabel;
     private JButton rankingButton;
     private JButton audio;
@@ -20,19 +20,17 @@ public class MainPanel extends JPanel {
         setLayout(null);
         
         //로고
-        ImageIcon logo = new ImageIcon(getClass().getResource("robohub_logo.png"));
-        logoLabel = new JLabel(logo);
-        add(logoLabel); 
+        logoImage = new ImageIcon(getClass().getResource("robohub_logo.png")).getImage();
         
         //Start 버튼
-        startButton = new JButton("START"); //문구
+        startButton = new JButton("START"); 
         startButton.setBackground(Color.GRAY); //배경색
         startButton.setForeground(Color.WHITE); //글씨색
         startButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5)); //테두리
         startButton.setOpaque(true); //배경색 적용
         startButton.setFocusPainted(false);
         startButton.setFont(new Font("Arial",Font.BOLD,30));
-        add(startButton); //부착
+        add(startButton); 
         
         //Start버튼 누르면 StageIntroPanel로 이동, 익명 클래스로 이벤트 리스너 작성(교재 p566)
         startButton.addActionListener(new ActionListener() {
@@ -42,14 +40,14 @@ public class MainPanel extends JPanel {
         });
         
         //Help 버튼
-        helpButton = new JButton("HELP"); //문구
+        helpButton = new JButton("HELP"); 
         helpButton.setBackground(Color.GRAY);
         helpButton.setForeground(Color.WHITE);
         helpButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         helpButton.setOpaque(true);
         helpButton.setFocusPainted(false);
         helpButton.setFont(new Font("Arial",Font.BOLD,30));
-        add(helpButton); //부착
+        add(helpButton); 
         
         //help버튼 누르면 HelpPanel로 이동, 익명 클래스로 이벤트 리스너 작성(교재 p566)
         helpButton.addActionListener(new ActionListener() {
@@ -59,14 +57,14 @@ public class MainPanel extends JPanel {
         });  
         
         //Ranking 버튼
-        rankingButton = new JButton("RANKING"); //문구
+        rankingButton = new JButton("RANKING");
         rankingButton.setBackground(Color.GRAY);
         rankingButton.setForeground(Color.WHITE);
         rankingButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         rankingButton.setOpaque(true);
         rankingButton.setFocusPainted(false);
         rankingButton.setFont(new Font("Arial",Font.BOLD,30));
-        add(rankingButton); //부착
+        add(rankingButton); 
         
         //Ranking 버튼 누르면 RankPanel로 이동
         rankingButton.addActionListener(new ActionListener() {
@@ -83,9 +81,7 @@ public class MainPanel extends JPanel {
         //audio 버튼
         ImageIcon audio_icon = new ImageIcon(getClass().getResource("audio.png"));
         audio = new JButton(audio_icon);
-        //audio.setBorderPainted(false);          // 버튼 테두리 제거
         audio.setContentAreaFilled(false);      // 버튼 내부 배경 제거
-        //audio.setFocusPainted(false);
         add(audio);
         
         audio.addActionListener(new ActionListener() {
@@ -106,8 +102,7 @@ public class MainPanel extends JPanel {
         	        System.out.println("volume = " + v);
         	    });
         	}
-        });
-        
+        });  
     }
     
     //화면이 리사이즈될 때마다 자동 호출
@@ -118,13 +113,12 @@ public class MainPanel extends JPanel {
         int width = getWidth(); 
         int height = getHeight(); 
 
-        //로고 위치/크기
-        int logoWidth = logoLabel.getIcon().getIconWidth(); //로고 폭
-        int logoHeight = logoLabel.getIcon().getIconHeight(); //로고 높이
-        int logoX = (width - logoWidth) / 2; //로고 x좌표
-        int logoY = height / 13; //로고 y좌표
-        logoLabel.setLocation(logoX,logoY);
-        logoLabel.setSize(logoWidth,logoHeight);
+        //로고 위치 / 크기
+        int logoWidth = width / 2;   
+        int logoHeight = height * 33 / 180;   
+        int logoX = (width - logoWidth) / 2;
+        int logoY = height * 8 / 100;
+        g.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight, this);
 
         //START버튼 위치/크기
         int buttonWidth = width / 4; 
@@ -155,12 +149,9 @@ public class MainPanel extends JPanel {
         //audio 버튼 위치/크기
         int gap = height / 22;
         int audioSize = 2 * gap;
-        
         int audioX = width - audioSize - gap;
         int audioY = height - audioSize -  gap;
-        
-        
-        audio.setBounds(audioX, audioY, audioSize, audioSize);
-        
+        audio.setLocation(audioX,audioY);
+        audio.setSize(audioSize,audioSize);
     }
 }

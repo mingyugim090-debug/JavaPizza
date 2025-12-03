@@ -22,7 +22,6 @@ public class InformationPanel extends JPanel {
         this.score = score;
 
         //전체 바 높이
-        this.setPreferredSize(new Dimension(0, 60)); //세로 60에 맞추어 가로 길이 자동 생성 
         setOpaque(false);
         this.setLayout(new GridLayout(1, 3, 20, 0)); // 행,열,가로 칸 사이 간격 20px
 

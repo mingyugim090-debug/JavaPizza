@@ -86,23 +86,34 @@ public class FileManager {
             while ((line = br.readLine()) != null) {
 
                 String[] parts = line.split(",");
-
-                if (parts.length == 2) {
+                
+                // 파일 형식 오류나면 그냥 다음줄 읽기
+                if (parts.length != 2) continue;
+                
+                try{
                     int score = Integer.parseInt(parts[0]);
                     String name = parts[1];
 
                     scores.add(score);
                     names.add(name);
+                } // 점수가 숫자가 아니면 그 라인 무시하고 다음라인 읽기
+                catch(NumberFormatException e) {
+                	System.out.println("잘못된 데이터: "+line);
+                	continue;
                 }
             }
 
             arraydown();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("랭킹 파일 읽기 실패: "+e.getMessage());
         } finally {
-            try { if (br != null) br.close(); } catch (IOException e) {}
-            try { if (fr != null) fr.close(); } catch (IOException e) {}
+            try { 
+            	if (br != null) br.close();
+            } catch (IOException e) {}
+            
+            try { if (fr != null) fr.close();
+            } catch (IOException e) {}
         }
     }
 }
