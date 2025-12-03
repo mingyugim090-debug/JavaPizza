@@ -22,7 +22,6 @@ import util.FileManager;
 import model.Robot;
 
 public class GameManager {  
-	
 //======================[멤버 변수]======================================
 //게임 운영에 필요한 모든 상태값 변수를 private으로 선언하여 캡슐화
     
@@ -340,7 +339,7 @@ public class GameManager {
 	    }
 
 	    
-	  //장바구니 일괄 구매
+	  //장바구니 구매
 	    public void buyMain(ArrayList<Robot> selected_robots, int total_price) {
 	    	if(selected_robots.isEmpty()) {
 	    		JOptionPane.showMessageDialog(frame, "구매할 로봇을 선택해주세요");
@@ -359,59 +358,30 @@ public class GameManager {
 	                        boolean success = gamePanel.getMyRobotPanel().addRobot(name, 2);
 	                        if (success) {
 	                            gamePanel.getRobotPanel().setPurchased(name);
-	                            saveRobotPurchase(name);
+	                            
+	                            if(name.equals("변환 로봇")) {
+	                            	if(myRobotCounts[0] == -1) myRobotCounts[0] = 0;
+	                            	myRobotCounts[0] += 2;
+	                            }
+	                            else if (name.equals("삭제 로봇")) {
+	                                if(myRobotCounts[1] == -1) myRobotCounts[1] = 0;
+	                                myRobotCounts[1] += 2;
+	                            }
+	                            else if (name.equals("메타몽 로봇")) {
+	                                if(myRobotCounts[2] == -1) myRobotCounts[2] = 0;
+	                                myRobotCounts[2] += 2;
+	                            }
 	                        }
 	                    }
+	    				JOptionPane.showMessageDialog(frame, "구매 완료");
 	                }
-	            } else {
-	                JOptionPane.showMessageDialog(frame, "구매 취소/실패");
-	            }
+	            }  
 	            selected_robots.clear();
-	        }
-	    
- public void buyRobot(String robotName, int total_price) {
-    	  boolean isAlreadyBought = false;
-    	    if (robotName.equals("변환 로봇") && myRobotCounts[0] != -1) isAlreadyBought = true;
-    	    else if (robotName.equals("삭제 로봇") && myRobotCounts[1] != -1) isAlreadyBought = true;
-    	    else if (robotName.equals("메타몽 로봇") && myRobotCounts[2] != -1) isAlreadyBought = true;
-
-    	    if (isAlreadyBought) {
-    	        JOptionPane.showMessageDialog(frame, "구매 불가");
-    	        return;
-    	    }
-    	  
-    	if (coins >= total_price) {
-    		boolean success = gamePanel.getMyRobotPanel().addRobot(robotName, 2);
-    		
-    		if(success) {
-    			coins -= total_price;
-    			addScore(0,0);
-    			gamePanel.getRobotPanel().setPurchased(robotName);
-    			saveRobotPurchase(robotName);
-             }
-    	
-    	}else {
-    		    JOptionPane.showMessageDialog(frame, "코인부족"); 
-    	}
-      }  	
-	  
-	  //위의 두 메서드 코드에서 중복되는 부분 따로 정리
-	  private void saveRobotPurchase(String robotName) {
-	        if (robotName.equals("변환 로봇")) myRobotCounts[0] = 2;
-	        else if (robotName.equals("삭제 로봇")) myRobotCounts[1] = 2;
-	        else if (robotName.equals("메타몽 로봇")) myRobotCounts[2] = 2;
 	    }
-	  
 	  public void PrintRobot(String robotName, int price) {
 		  String message = robotName + "은" + price + "coin 입니다.";
 		  JOptionPane.showMessageDialog(frame, message);
-				  
-	  }
-	 
-	  
-	  
-	  
-
+	}
 //=======================[Getters]==================
 public int[][] getMapData() { return mapData; }
 public int getGridSize() { return gridSize; }
@@ -421,6 +391,3 @@ public int getScore() { return score; }
 public int getNextBlockColor() { return colorNumber; }
 public FileManager getFileManager() { return fileManager; }
 }
-
-    
-   
