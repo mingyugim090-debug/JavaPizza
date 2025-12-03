@@ -1,4 +1,9 @@
+10800,뮌헨 김민재
+8400,킹민재
+7800,MC민무늬도끼
 6600,kmj
+5100,민재
+2400,kmj
 1700,skh
 1700,skh
 1700,skh
@@ -9,7 +14,6 @@
 100,awecwef
 100,awecwef
 100,awecwef
-0,sfghbsfg
 0,aWSZfcwasef
 0,sfghbsfg
 0,aWSZfcwasef
@@ -19,3 +23,4 @@
 0,aWSZfcwasef
 0,sfghbsfg
 0,aWSZfcwasef
+0,sfghbsfg
