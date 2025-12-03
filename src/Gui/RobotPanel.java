@@ -60,7 +60,7 @@ private GameManager gameManager;
         
         tbot = new TransferRobot("변환 로봇", "대기중인 물건의 색상을 랜덤 변경.", 1500);
         dbot = new DeleteRobot("삭제 로봇", "원하는 1칸 삭제 가능.", 2500);
-        mbot = new MetaRobot("메타몽 로봇", "모든 색상과 매칭되는 무지개 아이템으로 변환.", 4000);
+        mbot = new MetaRobot("메타몽 로봇", "모든 색상과 매칭되는 보라색 아이템을 생성.", 4000);
         selected_robots = new ArrayList<>();
 
         //연한 회색으로 배경색 지정
