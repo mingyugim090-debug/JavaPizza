@@ -10,8 +10,6 @@ public class Main {
 		    //view 패키지 객체 생성
 		    Frame frame = new Frame(); //메인 화면 생성
 
-		    //GamaManager 객체 생성
-		    //GameManager 와 frame 상호 연결
 		    GameManager gameManager = new GameManager(frame);
 		    frame.setGameManager(gameManager);
 		    
@@ -22,7 +20,3 @@ public class Main {
 	}
 
 
-//Main 클래스 역할 : 프로그램 시작점
-//view 패캐지의 Frame클래스 와 controller패키지의 GameManager클래스 연결
-//Main --> Frame , GameManager 생성
-//GameManager와 Frame이 서로 상호작용
