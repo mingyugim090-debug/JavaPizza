@@ -20,6 +20,9 @@ import Gui.GamePanel;
 import util.TimeThread;
 import util.FileManager;
 import model.Robot;
+import model.TransferRobot;
+import model.DeleteRobot;
+import model.MetaRobot;
 
 public class GameManager {  
 //======================[멤버 변수]======================================
@@ -50,6 +53,10 @@ public class GameManager {
     private int robotMode = 0;
     private int[] myRobotCounts = {-1,-1,-1};
     
+    private TransferRobot tbot;
+    private DeleteRobot dbot;
+    private MetaRobot mbot;
+    
 
     
 //======================[생성자 및 초기화]====================================    
@@ -57,6 +64,9 @@ public class GameManager {
     public GameManager(Frame frame) {
         this.frame = frame;
         this.fileManager = new FileManager();
+        tbot = new TransferRobot("변환 로봇");
+        dbot = new DeleteRobot("삭제 로봇");
+        mbot = new MetaRobot("메타몽 로봇");
     }
     
     //화면이 전환될 때 GamePanel을 연결하고 로봇 정보 복구하는 메서드
@@ -140,7 +150,7 @@ public class GameManager {
 
 //=====================[데이터 관리 & 판정]========================
     //다음 블록 생성
-    private void generateNextBlock() {
+    public void generateNextBlock() {
     	colorNumber = random.nextInt(4) + 1;
     	if(gamePanel != null) gamePanel.updateNextBlock(colorNumber);
     }
@@ -172,6 +182,7 @@ public class GameManager {
 // ======================[상호작용 및 판정]===========================
     //사용자가 맵을 클릭했을 때 호출되는 핵심 로직
     //사용자가 맵의 (row, col) 위치에 물건을 놓았을 때 MapPanel에서 호출하는 메서드 
+    
     public void handleMapAction(int row, int col) {
         if (!isGameRunning) return;
         if (row < 0 || col < 0 || row >= gridSize || col >= gridSize) return;
@@ -180,8 +191,8 @@ public class GameManager {
         //1. 삭제 로봇 : 클릭한 로봇 제거
         if (robotMode == 2) {
             if (mapData[row][col] != 0) {
-                mapData[row][col] = 0; // 블록 삭제
-                useRobotItem("삭제 로봇"); // 사용횟수 차감
+                dbot.skills(this, row, col); // 블록 삭제
+                useRobotItem(dbot.getName()); // 사용횟수 차감
                 frame.repaint();
             }
             return; 
@@ -190,8 +201,8 @@ public class GameManager {
         // 메타몽 로봇 : 빈칸에 만능 블록(보라색) 배치
         if (robotMode == 3) { 
             if (mapData[row][col] == 0) {
-                mapData[row][col] = 5; //5번 : 보라색
-                useRobotItem("메타몽 로봇");
+                mbot.skills(this, row, col); //5번 : 보라색
+                useRobotItem(mbot.getName());
                 checkLineMatch(row, col);
                 generateNextBlock();
                 frame.repaint();
@@ -319,16 +330,15 @@ public class GameManager {
     //로봇 아이템 사용 완료 후 차감되고 , 기본로봇으로 복귀
     public void useRobotItem(String robotName) {
     	gamePanel.getMyRobotPanel().useRobotOnce(robotName);
-    	if (robotName.equals("변환 로봇")) myRobotCounts[0]--;
-    	else if (robotName.equals("삭제 로봇")) myRobotCounts[1]--;
-    	else if (robotName.equals("메타몽 로봇")) myRobotCounts[2]--;
+    	if (robotName.equals(tbot.getName())) myRobotCounts[0]--;
+    	else if (robotName.equals(dbot.getName())) myRobotCounts[1]--;
+    	else if (robotName.equals(mbot.getName())) myRobotCounts[2]--;
     	this.robotMode = 0; 
     }
     //변환 로봇 기능 : 다음 블록 색상을 즉시 랜덤 변경
-    public void handleConvertRobot() {
-        generateNextBlock(); 
-        frame.repaint();
-        useRobotItem("변환 로봇"); 
+    public void useTransferRobot() {
+    	tbot.skills(this, 0, 0);
+    	frame.repaint();
     }
 	    
 	    //체크박스 선택된 robot 목록(ArrayList) 반환
@@ -357,17 +367,16 @@ public class GameManager {
 	                        String name = robot.getName();
 	                        boolean success = gamePanel.getMyRobotPanel().addRobot(name, 2);
 	                        if (success) {
-	                            gamePanel.getRobotPanel().setPurchased(name);
 	                            
-	                            if(name.equals("변환 로봇")) {
+	                            if(name.equals(tbot.getName())) {
 	                            	if(myRobotCounts[0] == -1) myRobotCounts[0] = 0;
 	                            	myRobotCounts[0] += 2;
 	                            }
-	                            else if (name.equals("삭제 로봇")) {
+	                            else if (name.equals(dbot.getName())) {
 	                                if(myRobotCounts[1] == -1) myRobotCounts[1] = 0;
 	                                myRobotCounts[1] += 2;
 	                            }
-	                            else if (name.equals("메타몽 로봇")) {
+	                            else if (name.equals(mbot.getName())) {
 	                                if(myRobotCounts[2] == -1) myRobotCounts[2] = 0;
 	                                myRobotCounts[2] += 2;
 	                            }
